@@ -62,6 +62,18 @@
           "duration_seconds": {
             "type": "number",
             "description": "Estimated duration for this scene"
+          },
+          "sub_shots": {
+            "type": "array",
+            "description": "Anti-deadtime decomposition. RECOMMENDED when duration_seconds > 15: break a long scene into <=15s sub-shots so the frame never stays static. Alternatively, keep one scene but provide animation_cues with a visible change roughly every 10-15s. See shared/docs/remotion-spec.md §1.5.",
+            "items": {
+              "type": "object",
+              "required": ["start_seconds", "action"],
+              "properties": {
+                "start_seconds": { "type": "number", "minimum": 0, "description": "Sub-shot start offset within the scene" },
+                "action": { "type": "string", "description": "Visible change/focus for this sub-shot, e.g. 'zoom into code block', 'stagger cards in', 'switch to @SplitLayout right pane', 'B-roll cut-in'" }
+              }
+            }
           }
         }
       }

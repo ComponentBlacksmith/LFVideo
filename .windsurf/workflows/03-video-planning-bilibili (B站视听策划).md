@@ -40,6 +40,7 @@ description: B站视听策划 - 读取上游故事大纲，自动生成 Remotion
    - 若现有组件可表达（如 `@IntroScene`, `@TableScene`, `@TimelineScene`）→ 复用。
    - 若无法表达 → 声明新 `Template Ticket`。
 3. 为每个 section 生成 Props 填充策略与动画 Cue 表。
+4. **防静止编排（Anti-Deadtime）**：对每个 section 估算 `duration_seconds`，凡 > 15 秒者，必须二选一——(a) 配套约每 10–15 秒至少 1 个可见变化的 `animation_cues` 并覆盖到 scene 末尾；或 (b) 拆成多个子镜头（可选字段 `sub_shots` 或多个 `scene_storyboard`，每段 ≤15 秒）。详见 `shared/docs/remotion-spec.md` §1.5。
 
 ### 4. 生成 B 轨录屏指令 (AI 自动)
 
@@ -57,6 +58,7 @@ description: B站视听策划 - 读取上游故事大纲，自动生成 Remotion
 
 输出前自检：
 - ❌ **组件覆盖度自检**：每个 section 是否都映射到了具体组件或 Ticket？（禁止留下未解决的抽象描述）
+- ❌ **防静止自检**：是否存在 `duration_seconds > 15` 却既无足量 `animation_cues`（约每 10–15s 一个变化）又未拆 `sub_shots` 的 scene？若有，补 cue 或拆子镜头（见 `shared/docs/remotion-spec.md` §1.5）。
 - ❌ **Schema 机器校验**：模拟校验 JSON 结构块。后续自动化可执行：
   ```bash
   # 校验视听编排蓝图是否符合 03-plan-bilibili 规范

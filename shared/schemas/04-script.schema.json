@@ -29,7 +29,19 @@
           },
           "voice": { "type": "string", "description": "The exact spoken voiceover script" },
           "visual_instructions": { "type": "string", "description": "Visual scene prompt or Remotion code instructions" },
-          "duration_hint_seconds": { "type": "number", "minimum": 1 }
+          "duration_hint_seconds": { "type": "number", "minimum": 1 },
+          "visual_beats": {
+            "type": "array",
+            "description": "Anti-deadtime sub-shot timeline. RECOMMENDED whenever duration_hint_seconds > 15: each beat marks a visible visual change so the shot never stays static longer than ~15s. See shared/docs/remotion-spec.md §1.5.",
+            "items": {
+              "type": "object",
+              "required": ["at_seconds", "action"],
+              "properties": {
+                "at_seconds": { "type": "number", "minimum": 0, "description": "Seconds from this section's start when the visual change happens" },
+                "action": { "type": "string", "description": "The visible change, e.g. 'stagger row in', 'zoom focus', 'highlight_cell', 'switch component', 'B-roll cut-in'" }
+              }
+            }
+          }
         }
       }
     },
