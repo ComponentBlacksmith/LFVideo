@@ -1,215 +1,155 @@
 ---
 stage: 06-tts-synthesis
-status: draft
+status: approved
 source_workflow: /06-tts-synthesis
+upstream_inputs:
+  - 04-script/README.md (status: draft)
+  - shared/docs/remotion-spec.md
+engine: piper-tts
+model: zh_CN-huayan-medium
 ---
 
-# ep02 TTS 语音合成规划
+# ep02 TTS 语音合成（Piper TTS 本地跑通）
 
-## 引擎推荐
+## 引擎选型
 
-| 维度 | 推荐方案 |
-|------|---------|
-| **首选引擎** | 豆包 TTS（`doubao_tts.py`） |
-| **推荐理由** | 中文情感最自然；支持逐字时间戳（利于后续 08 字幕对齐）；长文本异步合成 |
-| **备选引擎** | OpenAI TTS（中英混合段落较多时切换） |
-| **离线备选** | Piper TTS（零成本本地引擎，紧急降级方案） |
-| **输出格式** | WAV 44.1kHz / 16bit 单声道 |
-
-### 引擎选择理由
-
-本期 ep02 口播内容为 **纯中文技术讲解**（Remotion / React 视频渲染），虽含英文术语但主体为中文口语。豆包 TTS 在中文自然度和技术讲解场景的表现优于其他引擎：
-- 停顿感和换气节奏接近真人
-- 支持 `character-level timestamps`，直接输出逐字时间戳供 08 字幕阶段使用
-- 长文本异步 API，单次可处理完整段落（无需按句切分）
-
----
-
-## 口播段落拆分
-
-从 `04-script/README.md` 提取的 5 段 `[口播]` 文本：
-
-### 段落 1：开头黄金钩子（S1）
-
-| 属性 | 值 |
+|| 维度 | 值 |
 |------|---|
-| 场景 | S1 @IntroScene |
-| 情感 | 钩子抓人 → 稍快、有力 |
-| 预估时长 | 30s |
-| 输出文件 | `voice-s01.wav` |
-| 字数 | 约 150 字 |
+| **当前引擎** | Piper TTS（本地、免费、零 API 依赖） |
+| **模型** | `zh_CN-huayan-medium`（63MB ONNX，中文女声，VITS 架构） |
+| **采样率** | 22050 Hz / 16bit 单声道 |
+| **后续升级** | 豆包/OpenAI TTS（需 API Key，中文情感更自然、支持逐字时间戳） |
 
-**口播原文**：
-> 你还在用 PR、AE 一帧一帧地剪视频吗？停。今天我要告诉你一个完全不同的思路。写代码，就是在写视频。一百行 React，直接编译成 4K 高清 MP4。这就是 Remotion。但别急着兴奋，这条路上有一个几乎所有 AI 都会踩的致命深坑。 SSR 渲染时，window is not defined。什么意思？就是你的代码在浏览器里跑得欢，一编译就崩。怎么解？一条 MDC 规则，被动约束，让 AI 自动写出安全代码。今天这期，手把手带你跑通。
+### Piper TTS 优势（跑通阶段）
 
-**TTS 参数建议**：
-- `speed`: 1.05（稍快于正常语速，制造紧迫感）
-- 情感：激昂 + 好奇
+- **零成本**：无需 API Key，完全本地推理
+- **速度快**：16 段口播合成总耗时约 13 秒（CPU）
+- **可复现**：同一模型同一文本每次输出一致
+- **格式兼容**：直接输出 WAV，可无缝对接 07 组装阶段
 
----
+### 已知局限
 
-### 段落 2：Remotion 底层解密（S2）
-
-| 属性 | 值 |
-|------|---|
-| 场景 | S2 @TimelineScene |
-| 情感 | 讲解型 → 稳重、清晰 |
-| 预估时长 | 120s |
-| 输出文件 | `voice-s02.wav` |
-| 字数 | 约 200 字 |
-
-**口播原文**：
-> 先搞清楚 Remotion 的核心机制。视频的本质是什么？是帧。帧的本质是什么？是时间。Remotion 给你一个 `useCurrentFrame()` Hook，返回当前是第几帧。再给你一个 `useVideoConfig()`，返回 fps 和总帧数。简单除法，`frame / fps`，你就得到了当前时间点。这意味着什么？意味着你可以用 React 的状态、Props、Effect，来驱动视频的每一帧。想做一个进度条？监听 frame。想做动画插值？spring 物理公式直接上。你写的不是视频，是"时间的函数"。这才是代码即视频的真正含义。
-
-**TTS 参数建议**：
-- `speed`: 0.95（稍慢，留出思考空间）
-- 在"视频的本质是什么？是帧。帧的本质是什么？是时间。"处插入 SSML `<break time="300ms"/>` 增强节奏感
+- 中文自然度不如商业 TTS（豆包/Azure/OpenAI）
+- 英文术语发音偏差（Remotion、SSR 等）无 SSML 精调能力
+- 无逐字时间戳输出（后续 08 字幕阶段需额外 Whisper 对齐）
 
 ---
 
-### 段落 3：致命 SSR 踩坑（S3）
+## 合成结果
 
-| 属性 | 值 |
-|------|---|
-| 场景 | S3 @ConceptScene + @VideoSlot |
-| 情感 | 讲故事 → 先平叙，到报错处突然加重 |
-| 预估时长 | 120s |
-| 输出文件 | `voice-s03.wav` |
-| 字数 | 约 220 字 |
-
-**口播原文**：
-> 好，原理明白了，开始实操。你让 Cursor 写一个 Remotion 组件，读取窗口宽度做响应式布局。代码看起来没问题，在浏览器预览里跑得欢。你信心满满，执行 `npx remotion render`，准备导出成片。啪，红屏。`ReferenceError: window is not defined`。为什么？Remotion 的渲染分两个阶段。第一阶段，SSR 预渲染，Puppeteer 在 Node.js 环境里截图。Node 里没有 window，没有 document，没有任何浏览器全局对象。你的代码在顶层直接读 `window.innerWidth`，Node 端直接崩溃。这不是你代码的问题，是 AI 的环境感知盲区。它不知道这段代码要在两个完全不同的环境里跑。
-
-**TTS 参数建议**：
-- `speed`: 1.0（正常语速）
-- "啪，红屏"处加 `<emphasis level="strong">`
-- "ReferenceError: window is not defined" 需 SSML `<say-as>` 或拼音标注
-
----
-
-### 段落 4：MDC 被动约束降维打击（S4）
-
-| 属性 | 值 |
-|------|---|
-| 场景 | S4 @SplitLayout |
-| 情感 | 先否定传统解法 → 揭示更优方案 → 胜利感 |
-| 预估时长 | 150s |
-| 输出文件 | `voice-s04.wav` |
-| 字数 | 约 200 字 |
-
-**口播原文**：
-> 传统解法？手动改代码，加 `typeof window === 'undefined'` 守卫。但这很蠢。你要跟 AI 反复拉扯，每次它都可能忘掉。更好的解法？被动约束。写一个 `.cursor/rules/remotion-ssr.mdc` 文件，里面只有一条规则：所有 Remotion 组件，访问浏览器全局对象前，必须检查环境。Cursor 读到这条规则，自动在生成的代码里加上守卫。你不用改一行代码，不用跟 AI 拉锯。看左边，没规则，Cursor 反复循环，不停报错。看右边，加了 MDC 规则，一次通过，直接出片。这就是约束的力量。不是人去盯 AI，是让规则去盯。
-
-**TTS 参数建议**：
-- `speed`: 1.0
-- "但这很蠢"处加 `<emphasis>`（轻蔑语气）
-- "一次通过，直接出片"处加重（胜利感）
+| 段落 ID | 对应场景 | 字数 | 时长 | 文件 |
+|---------|---------|------|------|------|
+| S1_intro | 第一段·开头钩子 | 158 | 25.59s | `S1_intro.wav` |
+| S2a_paradigm | 第二段A·范式与痛点 | 258 | 42.97s | `S2a_paradigm.wav` |
+| S2b_frame_as_state | 第二段B·帧即状态 | 120 | 20.96s | `S2b_frame_as_state.wav` |
+| S2c_six_routes | 第二段C·六条路线 | 314 | 44.33s | `S2c_six_routes.wav` |
+| S3a_judgment_matrix | 第三段A·判断层矩阵 | 381 | 60.38s | `S3a_judgment_matrix.wav` |
+| S3b_remotion_reasons | 第三段B·选型四理由 | 288 | 41.62s | `S3b_remotion_reasons.wav` |
+| S3c_comparison | 第三段C·Remotion vs HyperFrames | 164 | 21.04s | `S3c_comparison.wav` |
+| S3d_tradeoffs | 第三段D·选型代价 | 171 | 27.85s | `S3d_tradeoffs.wav` |
+| S4a_pipeline | 第四段A·七阶段流水线 | 172 | 30.59s | `S4a_pipeline.wav` |
+| S4b_three_piece | 第四段B·三件套 | 170 | 24.31s | `S4b_three_piece.wav` |
+| S4c_orchestrator | 第四段C·编排器伪代码 | 199 | 24.14s | `S4c_orchestrator.wav` |
+| S4d_ab_track | 第四段D·A/B轨机制 | 300 | 41.20s | `S4d_ab_track.wav` |
+| S5a_data_driven | 第五段A·数据驱动 vs 手写 | 246 | 33.45s | `S5a_data_driven.wav` |
+| S5b_ssr_guard | 第五段B·SSR守卫 | 336 | 43.05s | `S5b_ssr_guard.wav` |
+| S5c_ai_render | 第五段C·AI出片 | 278 | 39.59s | `S5c_ai_render.wav` |
+| S6_cta | 第六段·结尾CTA | 209 | 32.75s | `S6_cta.wav` |
+| **合计** | **16 段** | **3764 字** | **553.82s（9分14秒）** | |
 
 ---
 
-### 段落 5：结尾 CTA（S5）
+## 运行方式
 
-| 属性 | 值 |
-|------|---|
-| 场景 | S5 @OutroScene |
-| 情感 | 总结 → 有力、号召感 |
-| 预估时长 | 30s |
-| 输出文件 | `voice-s05.wav` |
-| 字数 | 约 130 字 |
+```bash
+# 前置
+pip install piper-tts  # 包含 onnxruntime + espeak-ng
 
-**口播原文**：
-> 掌握这套代码即视频的流程，你的后期效率能提升百倍。同样的内容，别人剪一天，你写一小时代码直接编译。而且，MDC 约束这套思路，不止用在 Remotion，任何 AI 辅助的场景都能套。想拿到本期完整的代码和规则模板？开源仓库在简介，自取。下期，我们讲一个更细的技术点：Whisper 毫秒级字幕卡点。如何让字幕精准跟上口播节奏，而且是自动的。关注，别错过。
-
-**TTS 参数建议**：
-- `speed`: 1.05（稍快，CTA 有力）
-- "关注，别错过"处加 `<emphasis level="strong">`
-
----
-
-## 术语 SSML 修正清单
-
-以下技术术语可能被 TTS 引擎误读，需预处理：
-
-| 术语 | 问题 | SSML 修正方案 |
-|------|------|-------------|
-| Remotion | 中文引擎可能读成"热摸森" | `<phoneme alphabet="ipa" ph="rɪˈmoʊʃən">Remotion</phoneme>` |
-| SSR | 可能连读 | `<say-as interpret-as="characters">SSR</say-as>` → "S-S-R" |
-| Cursor | 可能读成"库瑟" | `<phoneme alphabet="ipa" ph="ˈkɜːrsər">Cursor</phoneme>` |
-| MDC | 可能连读 | `<say-as interpret-as="characters">MDC</say-as>` → "M-D-C" |
-| React | 中文引擎可能音不准 | `<phoneme alphabet="ipa" ph="riˈækt">React</phoneme>` |
-| useCurrentFrame() | 代码函数名 | 读作 "use Current Frame" 拆词 |
-| useVideoConfig() | 代码函数名 | 读作 "use Video Config" 拆词 |
-| Props | 可能读成"普洛普斯" | `<phoneme alphabet="ipa" ph="prɑːps">Props</phoneme>` |
-| fps | 缩写 | `<say-as interpret-as="characters">fps</say-as>` → "F-P-S" |
-| Node.js | 混合 | 读作 "Node" + 停顿 + "JS" |
-| Puppeteer | 可能误读 | `<phoneme alphabet="ipa" ph="ˌpʌpəˈtɪr">Puppeteer</phoneme>` |
-| window.innerWidth | 代码属性 | 读作 "window 点 inner Width" |
-| npx remotion render | 命令 | 读作 "NPX remotion render"，NPX 逐字母 |
-| 4K | 规格 | `<say-as interpret-as="characters">4K</say-as>` → "四K" |
-| MP4 | 格式 | `<say-as interpret-as="characters">MP4</say-as>` → "M-P-4" |
-| ReferenceError | JS 错误类型 | 读作 "Reference Error" 拆词 |
-| typeof | JS 操作符 | 读作 "type of" 拆词 |
-| .mdc | 文件扩展名 | 读作 "点 M-D-C" |
-
----
-
-## 合成参数汇总
-
-```python
-# tts_selector 调用配置模板
-common_config = {
-    "language": "zh-CN",
-    "preferred_provider": "doubao",
-    "voice_id": "<待选定>",   # 需试听选择合适的男声/女声
-    "output_format": "wav",
-    "sample_rate": 44100,
-    "bit_depth": 16,
-}
-
-segments = [
-    {"id": "s01", "text": "...", "speed": 1.05, "emotion": "hook"},
-    {"id": "s02", "text": "...", "speed": 0.95, "emotion": "explain"},
-    {"id": "s03", "text": "...", "speed": 1.0,  "emotion": "narrative_climax"},
-    {"id": "s04", "text": "...", "speed": 1.0,  "emotion": "persuasion"},
-    {"id": "s05", "text": "...", "speed": 1.05, "emotion": "cta"},
-]
+# 合成（自动下载模型到 models/ 目录）
+cd content-library/ep02-video-render/06-tts
+python synthesize.py
 ```
 
----
-
-## 总时长预估
-
-| 段落 | 字数 | 预估时长 | 语速 |
-|------|------|---------|------|
-| S1 开头钩子 | ~150 字 | ~30s | 1.05x |
-| S2 底层解密 | ~200 字 | ~45s | 0.95x |
-| S3 SSR 踩坑 | ~220 字 | ~50s | 1.0x |
-| S4 MDC 约束 | ~200 字 | ~45s | 1.0x |
-| S5 结尾 CTA | ~130 字 | ~30s | 1.05x |
-| **合计** | **~900 字** | **~200s（约 3 分 20 秒）** | |
-
-> 注：脚本预估总时长 7 分 30 秒包含画面停留和动画时间，纯口播语音约 3-4 分钟属正常范围。
+产出在 `assets/` 目录，含 16 个 WAV 文件 + `manifest.json`。
 
 ---
 
-## 待决事项（需人工确认）
+## 术语发音说明（Piper 无 SSML，记录备忘）
 
-1. **音色选择**：需要试听豆包 TTS 可用 voice_type 列表，选择适合技术讲解的男声/女声
-2. **API Key**：豆包 TTS 需要 `DOUBAO_SPEECH_API_KEY`（火山引擎控制台获取）
-3. **SSML 支持度**：需确认豆包 TTS 对 `<phoneme>` 和 `<say-as>` 标签的支持程度，不支持时改用拼音注音方案
-4. **是否需要试听多引擎对比**：可先用豆包生成一段 S1，不满意再切换 OpenAI TTS
+以下术语在 Piper TTS 中文模型下发音存在偏差，**升级到豆包/OpenAI 时需加 SSML 修正**：
+
+| 术语 | Piper 实际表现 | 升级时 SSML 方案 |
+|------|--------------|----------------|
+| Remotion | 可辨识但音调偏 | `<phoneme ph="rɪˈmoʊʃən">` |
+| SSR | 连读偏快 | `<say-as interpret-as="characters">` |
+| Cursor | 基本正确 | - |
+| MDC | 连读 | `<say-as interpret-as="characters">` |
+| React | 基本正确 | - |
+| ComparisonCard | 拆词不稳定 | 读作"Comparison Card" |
+| npx remotion render | 整体偏快 | 按词拆读 |
+| typeof window | 基本正确 | - |
 
 ---
 
-## 落盘目录结构（待合成后填充）
+## 落盘目录结构
 
 ```
 content-library/ep02-video-render/06-tts/
-├── README.md          # 本文件
-├── assets/
-│   ├── voice-s01.wav  # 待合成
-│   ├── voice-s02.wav  # 待合成
-│   ├── voice-s03.wav  # 待合成
-│   ├── voice-s04.wav  # 待合成
-│   └── voice-s05.wav  # 待合成
+├── README.md           # 本文件（执行记录）
+├── synthesize.py       # 合成脚本（可复现）
+├── models/
+│   ├── zh_CN-huayan-medium.onnx       # Piper 中文模型（63MB）
+│   └── zh_CN-huayan-medium.onnx.json  # 模型配置
+└── assets/
+    ├── manifest.json   # 合成清单（segment_id / duration / file_size）
+    ├── S1_intro.wav
+    ├── S2a_paradigm.wav
+    ├── S2b_frame_as_state.wav
+    ├── S2c_six_routes.wav
+    ├── S3a_judgment_matrix.wav
+    ├── S3b_remotion_reasons.wav
+    ├── S3c_comparison.wav
+    ├── S3d_tradeoffs.wav
+    ├── S4a_pipeline.wav
+    ├── S4b_three_piece.wav
+    ├── S4c_orchestrator.wav
+    ├── S4d_ab_track.wav
+    ├── S5a_data_driven.wav
+    ├── S5b_ssr_guard.wav
+    ├── S5c_ai_render.wav
+    └── S6_cta.wav
+```
+
+---
+
+## 下一步
+
+1. **试听审核**：人工试听各段 WAV，确认口播节奏和英文术语可接受度
+2. **引擎升级**（可选）：若 Piper 质量不满足要求，切换豆包 TTS（需 `DOUBAO_SPEECH_API_KEY`）
+3. **推进 07 组装**：将 `assets/*.wav` 作为口播音轨输入 07 视频组装阶段
+4. **Whisper 对齐**（08 字幕阶段）：对 WAV 文件做 Whisper 时间戳提取，生成逐字字幕
+
+```json
+{
+  "stage": "06-tts-synthesis",
+  "platform": "bilibili",
+  "engine": "piper-tts",
+  "model": "zh_CN-huayan-medium",
+  "sample_rate_hz": 22050,
+  "total_segments": 16,
+  "total_duration_seconds": 553.82,
+  "total_text_chars": 3764,
+  "synthesis_config": {
+    "length_scale": 1.0,
+    "noise_scale": 0.667,
+    "noise_w_scale": 0.8
+  },
+  "quality_notes": [
+    "本地引擎零成本跑通，验证流程可行性",
+    "中文自然度可接受但不如商业TTS",
+    "英文术语发音偏差待升级引擎后SSML修正",
+    "无逐字时间戳，后续字幕需Whisper补充"
+  ],
+  "upgrade_path": "doubao_tts / openai_tts（需API Key）"
+}
 ```

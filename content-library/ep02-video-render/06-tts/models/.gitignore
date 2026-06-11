@@ -1,0 +1,4 @@
+# Piper TTS model files (large binaries, download via synthesize.py)
+*.onnx
+*.onnx.json
+hub/
