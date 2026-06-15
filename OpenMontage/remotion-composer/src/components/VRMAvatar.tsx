@@ -150,15 +150,12 @@ interface VRMModelProps {
   modelY?: number;
   /** horizontal offset; positive shifts the host toward the right edge */
   modelX?: number;
-  /** posture: full-body idle ("stand") or seated bust resting on a desk ("desk") */
-  pose?: "stand" | "desk";
 }
 
 const VRMModel: React.FC<VRMModelProps> = ({
   captions,
   modelY = -0.95,
   modelX = 0,
-  pose = "stand",
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -235,23 +232,19 @@ const VRMModel: React.FC<VRMModelProps> = ({
     }
 
     const h = vrm.humanoid;
-    const isDesk = pose === "desk";
 
     // Weight shift through the hips with a soft counter-rotation in the spine
-    // (contrapposto). For the seated "desk" pose we damp the sway right down so
-    // she sits steadily and leans slightly forward onto the desk.
-    const swayAmt = isDesk ? 0.25 : 1;
+    // (contrapposto) so the idle never looks rigid.
     const hips = h.getNormalizedBoneNode(VRMHumanBoneName.Hips);
     if (hips) {
-      hips.rotation.y = (sway * 0.05 + sway2 * 0.03) * swayAmt;
-      hips.rotation.z = sway * 0.02 * swayAmt;
-      hips.position.x = sway * 0.012 * swayAmt;
+      hips.rotation.y = sway * 0.05 + sway2 * 0.03;
+      hips.rotation.z = sway * 0.02;
+      hips.position.x = sway * 0.012;
     }
     const spine = h.getNormalizedBoneNode(VRMHumanBoneName.Spine);
     if (spine) {
-      spine.rotation.y = -sway * 0.035 * swayAmt;
-      spine.rotation.z = -sway * 0.015 * swayAmt;
-      spine.rotation.x = isDesk ? 0.1 + breath * 0.015 : 0;
+      spine.rotation.y = -sway * 0.035;
+      spine.rotation.z = -sway * 0.015;
     }
 
     const lUpper = h.getNormalizedBoneNode(VRMHumanBoneName.LeftUpperArm);
@@ -261,45 +254,22 @@ const VRMModel: React.FC<VRMModelProps> = ({
     const lHand = h.getNormalizedBoneNode(VRMHumanBoneName.LeftHand);
     const rHand = h.getNormalizedBoneNode(VRMHumanBoneName.RightHand);
 
-    if (isDesk) {
-      // Seated "both forearms resting flat on the desk" pose. The upper arms drop
-      // and swing forward so the elbows come down onto the desktop, the forearms
-      // bend inward until they lie horizontally across the surface, and the hands
-      // settle flat (palms down). A faint breath keeps the shoulders alive.
-      const br = breath * 0.012;
-      if (lUpper) lUpper.rotation.set(0 + br, 0, -1.32);
-      if (rUpper) rUpper.rotation.set(0 + br, 0, 1.32);
-      if (lLower) lLower.rotation.set(-1.15, 0, -0.55);
-      if (rLower) rLower.rotation.set(-1.15, 0, 0.55);
-      if (lHand) lHand.rotation.set(-0.1, 0, 0);
-      if (rHand) rHand.rotation.set(-0.1, 0, 0);
-    } else {
-      // Slow, deliberate "point at the table" gesture: a smooth bump that raises
-      // the host's right arm (screen-left, toward the slide content) on a ~13s
-      // cycle, holds, then lowers. Kept low-frequency so it never looks jittery.
-      const point = Math.max(0, Math.sin((2 * Math.PI * timeSec) / 13 - Math.PI / 2));
-
-      // Lower the arms from the default T-pose into a natural rest, with a slow
-      // sway-driven swing (no per-word jitter), then layer the pointing gesture.
-      if (lUpper) {
-        lUpper.rotation.z = -1.2 - breath * 0.02;
-        lUpper.rotation.y = -0.05 + sway * 0.03;
-        lUpper.rotation.x = Math.sin(swayP + 0.5) * 0.02;
-      }
-      if (rUpper) {
-        rUpper.rotation.z = 1.2 + breath * 0.02 - point * 0.82;
-        rUpper.rotation.y = 0.05 + sway * 0.03 - point * 0.15;
-        rUpper.rotation.x = Math.sin(swayP + 0.9) * 0.02 + point * 0.15;
-      }
-      if (lLower) lLower.rotation.z = -0.2 + Math.sin(swayP + 1.1) * 0.015;
-      if (rLower) rLower.rotation.z = 0.2 - point * 0.32;
-      if (lHand) lHand.rotation.z = Math.sin(swayP + 1.6) * 0.03;
-      if (rHand) {
-        // Settle the hand flat while pointing; gentle, slow idle otherwise.
-        rHand.rotation.z = -Math.sin(swayP + 1.9) * 0.03 * (1 - point);
-        rHand.rotation.x = point * 0.1;
-      }
+    // Default idle: arms lowered from the T-pose into a natural rest, with a
+    // slow, sway-driven swing so they never look frozen.
+    if (lUpper) {
+      lUpper.rotation.z = -1.2 - breath * 0.02;
+      lUpper.rotation.y = -0.05 + sway * 0.03;
+      lUpper.rotation.x = Math.sin(swayP + 0.5) * 0.02;
     }
+    if (rUpper) {
+      rUpper.rotation.z = 1.2 + breath * 0.02;
+      rUpper.rotation.y = 0.05 + sway * 0.03;
+      rUpper.rotation.x = Math.sin(swayP + 0.9) * 0.02;
+    }
+    if (lLower) lLower.rotation.z = -0.2 + Math.sin(swayP + 1.1) * 0.015;
+    if (rLower) rLower.rotation.z = 0.2 + Math.sin(swayP + 1.4) * 0.015;
+    if (lHand) lHand.rotation.z = Math.sin(swayP + 1.6) * 0.03;
+    if (rHand) rHand.rotation.z = -Math.sin(swayP + 1.9) * 0.03;
 
     // Breathing on the chest.
     const chest =
@@ -339,7 +309,7 @@ const VRMModel: React.FC<VRMModelProps> = ({
       continueRender(handle);
       continued.current = true;
     }
-  }, [vrm, frame, fps, captions, advance, handle, pose]);
+  }, [vrm, frame, fps, captions, advance, handle]);
 
   return (
     <>
@@ -361,8 +331,6 @@ export interface VRMAvatarProps {
   modelX?: number;
   /** Vertical model offset; more negative pushes the host down (frame upper body). */
   modelY?: number;
-  /** Host posture: full-body idle ("stand") or seated bust with hands on a desk ("desk"). */
-  pose?: "stand" | "desk";
 }
 
 export const VRMAvatar: React.FC<VRMAvatarProps> = ({
@@ -371,7 +339,6 @@ export const VRMAvatar: React.FC<VRMAvatarProps> = ({
   cameraDistance = 2.55,
   modelX = 0.16,
   modelY,
-  pose = "stand",
 }) => {
   const { width, height } = useVideoConfig();
   const panelW = Math.round(width * widthFraction);
@@ -402,29 +369,8 @@ export const VRMAvatar: React.FC<VRMAvatarProps> = ({
             captions={captions}
             modelX={modelX}
             modelY={modelY}
-            pose={pose}
           />
         </ThreeCanvas>
-        {pose === "desk" && (
-          // Desk ledge the host rests her forearms on. Painted after the canvas
-          // so it sits in front of the lower body; the forearms/hands posed just
-          // above its top edge stay visible and read as resting on the surface.
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: Math.round(panelH * 0.13),
-              background:
-                "linear-gradient(180deg, rgba(36,49,71,0.96) 0%, rgba(20,28,46,0.98) 14%, rgba(13,19,33,0.99) 100%)",
-              borderTop: "2px solid rgba(120,150,200,0.35)",
-              borderTopLeftRadius: 18,
-              boxShadow:
-                "0 -18px 44px rgba(0,0,0,0.35), inset 0 2px 0 rgba(255,255,255,0.06)",
-            }}
-          />
-        )}
       </div>
     </AbsoluteFill>
   );

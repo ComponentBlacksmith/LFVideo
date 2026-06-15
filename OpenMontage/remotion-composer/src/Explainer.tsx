@@ -329,8 +329,6 @@ interface AvatarConfig {
   modelX?: number;
   /** Vertical model offset; more negative pushes the host down (frame upper body). */
   modelY?: number;
-  /** Host posture: full-body idle ("stand") or seated bust with hands on a desk ("desk"). */
-  pose?: "stand" | "desk";
 }
 
 export interface ExplainerProps {
@@ -947,7 +945,6 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
           cameraDistance={avatar.cameraDistance}
           modelX={avatar.modelX}
           modelY={avatar.modelY}
-          pose={avatar.pose}
         />
       )}
 

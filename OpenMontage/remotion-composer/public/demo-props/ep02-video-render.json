@@ -1725,7 +1725,6 @@
     "widthFraction": 0.4,
     "cameraDistance": 1.95,
     "modelX": 0.0,
-    "modelY": -1.26,
-    "pose": "desk"
+    "modelY": -1.26
   }
 }
