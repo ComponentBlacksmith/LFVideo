@@ -15,18 +15,13 @@
 
 | 期 | 01 选题 | 02 策划 | 03 B站视听 | 04 脚本 | 05 B轨录屏 ⏸ | 06 TTS | 07 组装 | 08 字幕 | 09 BGM ⏸ | 10 封面 ⏸ | 11 质检 ⏸ | 12 分发 ⏸ | 13 归档 ⏸ | 备注 |
 |----|---------|---------|------------|---------|----------|--------|---------|--------|-------|--------|--------|--------|--------|------|
-| **系列一：《Vibe Coding 造一条自动化视频生产线》** | | | | | | | | | | | | | | |
-| ep01-video-agent-overview | approved | approved | approved | approved | - | - | approved | - | - | - | - | approved | approved | 「把视频写成代码」· 总览：IDE 智能体 + Python 工具 + React 编译器（已完结） |
-| ep02-video-render | approved | approved | approved | approved | suspended | approved | approved | draft | suspended | suspended | suspended | suspended | suspended | 「代码即视频」· 渲染引擎：场景组件系统 + VRM 主持人（本期） |
-| ep03-video-subtitle | - | - | - | - | - | - | - | - | - | - | - | - | - | 「让字幕踩着话音跳」· 字幕卡点：Whisper 字级时间戳驱动弹跳字幕 |
-| ep04-video-audio | - | - | - | - | - | - | - | - | - | - | - | - | - | 「会让路的背景音乐」· 声音工程：智能混音、气口与响度标准化 |
-| ep05-video-pipeline | - | - | - | - | - | - | - | - | - | - | - | - | - | 「流程也是代码」· 13 阶段状态机 + Schema 校验门 |
-| ep06-video-orchestrator | - | - | - | - | - | - | - | - | - | - | - | - | - | 「给 AI 发工牌干活」· 角色即 Prompt → 智能体编排（YAML 管道） |
-| ep07-video-tech-choices | - | - | - | - | - | - | - | - | - | - | - | - | - | 「我踩过的选型坑」· 技术选型复盘：为什么这么选 |
-| **系列二：PPT 演示文稿自动化** | | | | | | | | | | | | | | |
-| ep08-ppt-marp-overview | - | - | - | - | - | - | - | - | - | - | - | - | - | Marp 总体构建：为什么 Markdown 是 AI IDE 唯一解？ |
-| ep09-ppt-css-theme | - | - | - | - | - | - | - | - | - | - | - | - | - | 深度排版主题：用 CSS Themes 与 Tailwind 对齐 PPT 排版 |
-| ep10-ppt-slidev-react | - | - | - | - | - | - | - | - | - | - | - | - | - | 交互式 React 幻灯片：使用 Slidev 注入动态代码终端 |
+| **《Vibe Coding 造一条自动化视频生产线》** | | | | | | | | | | | | | | |
+| ep01-video-agent-overview | - | - | - | - | - | - | - | - | - | - | - | - | - | 总览 · 系列总览/总结（含技术选型复盘）；最后制作、发布置顶第 1 期 |
+| ep02-video-render | approved | approved | approved | approved | suspended | approved | approved | draft | suspended | suspended | suspended | suspended | suspended | 视频渲染 · 场景组件系统 + VRM 主持人（本期） |
+| ep03-video-subtitle | - | - | - | - | - | - | - | - | - | - | - | - | - | 字幕匹配 · Whisper 字级时间戳驱动弹跳字幕 |
+| ep04-video-audio | - | - | - | - | - | - | - | - | - | - | - | - | - | 音频混音 · 智能混音、气口与响度标准化 |
+| ep05-video-pipeline | - | - | - | - | - | - | - | - | - | - | - | - | - | 工作流构建 · 13 阶段状态机 + Schema 校验门 |
+| ep06-video-orchestrator | - | - | - | - | - | - | - | - | - | - | - | - | - | 角色编排 · 角色即 Prompt → 多智能体编排（YAML 管道） |
 
 ## 审核门规则（L0.5 单核校验门）
 

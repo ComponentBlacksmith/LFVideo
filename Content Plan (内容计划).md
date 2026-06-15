@@ -24,29 +24,22 @@
 
 ## 内容路线图
 
-以 [content-library/PIPELINE.md](./content-library/PIPELINE.md) 看板为唯一真相，当前规划两个系列：
+以 [content-library/PIPELINE.md](./content-library/PIPELINE.md) 看板为唯一真相。当前只做一个系列：
 
-**系列一：《Vibe Coding 造一条自动化视频生产线》**——围绕本项目真实的架构 / 工作流 / 角色 / 技术选型，边做边播（每期 3–10 分钟）。
+**《Vibe Coding 造一条自动化视频生产线》**——围绕本项目真实的架构 / 工作流 / 角色 / 技术选型，边做边播（每期 3–10 分钟）。
 
-| 期 | 短标题 | 主题 | 状态 |
-|----|--------|------|------|
-| ep01-video-agent-overview | 把视频写成代码 | 总览：IDE 智能体 + Python 工具 + React 编译器 | 已完结 |
-| ep02-video-render | 代码即视频 | 渲染引擎：场景组件系统 + VRM 主持人 | **本期**（08 字幕 draft） |
-| ep03-video-subtitle | 让字幕踩着话音跳 | 字幕卡点：Whisper 字级时间戳驱动弹跳字幕 | 规划 |
-| ep04-video-audio | 会让路的背景音乐 | 声音工程：智能混音、气口与响度标准化 | 规划 |
-| ep05-video-pipeline | 流程也是代码 | 13 阶段状态机 + Schema 校验门 | 规划 |
-| ep06-video-orchestrator | 给 AI 发工牌干活 | 角色即 Prompt → 智能体编排（YAML 管道） | 规划 |
-| ep07-video-tech-choices | 我踩过的选型坑 | 技术选型复盘：为什么这么选 | 规划 |
+| 期 | 标题 | 主题 | 状态 |
+|----|------|------|------|
+| ep01-video-agent-overview | 总览 | 系列总览/总结（含技术选型复盘） | 最后制作 |
+| ep02-video-render | 视频渲染 | 场景组件系统 + VRM 主持人 | **本期**（08 字幕 draft） |
+| ep03-video-subtitle | 字幕匹配 | Whisper 字级时间戳驱动弹跳字幕 | 规划 |
+| ep04-video-audio | 音频混音 | 智能混音、气口与响度标准化 | 规划 |
+| ep05-video-pipeline | 工作流构建 | 13 阶段状态机 + Schema 校验门 | 规划 |
+| ep06-video-orchestrator | 角色编排 | 角色即 Prompt → 多智能体编排（YAML 管道） | 规划 |
 
-**系列二：PPT 自动化**（顺延至 ep08-10）
+**制作顺序**：先做 EP02 → EP03 → EP04 → EP05 → EP06 这五期"功能期"，在过程中不断优化工作流、把画面/音频质量做上去；**EP01 总览/总结放到最后制作**（素材最全、故事最清楚时再回头拍开篇），发布时置顶为第 1 期作系列锚点。
 
-| 期 | 主题 | 状态 |
-|----|------|------|
-| ep08-ppt-marp-overview | 为什么 Markdown 是 AI IDE 的 PPT 唯一解 | 规划 |
-| ep09-ppt-css-theme | 用 CSS Themes / Tailwind 对齐 PPT 排版 | 规划 |
-| ep10-ppt-slidev-react | Slidev 注入动态 React 代码终端 | 规划 |
-
-**排期规则**：同系列内按制作 readiness 决定先后；每期都必须同时覆盖操作层 + 判断层。脑暴素材放 [`ideas/`](./ideas/)，成熟后走 `01-topic-research` 进入成品库。
+**排期规则**：按制作 readiness 决定先后；每期都必须同时覆盖操作层 + 判断层。脑暴素材放 [`ideas/`](./ideas/)，成熟后走 `01-topic-research` 进入成品库。
 
 ---
 

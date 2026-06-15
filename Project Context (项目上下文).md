@@ -13,9 +13,9 @@
 | 仓库 | `DomeButlerBang/LFVideo` |
 | 性质 | 硬核技术教程**内容频道**项目（视频 + GitHub 配套资源） |
 | 核心打法 | 用 AI IDE 把能力编排成**可复用的自动化工作流**；并以频道自身的「视频生产线」作为头号实战样板（Dogfooding） |
-| 当前阶段 | 系列一「AI 视频自动化」生产中；同步完善流水线自动化能力与成片质量 |
+| 当前阶段 | 系列《Vibe Coding 造一条自动化视频生产线》生产中；同步完善流水线自动化能力与成片质量 |
 | 当前期 | `ep02-video-render`（推进到 08 字幕 `draft`，详见 [content-library/PIPELINE.md](./content-library/PIPELINE.md)） |
-| 下一步 | 推进 ep02 收尾（字幕/组装质量），夯实 03→04→07 自动化；规划 ep03 字幕卡点 / ep04 智能体编排 |
+| 下一步 | 收尾 ep02（字幕/组装质量），按 ep02→03→04→05→06 顺序边做边迭代工作流与成片质量；ep01 总览最后制作 |
 
 ---
 
@@ -151,18 +151,18 @@ LFVideo/
 
 ## 内容路线图（详见 [content-library/PIPELINE.md](./content-library/PIPELINE.md)）
 
-| 系列 | 期 | 短标题 | 主题 |
-|------|----|--------|------|
-| 系列一：《Vibe Coding 造一条自动化视频生产线》 | ep01-video-agent-overview | 把视频写成代码 | 总览：IDE 智能体 + Python 工具 + React 编译器（已完结） |
-| | ep02-video-render | 代码即视频 | 渲染引擎：场景组件系统 + VRM 主持人（**本期**） |
-| | ep03-video-subtitle | 让字幕踩着话音跳 | 字幕卡点：Whisper 字级时间戳驱动弹跳字幕 |
-| | ep04-video-audio | 会让路的背景音乐 | 声音工程：智能混音、气口与响度标准化 |
-| | ep05-video-pipeline | 流程也是代码 | 13 阶段状态机 + Schema 校验门 |
-| | ep06-video-orchestrator | 给 AI 发工牌干活 | 角色即 Prompt → 智能体编排（YAML 管道） |
-| | ep07-video-tech-choices | 我踩过的选型坑 | 技术选型复盘：为什么这么选 |
-| 系列二：PPT 自动化 | ep08-ppt-marp-overview | — | 为什么 Markdown 是 AI IDE 的 PPT 唯一解 |
-| | ep09-ppt-css-theme | — | 用 CSS Themes / Tailwind 对齐 PPT 排版 |
-| | ep10-ppt-slidev-react | — | Slidev 注入动态 React 代码终端 |
+系列：**《Vibe Coding 造一条自动化视频生产线》**（每期 3–10 分钟，边做边播）
+
+| 期 | 标题 | 主题 |
+|----|------|------|
+| ep01-video-agent-overview | 总览 | 系列总览/总结（含技术选型复盘）；最后制作、置顶第 1 期 |
+| ep02-video-render | 视频渲染 | 场景组件系统 + VRM 主持人（**本期**） |
+| ep03-video-subtitle | 字幕匹配 | Whisper 字级时间戳驱动弹跳字幕 |
+| ep04-video-audio | 音频混音 | 智能混音、气口与响度标准化 |
+| ep05-video-pipeline | 工作流构建 | 13 阶段状态机 + Schema 校验门 |
+| ep06-video-orchestrator | 角色编排 | 角色即 Prompt → 多智能体编排（YAML 管道） |
+
+> 制作顺序：EP02 → EP06 五期"功能期"先做、迭代质量，EP01 总览/总结最后制作。
 
 ---
 
