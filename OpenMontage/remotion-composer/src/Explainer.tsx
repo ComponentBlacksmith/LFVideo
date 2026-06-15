@@ -36,7 +36,12 @@ import { PieChart } from "./components/charts/PieChart";
 import { KPIGrid } from "./components/charts/KPIGrid";
 import { ProgressBar } from "./components/ProgressBar";
 import { CaptionOverlay, WordCaption } from "./components/CaptionOverlay";
-import { VRMAvatar } from "./components/VRMAvatar";
+import { VRMAvatar, AvatarTimelineEntry } from "./components/VRMAvatar";
+import {
+  AvatarOverride,
+  AvatarSceneConfig,
+  resolveAvatarPreset,
+} from "./components/avatarPresets";
 import { SectionTitle } from "./components/SectionTitle";
 import { StatReveal } from "./components/StatReveal";
 import { HeroTitle } from "./components/HeroTitle";
@@ -284,6 +289,8 @@ interface Cut {
   headers?: string[];
   rows?: any[];
   items?: any[];
+  /** Per-cut digital-host treatment: a preset name or inline override. */
+  avatar?: string | AvatarOverride;
 }
 
 interface Overlay {
@@ -318,17 +325,13 @@ interface AudioConfig {
   };
 }
 
-interface AvatarConfig {
-  /** Show the VRM digital host (right-side half-body PiP). */
+interface AvatarConfig extends AvatarSceneConfig {
+  /** Show the VRM digital host. */
   enabled?: boolean;
-  /** Panel width as a fraction of the composition width (default 0.24). */
-  widthFraction?: number;
-  /** Camera distance from the host; larger = host appears smaller. */
-  cameraDistance?: number;
-  /** Horizontal model offset; positive shifts the host toward the right edge. */
-  modelX?: number;
-  /** Vertical model offset; more negative pushes the host down (frame upper body). */
-  modelY?: number;
+  /** Fallback preset when a cut has no `avatar` and its type has no mapping. */
+  default?: string;
+  /** Optional per-episode "scene type → preset" overrides of the built-ins. */
+  byType?: Record<string, string>;
 }
 
 export interface ExplainerProps {
@@ -937,14 +940,15 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
         );
       })}
 
-      {/* Layer 2.5: Digital host (VRM half-body PiP, right side) */}
+      {/* Layer 2.5: Digital host — scene-aware framing via per-cut presets */}
       {avatar?.enabled && (
         <VRMAvatar
           captions={captions}
-          widthFraction={avatar.widthFraction}
-          cameraDistance={avatar.cameraDistance}
-          modelX={avatar.modelX}
-          modelY={avatar.modelY}
+          timeline={cuts.map<AvatarTimelineEntry>((cut) => ({
+            from: Math.round(cut.in_seconds * fps),
+            to: Math.round(cut.out_seconds * fps),
+            preset: resolveAvatarPreset(cut.type, cut.avatar, avatar),
+          }))}
         />
       )}
 

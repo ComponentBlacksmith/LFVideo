@@ -20,6 +20,12 @@ import {
 } from "@pixiv/three-vrm";
 import { pinyin } from "pinyin-pro";
 import type { WordCaption } from "./CaptionOverlay";
+import {
+  AvatarPreset,
+  AVATAR_PRESETS,
+  computeAvatarLayout,
+  lerpLayout,
+} from "./avatarPresets";
 
 // ---------------------------------------------------------------------------
 // Audio-driven mouth (deterministic, derived from the caption word timeline)
@@ -330,58 +336,112 @@ const VRMModel: React.FC<VRMModelProps> = ({
 };
 
 // ---------------------------------------------------------------------------
-// Public component — right-side half-body PiP host
+// Public component — scene-aware host, rendered once and placed via 2D crop
 // ---------------------------------------------------------------------------
+// Canonical render: the host is always drawn full-body, centered, at this fixed
+// camera. Every preset is a 2D crop + placement of THIS render (see
+// avatarPresets.ts). Calibrate the crop rectangles against this framing.
+const CANON_CAMERA_Z = 3.55;
+const CANON_MODEL_Y = -0.82;
+/** Canonical canvas aspect (width / height). Tall portrait for a full body. */
+const CANON_ASPECT = 0.58;
+
+/** One resolved cut on the avatar timeline. */
+export interface AvatarTimelineEntry {
+  from: number;
+  to: number;
+  preset: AvatarPreset;
+}
+
 export interface VRMAvatarProps {
   captions?: WordCaption[];
-  /** Panel width as a fraction of the composition width. */
-  widthFraction?: number;
-  /** Camera distance from the host; larger = host appears smaller. */
-  cameraDistance?: number;
-  /** Horizontal model offset; positive shifts the host toward the right edge. */
-  modelX?: number;
-  /** Vertical model offset; more negative pushes the host down (frame upper body). */
-  modelY?: number;
+  /** Per-cut resolved presets, ordered by `from` (ascending). */
+  timeline?: AvatarTimelineEntry[];
+  /** Crossfade/move duration at each cut boundary, in frames. */
+  transitionFrames?: number;
+}
+
+function easeInOut(t: number): number {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 }
 
 export const VRMAvatar: React.FC<VRMAvatarProps> = ({
   captions,
-  widthFraction = 0.24,
-  cameraDistance = 2.55,
-  modelX = 0.16,
-  modelY,
+  timeline,
+  transitionFrames = 9,
 }) => {
   const { width, height } = useVideoConfig();
-  const panelW = Math.round(width * widthFraction);
-  const panelH = height;
+  const frame = useCurrentFrame();
+
+  const canonH = height;
+  const canonW = Math.round(height * CANON_ASPECT);
+
+  // Resolve the active cut and interpolate its placement from the previous one
+  // so the host eases between framings at scene boundaries.
+  const entries = timeline ?? [];
+  let idx = -1;
+  for (let i = 0; i < entries.length; i++) {
+    if (frame >= entries[i].from) idx = i;
+    else break;
+  }
+
+  const hiddenPreset = AVATAR_PRESETS.hidden;
+  const activePreset = idx >= 0 ? entries[idx].preset : hiddenPreset;
+  const target = computeAvatarLayout(activePreset, width, height, canonW, canonH);
+
+  let layout = target;
+  if (idx >= 0) {
+    const prevPreset = idx > 0 ? entries[idx - 1].preset : hiddenPreset;
+    const source = computeAvatarLayout(prevPreset, width, height, canonW, canonH);
+    const t = Math.min(
+      1,
+      Math.max(0, (frame - entries[idx].from) / transitionFrames)
+    );
+    layout = lerpLayout(source, target, easeInOut(t));
+  }
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none", zIndex: 50 }}>
       <div
         style={{
           position: "absolute",
-          right: 0,
-          bottom: 0,
-          width: panelW,
-          height: panelH,
+          left: layout.left,
+          top: layout.top,
+          width: layout.width,
+          height: layout.height,
+          overflow: "hidden",
+          opacity: layout.opacity,
         }}
       >
-        <ThreeCanvas
-          width={panelW}
-          height={panelH}
-          style={{ background: "transparent" }}
-          gl={{ alpha: true, preserveDrawingBuffer: true }}
-          camera={{ fov: 30, near: 0.1, far: 20, position: [0, 0, cameraDistance] }}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: canonW,
+            height: canonH,
+            transformOrigin: "top left",
+            transform: `translate(${layout.tx}px, ${layout.ty}px) scale(${layout.scale})`,
+          }}
         >
-          <ambientLight intensity={1.1} />
-          <directionalLight position={[1, 2, 2]} intensity={1.4} />
-          <directionalLight position={[-1.5, 1, 1.5]} intensity={0.6} />
-          <VRMModel
-            captions={captions}
-            modelX={modelX}
-            modelY={modelY}
-          />
-        </ThreeCanvas>
+          <ThreeCanvas
+            width={canonW}
+            height={canonH}
+            style={{ background: "transparent" }}
+            gl={{ alpha: true, preserveDrawingBuffer: true }}
+            camera={{
+              fov: 30,
+              near: 0.1,
+              far: 20,
+              position: [0, 0, CANON_CAMERA_Z],
+            }}
+          >
+            <ambientLight intensity={1.1} />
+            <directionalLight position={[1, 2, 2]} intensity={1.4} />
+            <directionalLight position={[-1.5, 1, 1.5]} intensity={0.6} />
+            <VRMModel captions={captions} modelX={0} modelY={CANON_MODEL_Y} />
+          </ThreeCanvas>
+        </div>
       </div>
     </AbsoluteFill>
   );

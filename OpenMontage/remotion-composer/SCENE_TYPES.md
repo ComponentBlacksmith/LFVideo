@@ -39,6 +39,57 @@ When you add a new component, append it here and in `src/components/index.ts`.
 
 ---
 
+## Digital host (VRM avatar) — per-scene framing
+
+The VRM host is rendered **once** in a canonical full-body framing; each scene
+shows it via a 2D crop + placement **preset**. You normally do **nothing** —
+picking a `cut.type` auto-selects a sensible preset (table → corner head, intro →
+full body on the side, etc.). Override only when needed.
+
+### Presets (`avatar` value)
+
+| preset | look | placement | use for |
+|---|---|---|---|
+| `hidden` | — | — | scenes that must use the whole frame |
+| `corner-bust` | small head+shoulders | bottom-right corner | dense full-screen info (tables, charts, terminals) |
+| `corner-bust-left` | small head+shoulders | bottom-left corner | same, when content sits on the right |
+| `bust-right` | half/¾ body | right side | talking-head explanation, content on the left |
+| `bust-left` | half/¾ body | left side | explanation, content on the right |
+| `full-right` | full body | right side | intros/outros/empty-side beats |
+| `full-left` | full body | left side | title cards with right-side space |
+| `presenter` | large ¾ body | bottom-center | host-only beats with no centered title |
+
+### Default `cut.type → preset` mapping (built-in)
+
+`intro_scene`/`outro_scene`/`hero_title`/`text_card`/`stat_card` → full body to a side ·
+`concept_scene`/`timeline_scene`/`callout` → `bust-right` ·
+`table_scene`/`terminal_scene`/`screenshot_scene`/`comparison`/`*_chart`/`kpi_grid`/`progress_bar` → `corner-bust`.
+
+Source of truth: `src/components/avatarPresets.ts` (`AVATAR_PRESETS`, `AVATAR_BY_TYPE`).
+
+### How to override
+
+Resolution order (high → low): `cut.avatar` → `avatar.byType[cut.type]` → built-in `AVATAR_BY_TYPE` → `avatar.default` → `bust-right`.
+
+```jsonc
+// top-level props
+"avatar": {
+  "enabled": true,
+  "default": "bust-right",          // fallback when nothing else matches
+  "byType": { "table_scene": "corner-bust-left" }  // per-episode overrides
+}
+
+// per cut: a preset name…
+{ "type": "table_scene", "avatar": "corner-bust-left" }
+// …or an inline tweak of a preset
+{ "type": "concept_scene", "avatar": { "preset": "bust-right", "screenWidth": 0.28 } }
+```
+
+The host eases between framings over ~9 frames at each scene boundary, so just set
+the right preset per scene and transitions are automatic.
+
+---
+
 ## Adding a new scene type
 
 1. Create the React component in `src/components/MyScene.tsx`. Use `interpolate(frame, [inFrame, outFrame], [from, to])` and `spring(...)` for motion. Read `useCurrentFrame()` and `useVideoConfig()`.
