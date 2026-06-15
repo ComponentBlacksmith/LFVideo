@@ -208,7 +208,16 @@ const VRMModel: React.FC<VRMModelProps> = ({
 
     const breath = breathAt(timeSec);
     const mouth = mouthStateAt(ms, captions);
-    const speaking = mouth.open; // 0..1, drives talking emphasis
+
+    // Smoothed talking envelope. The raw per-character mouth-open snaps up and
+    // down on every syllable (and to 0 in the gaps between words), so driving
+    // the head nod from it directly makes the head jerk. Average it over a
+    // ~0.5s window to get a slow envelope that tracks speech cadence instead.
+    let talk = 0;
+    for (let k = -4; k <= 4; k++) {
+      talk += mouthStateAt(ms + (k * 2000) / fps, captions).open;
+    }
+    talk /= 9;
 
     // Slow, mutually-incommensurate phases so the idle never visibly loops.
     const swayP = (2 * Math.PI * timeSec) / 6.5; // weight-shift phase
@@ -279,11 +288,13 @@ const VRMModel: React.FC<VRMModelProps> = ({
       chest.rotation.x = breath * 0.025;
     }
 
-    // Layered head motion + a gentle nod while speaking; the neck follows.
+    // Layered head motion + a gentle nod while speaking; the neck follows. The
+    // nod uses the smoothed talk envelope and a slow sine so it eases up and
+    // down with the cadence of speech rather than twitching per syllable.
     const neck = h.getNormalizedBoneNode(VRMHumanBoneName.Neck);
     if (neck) {
       neck.rotation.y = sway2 * 0.03;
-      neck.rotation.x = speaking * 0.03;
+      neck.rotation.x = talk * 0.022;
     }
     const head = h.getNormalizedBoneNode(VRMHumanBoneName.Head);
     if (head) {
@@ -293,7 +304,7 @@ const VRMModel: React.FC<VRMModelProps> = ({
         Math.sin((2 * Math.PI * timeSec) / 9) * 0.04 + sway2 * 0.04;
       head.rotation.x =
         Math.sin((2 * Math.PI * timeSec) / 5.5) * 0.02 +
-        Math.sin((2 * Math.PI * timeSec) / 1.7) * speaking * 0.05;
+        Math.sin((2 * Math.PI * timeSec) / 3.2) * talk * 0.03;
     }
 
     // Apply expression morphs + skeleton update for this frame. Keep spring
