@@ -1,123 +1,93 @@
 {
-  "theme": "anime-ghibli",
+  "theme": "flat-motion-graphics",
   "cuts": [
     {
       "id": "scene-1",
       "source": "",
-      "in_seconds": 0.0,
-      "out_seconds": 25.067,
       "type": "intro_scene",
-      "title": "代码即视频（Video-as-Code）",
-      "subtitle": "【AI 视频自动化生产线】第 2 期：渲染引擎篇",
+      "in_seconds": 0.0,
+      "out_seconds": 39.267,
+      "title": "不写代码，用 Vibe Coding 搭一套能自动出片的视频渲染引擎",
+      "subtitle": "《Vibe Coding 造一条自动化视频生产线》EP02 · 视频渲染",
       "background": "particles"
     },
     {
-      "id": "scene-2a",
+      "id": "scene-2",
       "source": "",
-      "in_seconds": 25.067,
-      "out_seconds": 67.6,
       "type": "concept_scene",
-      "eyebrow": "核心概念：范式与痛点",
-      "title": "传统剪辑 = 轨道 + 绝对时间轴 → 低 ROI 体力活",
-      "background": "gradient",
-      "items": [
-        {
-          "label": "VERSION",
-          "title": "可版本控制",
-          "desc": "视频就是文本（代码/JSON/YAML），能 diff、能 review、能 git 回滚",
-          "icon": "📝"
-        },
-        {
-          "label": "BATCH",
-          "title": "可参数化批量复用",
-          "desc": "同一套模板换一份数据，批量产出几十期结构一致的视频",
-          "icon": "🔁"
-        },
-        {
-          "label": "AI",
-          "title": "AI 友好",
-          "desc": "让 AI 拖时间轴很难，让 AI 写代码/改数据/调 CSS 是它最擅长的事",
-          "icon": "🤖"
-        }
-      ]
-    },
-    {
-      "id": "scene-2b",
-      "source": "",
-      "in_seconds": 67.6,
-      "out_seconds": 88.367,
-      "type": "concept_scene",
-      "eyebrow": "一句话本质",
-      "title": "帧即状态（Frame as State）",
+      "in_seconds": 39.267,
+      "out_seconds": 57.1,
+      "eyebrow": "第一步 · 选路线",
+      "title": "先让 AI 把「能把视频写成代码」的路都摆出来",
       "background": "gradient",
       "items": [
         {
           "label": "INPUT",
-          "title": "声明式代码/数据",
-          "desc": "用代码或数据把画面描述出来",
-          "icon": "📄"
+          "title": "用代码/数据描述画面",
+          "desc": "把想要的画面用代码或数据讲清楚",
+          "icon": "📝"
         },
         {
           "label": "COMPILE",
-          "title": "渲染器编译成帧",
-          "desc": "给定时间点，渲染器算出该时刻画面长什么样",
+          "title": "程序编译成帧",
+          "desc": "渲染器按时间点算出每一帧",
           "icon": "⚙️"
         },
         {
           "label": "OUTPUT",
           "title": "合成视频",
-          "desc": "帧序列合成高清 MP4，全流程可自动化",
+          "desc": "帧序列合成成片，全程可自动化",
           "icon": "🎬"
         }
       ]
     },
     {
-      "id": "scene-2c",
+      "id": "scene-3",
       "source": "",
-      "in_seconds": 88.367,
-      "out_seconds": 131.733,
       "type": "table_scene",
-      "eyebrow": "不止 Remotion",
-      "title": "Video-as-Code 六条技术路线",
+      "in_seconds": 57.1,
+      "out_seconds": 89.833,
+      "eyebrow": "选路线 · 同一内核：把画面编译成帧",
+      "title": "AI 摆出的六条路线",
       "background": "grid",
       "headers": [
-        "路线",
+        "技术路线",
         "代表项目",
-        "典型场景"
+        "适合场景"
       ],
       "rows": [
         {
-          "feature": "DOM / React 渲染",
+          "feature": "网页渲染",
           "cursor": "Remotion",
-          "windsurf": "前端栈、复杂排版、模板复用",
-          "win": "neutral"
+          "windsurf": "前端栈、复杂排版、跨期复用",
+          "win": "cursor"
         },
         {
-          "feature": "TS 声明式动画",
+          "feature": "时序动画",
           "cursor": "Motion Canvas / Revideo",
-          "windsurf": "代码演示、时序动画",
+          "windsurf": "代码演示、精确时序",
           "win": "neutral"
         },
         {
-          "feature": "程序化数学动画",
+          "feature": "数学动画",
           "cursor": "Manim",
-          "windsurf": "数学/算法可视化",
+          "windsurf": "数学 / 公式可视化",
           "win": "neutral"
         },
         {
-          "feature": "像素/合成脚本",
+          "feature": "像素合成",
           "cursor": "MoviePy",
           "windsurf": "纯 Python、简单拼接",
           "win": "neutral"
         },
         {
-          "feature": "Canvas/游戏引擎",
-          "cursor": "PixiJS / Cocos2d",
-          "windsurf": "粒子、游戏化动画",
+          "feature": "画布引擎",
+          "cursor": "PixiJS / Cocos",
+          "windsurf": "复杂粒子动画",
           "win": "neutral"
         },
         {
-          "feature": "命令式合成",
+          "feature": "命令行",
           "cursor": "FFmpeg + 脚本",
           "windsurf": "批量转码、字幕烧录",
           "win": "neutral"
@@ -125,418 +95,84 @@
       ]
     },
     {
-      "id": "scene-3a",
+      "id": "scene-4",
       "source": "",
-      "in_seconds": 131.733,
-      "out_seconds": 191.467,
       "type": "table_scene",
-      "eyebrow": "判断层 = 边界，非中立百科",
-      "title": "六个方案：适用场景 / 已知坑",
-      "background": "grid",
+      "in_seconds": 89.833,
+      "out_seconds": 140.2,
+      "eyebrow": "人盯着「坑」那列做减法",
+      "title": "六个方案的适合 / 不适合 & 已知坑",
+      "background": "gradient",
       "headers": [
         "方案",
-        "适用场景",
-        "已知坑"
+        "适合场景",
+        "不适合 & 已知的坑"
       ],
       "rows": [
         {
           "feature": "Remotion",
-          "cursor": "前端栈、复杂 CSS/SVG、跨期模板复用",
-          "windsurf": "顶层读 window/document 崩溃；BUSL 授权",
-          "win": "neutral"
+          "cursor": "前端栈、复杂排版、跨期复用",
+          "windsurf": "顶层读浏览器对象打包崩；BUSL 授权",
+          "win": "cursor"
         },
         {
-          "feature": "Motion Canvas / Revideo",
-          "cursor": "代码演示、精确时序编排",
-          "windsurf": "生态较小，模板需自建",
+          "feature": "Motion Canvas",
+          "cursor": "代码演示、精确时序",
+          "windsurf": "生态小、模板要自攒",
           "win": "neutral"
         },
         {
           "feature": "Manim",
-          "cursor": "数学/算法/公式可视化",
-          "windsurf": "学习曲线陡、排版弱、渲染慢",
+          "cursor": "数学 / 公式 / 算法",
+          "windsurf": "学习陡、排版弱、渲染慢",
           "win": "neutral"
         },
         {
           "feature": "MoviePy",
-          "cursor": "纯 Python、简单拼接/裁剪",
-          "windsurf": "文本布局繁琐、多层内存大",
+          "cursor": "纯 Python、简单拼接",
+          "windsurf": "文字排版繁琐、多层吃内存",
           "win": "neutral"
         },
         {
-          "feature": "PixiJS / Cocos2d",
-          "cursor": "游戏类复杂粒子动画",
-          "windsurf": "文本换行与 DOM 对齐复杂",
+          "feature": "PixiJS / Cocos",
+          "cursor": "游戏类粒子动画",
+          "windsurf": "换行 / 对齐计算复杂",
           "win": "neutral"
         },
         {
           "feature": "FFmpeg + 脚本",
-          "cursor": "批量转码、轻量字幕烧录",
-          "windsurf": "filtergraph 晦涩、调试困难",
+          "cursor": "批量转码、兜底合成",
+          "windsurf": "命令晦涩、难调试",
           "win": "neutral"
         }
       ]
     },
     {
-      "id": "scene-3b",
+      "id": "scene-5",
       "source": "",
-      "in_seconds": 191.467,
-      "out_seconds": 232.433,
       "type": "concept_scene",
-      "eyebrow": "核心约束：固定模板 + AI 接管 + 跨期可维护",
-      "title": "为什么选 Remotion？",
+      "in_seconds": 140.2,
+      "out_seconds": 166.1,
+      "eyebrow": "回到我自己的约束",
+      "title": "为什么是 Remotion",
       "background": "gradient",
       "items": [
         {
-          "label": "DECISIVE",
-          "title": "数据驱动模板，类型安全跨期复用",
-          "desc": "data.ts → Episode.tsx → template/ 四层结构，TS 保证换数据时格式不出错，改一处主题全期生效",
+          "label": "模板",
+          "title": "固定模板换数据就复用",
+          "desc": "改一处主题，全系列生效",
           "icon": "🏗️"
         },
         {
-          "label": "AI+CLI",
-          "title": "AI Agent 友好 + CLI 原生自动化",
-          "desc": "AI 只填数据+微调 CSS，幻觉最小；npx remotion render 纯命令行可 subprocess",
+          "label": "AI",
+          "title": "让 AI 接手最稳",
+          "desc": "只填数据、套现成组件，最不容易出错",
           "icon": "🤖"
         },
         {
-          "label": "WEB",
-          "title": "网页生态红利",
-          "desc": "完整 CSS/SVG/Flexbox/动效库随手可用，信息密度与排版自由度远超像素/Canvas 方案",
-          "icon": "🌐"
-        }
-      ]
-    },
-    {
-      "id": "scene-3c",
-      "source": "",
-      "in_seconds": 232.433,
-      "out_seconds": 253.333,
-      "type": "table_scene",
-      "eyebrow": "模板复用 + AI 接管维度",
-      "title": "Remotion ✅ vs HyperFrames ❌",
-      "background": "grid",
-      "headers": [
-        "对比维度",
-        "Remotion ✅",
-        "HyperFrames ❌"
-      ],
-      "rows": [
-        {
-          "feature": "模板复用 / 类型安全",
-          "cursor": "TS 约束、跨期安全",
-          "windsurf": "HTML 无类型检查",
-          "win": "cursor"
-        },
-        {
-          "feature": "AI 友好度",
-          "cursor": "结构稳定、AI 只填数据",
-          "windsurf": "直接写 HTML，结构易漂移",
-          "win": "cursor"
-        },
-        {
-          "feature": "长期维护",
-          "cursor": "改一处全期生效",
-          "windsurf": "10 期后维护困难",
-          "win": "cursor"
-        }
-      ]
-    },
-    {
-      "id": "scene-3d",
-      "source": "",
-      "in_seconds": 253.333,
-      "out_seconds": 280.6,
-      "type": "concept_scene",
-      "eyebrow": "如实交代",
-      "title": "选型代价（都能兜住）",
-      "background": "gradient",
-      "items": [
-        {
-          "label": "REACT",
-          "title": "基于 React 技术栈",
-          "desc": "本项目让 AI 写组件、填数据，人只把控架构与内容取舍",
-          "icon": "⚛️"
-        },
-        {
-          "label": "BUSL",
-          "title": "BUSL 商业授权",
-          "desc": "规模化商用需付费，当前规模无影响",
-          "icon": "📜"
-        },
-        {
-          "label": "SSR",
-          "title": "SSR 环境约束",
-          "desc": "Node 端求值读 window 会崩——用一条 MDC 规则交给 AI 自动规避，落地见第五段",
-          "icon": "🛡️"
-        }
-      ]
-    },
-    {
-      "id": "scene-4a",
-      "source": "",
-      "in_seconds": 280.6,
-      "out_seconds": 310.167,
-      "type": "timeline_scene",
-      "eyebrow": "流程即代码（Process-as-Code）",
-      "title": "七阶段流水线（01 → 07）",
-      "background": "grid",
-      "events": [
-        {
-          "year": "01",
-          "title": "选题分析",
-          "desc": "选题分析师",
-          "icon": "✅"
-        },
-        {
-          "year": "02",
-          "title": "内容策划",
-          "desc": "内容策划师",
-          "icon": "✅"
-        },
-        {
-          "year": "03",
-          "title": "B站视听策划",
-          "desc": "视觉策划师 · 当前",
-          "icon": "🎬"
-        },
-        {
-          "year": "04",
-          "title": "脚本撰写",
-          "desc": "文案撰稿人",
-          "icon": "✍️"
-        },
-        {
-          "year": "05",
-          "title": "视频组装",
-          "desc": "视频工程师",
-          "icon": "🛠️"
-        },
-        {
-          "year": "06",
-          "title": "分发适配",
-          "desc": "分发助手",
-          "icon": "📤"
-        },
-        {
-          "year": "07",
-          "title": "资源归档",
-          "desc": "归档",
-          "icon": "📦"
-        }
-      ]
-    },
-    {
-      "id": "scene-4b",
-      "source": "",
-      "in_seconds": 310.167,
-      "out_seconds": 333.933,
-      "type": "concept_scene",
-      "eyebrow": "三件套",
-      "title": "角色 × 工作流 × 状态机",
-      "background": "gradient",
-      "items": [
-        {
-          "label": "ROLE",
-          "title": "角色 = system_prompt",
-          "desc": "思考视角与边界（shared/roles/）",
-          "icon": "🎭"
-        },
-        {
-          "label": "WORKFLOW",
-          "title": "工作流 = user_prompt",
-          "desc": "每阶段标准步骤（.windsurf/workflows/01→07）",
-          "icon": "📋"
-        },
-        {
-          "label": "STATE",
-          "title": "frontmatter = 状态机",
-          "desc": "文件即数据的唯一进度真相源（stage/status + PIPELINE.md）",
-          "icon": "🔄"
-        }
-      ]
-    },
-    {
-      "id": "scene-4c",
-      "source": "",
-      "in_seconds": 333.933,
-      "out_seconds": 357.833,
-      "type": "terminal_scene",
-      "terminalTitle": "python-frontmatter 最小编排器",
-      "prompt": "$",
-      "steps": [
-        {
-          "kind": "out",
-          "text": "import frontmatter, glob"
-        },
-        {
-          "kind": "out",
-          "text": ""
-        },
-        {
-          "kind": "out",
-          "text": "for path in glob.glob(\"content-library/**/README.md\", recursive=True):"
-        },
-        {
-          "kind": "out",
-          "text": "    post = frontmatter.load(path)"
-        },
-        {
-          "kind": "out",
-          "text": "    if post.get(\"status\") == \"approved\":"
-        },
-        {
-          "kind": "out",
-          "text": "        stage = post[\"stage\"]"
-        },
-        {
-          "kind": "out",
-          "text": "        role  = load_role(stage)       # 角色 = system_prompt"
-        },
-        {
-          "kind": "out",
-          "text": "        steps = load_workflow(stage)   # 工作流 = user_prompt"
-        },
-        {
-          "kind": "out",
-          "text": "        run_agent(system=role, user=steps)"
-        }
-      ]
-    },
-    {
-      "id": "scene-4d",
-      "source": "",
-      "in_seconds": 357.833,
-      "out_seconds": 398.9,
-      "type": "concept_scene",
-      "eyebrow": "多模态物理限制",
-      "title": "A 轨 vs B 轨 + 提示词链",
-      "background": "gradient",
-      "items": [
-        {
-          "label": "A 轨",
-          "title": "可全自动",
-          "desc": "概念动画由 Remotion 组件渲染，AI 端到端生成数据+套模板，无需人工干预",
-          "icon": "🅰️"
-        },
-        {
-          "label": "B 轨",
-          "title": "须真人录屏",
-          "desc": "真实 IDE 录屏，TAD-01 强制真人录制，设计「挂起等待」机制",
-          "icon": "🅱️"
-        },
-        {
-          "label": "PROMPT",
-          "title": "可复现提示词链",
-          "desc": "Prompt-1：基于 @ComparisonCard 生成对比数据；Prompt-2：为 .cursor/rules/ 编写 MDC 规则约束",
-          "icon": "⛓️"
-        }
-      ]
-    },
-    {
-      "id": "scene-5a",
-      "source": "",
-      "in_seconds": 398.9,
-      "out_seconds": 433.067,
-      "type": "terminal_scene",
-      "terminalTitle": "✅ 只传数据，复用 @ComparisonCard（A 轨兜底）",
-      "prompt": "$",
-      "steps": [
-        {
-          "kind": "out",
-          "text": "// ✅ 正确示例：数据与模板分离"
-        },
-        {
-          "kind": "out",
-          "text": "const comparison = {"
-        },
-        {
-          "kind": "out",
-          "text": "  left:  { title: 'MoviePy',  points: ['纯 Python', '简单拼接'],     status: 'error' },"
-        },
-        {
-          "kind": "out",
-          "text": "  right: { title: 'Remotion', points: ['TS 类型安全', '模板复用'], status: 'success' },"
-        },
-        {
-          "kind": "out",
-          "text": "};"
-        },
-        {
-          "kind": "out",
-          "text": "// <ComparisonCard {...comparison} />  —— 下一期只换数据"
-        }
-      ]
-    },
-    {
-      "id": "scene-5b",
-      "source": "",
-      "in_seconds": 433.067,
-      "out_seconds": 476.0,
-      "type": "terminal_scene",
-      "terminalTitle": "✅ typeof window 守卫 + MDC 规则（A 轨兜底）",
-      "prompt": "$",
-      "steps": [
-        {
-          "kind": "out",
-          "text": "// ✅ 类型安全守卫：SSR 时用默认值"
-        },
-        {
-          "kind": "out",
-          "text": "const getWidth = () =>"
-        },
-        {
-          "kind": "out",
-          "text": "  typeof window !== 'undefined'"
-        },
-        {
-          "kind": "out",
-          "text": "    ? window.innerWidth"
-        },
-        {
-          "kind": "out",
-          "text": "    : 1920;"
-        },
-        {
-          "kind": "out",
-          "text": ""
-        },
-        {
-          "kind": "out",
-          "text": "// .cursor/rules/remotion-ssr.mdc:"
-        },
-        {
-          "kind": "out",
-          "text": "// \"任何 Remotion 组件不得在顶层读 window/document\""
-        }
-      ]
-    },
-    {
-      "id": "scene-5c",
-      "source": "",
-      "in_seconds": 476.0,
-      "out_seconds": 516.267,
-      "type": "concept_scene",
-      "eyebrow": "这一步怎么交给 AI 做好",
-      "title": "人把控架构，AI 干活",
-      "background": "gradient",
-      "items": [
-        {
-          "label": "DATA",
-          "title": "AI 填数据、套现成组件",
-          "desc": "人给出每段要展示什么，AI 按范式产出 data，复用 @ComparisonCard/charts/ 等",
-          "icon": "📊"
-        },
-        {
-          "label": "RULE",
-          "title": "用规则替 AI 兜底边界",
-          "desc": "SSR 守卫写进 .cursor/rules/remotion-ssr.mdc，AI 生成组件时自动带",
-          "icon": "🛡️"
-        },
-        {
-          "label": "RUN",
-          "title": "渲染命令交给 AI/脚本代跑",
-          "desc": "npx remotion render — 纯命令行，可 CI，人只看产物",
+          "label": "工具链",
+          "title": "一行命令出片 + 网页生态",
+          "desc": "npx remotion render；CSS / 动效 / 图表库随手拿",
           "icon": "▶️"
         }
       ]
@@ -544,1184 +180,8695 @@
     {
       "id": "scene-6",
       "source": "",
-      "in_seconds": 516.267,
-      "out_seconds": 548.733,
+      "type": "table_scene",
+      "in_seconds": 166.1,
+      "out_seconds": 191.033,
+      "eyebrow": "Remotion vs 复制粘贴 HTML",
+      "title": "模板复用 / 让 AI 接手 / 长期维护",
+      "background": "gradient",
+      "headers": [
+        "维度",
+        "✅ Remotion",
+        "❌ 复制粘贴 HTML"
+      ],
+      "rows": [
+        {
+          "feature": "模板复用",
+          "cursor": "改一处全系列生效",
+          "windsurf": "越改越乱",
+          "win": "cursor"
+        },
+        {
+          "feature": "让 AI 接手",
+          "cursor": "结构稳，只填数据",
+          "windsurf": "容易跑偏",
+          "win": "cursor"
+        },
+        {
+          "feature": "长期维护",
+          "cursor": "十期后还能管",
+          "windsurf": "维护是灾难",
+          "win": "cursor"
+        },
+        {
+          "feature": "如实代价",
+          "cursor": "React 栈 + BUSL，规模化付费",
+          "windsurf": "写得快、维护崩",
+          "win": "neutral"
+        }
+      ]
+    },
+    {
+      "id": "scene-7",
+      "source": "",
+      "type": "table_scene",
+      "in_seconds": 191.033,
+      "out_seconds": 217.567,
+      "eyebrow": "第二步 · 搭引擎：一份配置 按 type 分发",
+      "title": "Explainer 把 type 派发给现成组件",
+      "background": "gradient",
+      "headers": [
+        "配置 type",
+        "现成组件",
+        "用途"
+      ],
+      "rows": [
+        {
+          "feature": "comparison",
+          "cursor": "ComparisonCard",
+          "windsurf": "左右两栏对比",
+          "win": "neutral"
+        },
+        {
+          "feature": "terminal_scene",
+          "cursor": "合成终端",
+          "windsurf": "逐行打字，不用真录屏",
+          "win": "neutral"
+        },
+        {
+          "feature": "screenshot_scene",
+          "cursor": "截图 + 光标叠层",
+          "windsurf": "点击 / 打字脚本化演示",
+          "win": "neutral"
+        },
+        {
+          "feature": "charts",
+          "cursor": "柱 / 线 / 饼图、KPI",
+          "windsurf": "数据驱动图表",
+          "win": "neutral"
+        },
+        {
+          "feature": "concept / split",
+          "cursor": "ConceptScene / SplitLayout",
+          "windsurf": "概念图解 / 左右分屏",
+          "win": "neutral"
+        }
+      ]
+    },
+    {
+      "id": "scene-8",
+      "source": "",
+      "type": "terminal_scene",
+      "in_seconds": 217.567,
+      "out_seconds": 236.133,
+      "terminalTitle": "只写配置：一个 comparison",
+      "prompt": "$",
+      "steps": [
+        {
+          "kind": "cmd",
+          "text": "cat scenes/comparison.jsonc"
+        },
+        {
+          "kind": "out",
+          "text": "{"
+        },
+        {
+          "kind": "out",
+          "text": "  \"type\": \"comparison\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"title\": \"传统剪辑 vs 代码即视频\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"leftLabel\": \"传统剪辑\",   \"leftValue\": \"拖时间轴，改一处全手工重排\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"rightLabel\": \"代码即视频\", \"rightValue\": \"改一行配置，重新编译出片\""
+        },
+        {
+          "kind": "out",
+          "text": "}"
+        },
+        {
+          "kind": "pill",
+          "text": "TS 给每个字段定死格式，填错即编译报错",
+          "color": "#22D3EE"
+        }
+      ]
+    },
+    {
+      "id": "scene-9",
+      "source": "",
+      "type": "table_scene",
+      "in_seconds": 236.133,
+      "out_seconds": 262.633,
+      "eyebrow": "搭引擎 · 配置即内容",
+      "title": "❌ 从零手写组件  vs  ✅ 只填数据复用",
+      "background": "gradient",
+      "headers": [
+        "维度",
+        "❌ 从零手写组件",
+        "✅ 只填数据"
+      ],
+      "rows": [
+        {
+          "feature": "代码",
+          "cursor": "export const ComparisonScene = () => {…}",
+          "windsurf": "const data = { left, right }",
+          "win": "windsurf"
+        },
+        {
+          "feature": "复用性",
+          "cursor": "重复造轮子，丢了「换数据就复用」",
+          "windsurf": "套现成 @ComparisonCard，改数据即可",
+          "win": "windsurf"
+        },
+        {
+          "feature": "出错率",
+          "cursor": "AI 乱发挥空间大",
+          "windsurf": "TS 字段类型兜底，填错即报错",
+          "win": "windsurf"
+        }
+      ]
+    },
+    {
+      "id": "scene-10",
+      "source": "",
+      "type": "screenshot_scene",
+      "in_seconds": 262.633,
+      "out_seconds": 290.533,
+      "backgroundImage": "screenshots/ep02-avatar-preset.png",
+      "screenshotSize": {
+        "width": 1920,
+        "height": 1080
+      },
+      "cursorStartAt": [
+        0.5,
+        0.08
+      ],
+      "screenshotSteps": [
+        {
+          "kind": "pause",
+          "seconds": 4
+        },
+        {
+          "kind": "callout_balloon",
+          "anchor": [
+            0.6,
+            0.22
+          ],
+          "position": "right",
+          "text": "取景预设：整体渲一次，按场景裁半身 / 全身",
+          "durationSeconds": 7
+        },
+        {
+          "kind": "pause",
+          "seconds": 6
+        },
+        {
+          "kind": "callout_balloon",
+          "anchor": [
+            0.5,
+            0.62
+          ],
+          "position": "left",
+          "text": "脚踩稳：在大腿上把髋部摆动反向抵消，脚踩原地",
+          "durationSeconds": 7
+        },
+        {
+          "kind": "pause",
+          "seconds": 6
+        },
+        {
+          "kind": "callout_balloon",
+          "anchor": [
+            0.5,
+            0.42
+          ],
+          "position": "right",
+          "text": "边界：坚决不做对口型数字人、不做 AI 假界面",
+          "durationSeconds": 6
+        }
+      ]
+    },
+    {
+      "id": "scene-11",
+      "source": "",
+      "type": "table_scene",
+      "in_seconds": 290.533,
+      "out_seconds": 324.767,
+      "eyebrow": "搭引擎 · SSR 避坑",
+      "title": "❌ 打包阶段就崩  vs  ✅ 守卫 + 规则一次写死",
+      "background": "gradient",
+      "headers": [
+        "对比",
+        "❌ 顶层读 window",
+        "✅ typeof 守卫 + 规则"
+      ],
+      "rows": [
+        {
+          "feature": "代码",
+          "cursor": "const w = window.innerWidth",
+          "windsurf": "typeof window!=='undefined' ? … : 1920",
+          "win": "windsurf"
+        },
+        {
+          "feature": "结果",
+          "cursor": "ReferenceError，渲染红屏",
+          "windsurf": "浏览器才读，否则给默认值",
+          "win": "windsurf"
+        },
+        {
+          "feature": "根治",
+          "cursor": "每次口头提醒 AI",
+          "windsurf": ".cursor/rules/remotion-ssr.mdc 一次写死",
+          "win": "windsurf"
+        }
+      ]
+    },
+    {
+      "id": "scene-12",
+      "source": "",
+      "type": "terminal_scene",
+      "in_seconds": 324.767,
+      "out_seconds": 343.767,
+      "terminalTitle": "npx remotion render 出片",
+      "prompt": "$",
+      "steps": [
+        {
+          "kind": "cmd",
+          "text": "cd OpenMontage/remotion-composer"
+        },
+        {
+          "kind": "cmd",
+          "text": "npx remotion studio"
+        },
+        {
+          "kind": "out",
+          "text": "# 可视化调试，核对 Composition 注册名"
+        },
+        {
+          "kind": "cmd",
+          "text": "npx remotion render src/index.ts ep02-video-render out/ep02.mp4"
+        },
+        {
+          "kind": "out",
+          "text": "Rendering frames... ████████████ 100%"
+        },
+        {
+          "kind": "pill",
+          "text": "✓ out/ep02.mp4",
+          "color": "#34D399"
+        }
+      ]
+    },
+    {
+      "id": "scene-13",
+      "source": "",
       "type": "outro_scene",
-      "headline": "代码即视频 + 流程即代码 = 把内容生产做成可维护的工程流水线",
-      "cta": "关注 · 下期解密 Whisper 毫秒级字幕与卡点",
+      "in_seconds": 343.767,
+      "out_seconds": 363.833,
+      "headline": "整期就两步：用 Vibe Coding 选路线 + 搭引擎",
+      "cta": "关注 · 下期 EP03 字幕匹配：Whisper 让字幕踩着话音跳",
       "background": "gradient"
     }
   ],
-  "overlays": [],
+  "overlays": [
+    {
+      "type": "provider_chip",
+      "in_seconds": 1.0,
+      "out_seconds": 362.833,
+      "providers": [
+        "remotion",
+        "react",
+        "whisperx"
+      ]
+    }
+  ],
   "captions": [
     {
-      "word": "用PR、AE一帧帧剪视频？停。",
+      "word": "做",
       "startMs": 0,
-      "endMs": 2419
+      "endMs": 153
     },
     {
-      "word": "你有没有想过，写代码就是在写视频？",
-      "startMs": 2419,
-      "endMs": 4280
+      "word": "技",
+      "startMs": 153,
+      "endMs": 307
     },
     {
-      "word": "一段声明式的代码加一份数据，",
-      "startMs": 4639,
-      "endMs": 7280
+      "word": "术",
+      "startMs": 307,
+      "endMs": 461
     },
     {
-      "word": "交给渲染器编译成帧，直接合成高清MP4。",
-      "startMs": 7280,
-      "endMs": 9259
+      "word": "教",
+      "startMs": 461,
+      "endMs": 615
     },
     {
-      "word": "这不是科幻，这叫Video-a",
-      "startMs": 9259,
-      "endMs": 11900
+      "word": "程",
+      "startMs": 615,
+      "endMs": 769
     },
     {
-      "word": "s-Code。今天这期我把这套",
-      "startMs": 11900,
-      "endMs": 14060
+      "word": "视",
+      "startMs": 769,
+      "endMs": 923
     },
     {
-      "word": "范式讲透——它不止Remotion，",
-      "startMs": 14060,
-      "endMs": 16739
+      "word": "频，",
+      "startMs": 923,
+      "endMs": 1076
     },
     {
-      "word": "它是一类思路，至少六条路线。",
-      "startMs": 16739,
-      "endMs": 20079
+      "word": "最",
+      "startMs": 1461,
+      "endMs": 1614
     },
     {
-      "word": "选哪条、为什么选、怎么避坑、",
-      "startMs": 20079,
-      "endMs": 22879
+      "word": "烦",
+      "startMs": 1614,
+      "endMs": 1769
     },
     {
-      "word": "怎么让AI全程接管，一期全讲清。",
-      "startMs": 22879,
-      "endMs": 25339
+      "word": "的",
+      "startMs": 1769,
+      "endMs": 1922
     },
     {
-      "word": "传统剪辑的心智模型是什么？",
-      "startMs": 25589,
-      "endMs": 27949
+      "word": "是",
+      "startMs": 1922,
+      "endMs": 2076
     },
     {
-      "word": "轨道加绝对时间轴。",
-      "startMs": 27949,
-      "endMs": 29689
+      "word": "改。",
+      "startMs": 2076,
+      "endMs": 2230
     },
     {
-      "word": "在时间线上拖素材、",
-      "startMs": 29689,
-      "endMs": 31070
+      "word": "传",
+      "startMs": 3063,
+      "endMs": 3217
     },
     {
-      "word": "对齐音频、手打字幕。",
-      "startMs": 31070,
-      "endMs": 33390
+      "word": "统",
+      "startMs": 3217,
+      "endMs": 3371
     },
     {
-      "word": "对技术教程这种高频更新",
-      "startMs": 33390,
-      "endMs": 36609
+      "word": "剪",
+      "startMs": 3371,
+      "endMs": 3525
     },
     {
-      "word": "的内容来说，这是一场低",
-      "startMs": 36609,
-      "endMs": 39009
+      "word": "辑",
+      "startMs": 3525,
+      "endMs": 3679
     },
     {
-      "word": "ROI的体力活——每改",
-      "startMs": 39009,
-      "endMs": 41129
+      "word": "在",
+      "startMs": 3679,
+      "endMs": 3833
     },
     {
-      "word": "一处都得回到时间轴上重摆。",
-      "startMs": 41129,
-      "endMs": 43250
+      "word": "时",
+      "startMs": 3833,
+      "endMs": 3986
     },
     {
-      "word": "Video-as-Co",
-      "startMs": 43250,
-      "endMs": 45129
+      "word": "间",
+      "startMs": 3986,
+      "endMs": 4140
     },
     {
-      "word": "de换了一套模型。",
-      "startMs": 45129,
-      "endMs": 46170
+      "word": "轴",
+      "startMs": 4140,
+      "endMs": 4294
     },
     {
-      "word": "视频变成代码和数据，",
-      "startMs": 46170,
-      "endMs": 47129
+      "word": "上",
+      "startMs": 4294,
+      "endMs": 4448
     },
     {
-      "word": "渲染器编译成帧。",
-      "startMs": 47129,
-      "endMs": 48929
+      "word": "一",
+      "startMs": 4448,
+      "endMs": 4602
     },
     {
-      "word": "这带来三个传统剪辑给不",
-      "startMs": 48929,
-      "endMs": 50510
+      "word": "帧",
+      "startMs": 4602,
+      "endMs": 4756
     },
     {
-      "word": "了的工程特性。第一，",
-      "startMs": 50510,
-      "endMs": 53989
+      "word": "帧",
+      "startMs": 4756,
+      "endMs": 4909
     },
     {
-      "word": "可版本控制——代码能diff、",
-      "startMs": 53989,
-      "endMs": 55909
+      "word": "拖，",
+      "startMs": 4909,
+      "endMs": 5063
     },
     {
-      "word": "能review、",
-      "startMs": 55909,
-      "endMs": 56769
+      "word": "换",
+      "startMs": 5448,
+      "endMs": 5602
     },
     {
-      "word": "能git回滚。第二，",
-      "startMs": 56769,
-      "endMs": 60150
+      "word": "个",
+      "startMs": 5602,
+      "endMs": 5756
     },
     {
-      "word": "可参数化批量复用——同",
-      "startMs": 60150,
-      "endMs": 61230
+      "word": "数",
+      "startMs": 5756,
+      "endMs": 5909
     },
     {
-      "word": "一模板换一份数据，",
-      "startMs": 61230,
-      "endMs": 62549
+      "word": "据",
+      "startMs": 5909,
+      "endMs": 6063
     },
     {
-      "word": "几十期结构一致的视频批量产出。",
-      "startMs": 62549,
-      "endMs": 63549
+      "word": "要",
+      "startMs": 6063,
+      "endMs": 6217
     },
     {
-      "word": "第三，AI友好——让A",
-      "startMs": 63549,
-      "endMs": 64750
+      "word": "重",
+      "startMs": 6217,
+      "endMs": 6371
     },
     {
-      "word": "I拖时间轴很难，",
-      "startMs": 64750,
-      "endMs": 66290
+      "word": "排，",
+      "startMs": 6371,
+      "endMs": 6525
     },
     {
-      "word": "让AI写代码、改数据、调CSS，这是它最擅长的事。",
-      "startMs": 66290,
-      "endMs": 68269
+      "word": "改",
+      "startMs": 6909,
+      "endMs": 7063
     },
     {
-      "word": "一句话讲本质：帧即状态。",
-      "startMs": 68560,
-      "endMs": 74480
+      "word": "个",
+      "startMs": 7063,
+      "endMs": 7217
     },
     {
-      "word": "Video-as-Code把时间轴变成了代码和数据的函数。",
-      "startMs": 74840,
-      "endMs": 78879
+      "word": "标",
+      "startMs": 7217,
+      "endMs": 7371
     },
     {
-      "word": "给定一个时间点，渲染器算出该时刻画面长什么样。",
-      "startMs": 79140,
-      "endMs": 84840
+      "word": "题",
+      "startMs": 7371,
+      "endMs": 7525
     },
     {
-      "word": "输入是声明式的代码或数据，经过渲染器编译成帧，帧序列合成视频。整条链路都是代码控",
-      "startMs": 85180,
-      "endMs": 89260
+      "word": "要",
+      "startMs": 7525,
+      "endMs": 7678
     },
     {
-      "word": "代码即视频不等于Remotion。",
-      "startMs": 89520,
-      "endMs": 91880
+      "word": "重",
+      "startMs": 7678,
+      "endMs": 7832
     },
     {
-      "word": "它是一类范式，实现的工具不止一种。",
-      "startMs": 91880,
-      "endMs": 94700
+      "word": "对",
+      "startMs": 7832,
+      "endMs": 7986
     },
     {
-      "word": "看这张表。第一条路线，",
-      "startMs": 94700,
-      "endMs": 95980
+      "word": "位，",
+      "startMs": 7986,
+      "endMs": 8140
     },
     {
-      "word": "DOM加React渲染，",
-      "startMs": 96400,
-      "endMs": 99540
+      "word": "一",
+      "startMs": 8525,
+      "endMs": 8678
     },
     {
-      "word": "Remotion是代表，",
-      "startMs": 99540,
-      "endMs": 101460
+      "word": "期",
+      "startMs": 8678,
+      "endMs": 8832
     },
     {
-      "word": "React组件加CSS就能做复杂排版。",
-      "startMs": 101460,
-      "endMs": 105020
+      "word": "改",
+      "startMs": 8832,
+      "endMs": 8986
     },
     {
-      "word": "第二条，Motion Canvas，",
-      "startMs": 105020,
-      "endMs": 106540
+      "word": "三",
+      "startMs": 8986,
+      "endMs": 9140
     },
     {
-      "word": "TypeScript声明式动画，",
-      "startMs": 106540,
-      "endMs": 109780
+      "word": "轮",
+      "startMs": 9140,
+      "endMs": 9294
     },
     {
-      "word": "适合代码演示和时序编排。第三条，",
-      "startMs": 109780,
-      "endMs": 111020
+      "word": "人",
+      "startMs": 9294,
+      "endMs": 9448
     },
     {
-      "word": "Manim，Python写几",
-      "startMs": 111540,
-      "endMs": 112320
+      "word": "就",
+      "startMs": 9448,
+      "endMs": 9601
     },
     {
-      "word": "何和公式动画，数学可视化神器。",
-      "startMs": 112320,
-      "endMs": 113900
+      "word": "废",
+      "startMs": 9601,
+      "endMs": 9755
     },
     {
-      "word": "第四条，MoviePy，",
-      "startMs": 113900,
-      "endMs": 114580
+      "word": "了。",
+      "startMs": 9755,
+      "endMs": 9909
     },
     {
-      "word": "NumPy加FFmpeg，",
-      "startMs": 114580,
-      "endMs": 115420
+      "word": "我",
+      "startMs": 10742,
+      "endMs": 10896
     },
     {
-      "word": "纯Python做简单拼接。",
-      "startMs": 115420,
-      "endMs": 117380
+      "word": "的",
+      "startMs": 10896,
+      "endMs": 11050
     },
     {
-      "word": "第五条，PixiJS这类游戏引擎，",
-      "startMs": 117380,
-      "endMs": 119860
+      "word": "做",
+      "startMs": 11050,
+      "endMs": 11204
     },
     {
-      "word": "Canvas逐帧绘制做粒子效果。",
-      "startMs": 119860,
-      "endMs": 122380
+      "word": "法",
+      "startMs": 11204,
+      "endMs": 11358
     },
     {
-      "word": "第六条，FFmpeg加脚本，",
-      "startMs": 122380,
-      "endMs": 124140
+      "word": "不",
+      "startMs": 11358,
+      "endMs": 11512
     },
     {
-      "word": "命令式合成做批量转码。六条路线，",
-      "startMs": 124140,
-      "endMs": 125860
+      "word": "一",
+      "startMs": 11512,
+      "endMs": 11665
     },
     {
-      "word": "内核一样——用代码描述画面、",
-      "startMs": 125860,
-      "endMs": 129220
+      "word": "样",
+      "startMs": 11665,
+      "endMs": 11819
     },
     {
-      "word": "编译成帧、合成视频。",
-      "startMs": 129220,
-      "endMs": 131100
+      "word": "把",
+      "startMs": 11819,
+      "endMs": 11972
     },
     {
-      "word": "区别只在描述层用什么语言、渲染层用什么引擎。",
-      "startMs": 131100,
-      "endMs": 133540
+      "word": "整",
+      "startMs": 11972,
+      "endMs": 12126
     },
     {
-      "word": "范式理解了，接下来要做选择题。",
-      "startMs": 133850,
-      "endMs": 136370
+      "word": "条",
+      "startMs": 12126,
+      "endMs": 12280
     },
     {
-      "word": "判断层不是中立百科式综述，",
-      "startMs": 136370,
-      "endMs": 138310
+      "word": "片",
+      "startMs": 12280,
+      "endMs": 12434
     },
     {
-      "word": "它是边界——每个方案必须",
-      "startMs": 138310,
-      "endMs": 139710
+      "word": "子",
+      "startMs": 12434,
+      "endMs": 12588
     },
     {
-      "word": "回答什么前提下成立，",
-      "startMs": 139710,
-      "endMs": 142370
+      "word": "写",
+      "startMs": 12588,
+      "endMs": 12742
     },
     {
-      "word": "哪步会翻车。看这个矩阵。",
-      "startMs": 142370,
-      "endMs": 144250
+      "word": "成",
+      "startMs": 12742,
+      "endMs": 12895
+    },
+    {
+      "word": "一",
+      "startMs": 12895,
+      "endMs": 13049
+    },
+    {
+      "word": "份",
+      "startMs": 13049,
+      "endMs": 13203
+    },
+    {
+      "word": "配",
+      "startMs": 13203,
+      "endMs": 13357
+    },
+    {
+      "word": "置，",
+      "startMs": 13357,
+      "endMs": 13511
+    },
+    {
+      "word": "让",
+      "startMs": 13895,
+      "endMs": 14049
+    },
+    {
+      "word": "程",
+      "startMs": 14049,
+      "endMs": 14203
+    },
+    {
+      "word": "序",
+      "startMs": 14203,
+      "endMs": 14357
+    },
+    {
+      "word": "自",
+      "startMs": 14357,
+      "endMs": 14511
+    },
+    {
+      "word": "动",
+      "startMs": 14511,
+      "endMs": 14665
+    },
+    {
+      "word": "渲",
+      "startMs": 14665,
+      "endMs": 14818
+    },
+    {
+      "word": "染",
+      "startMs": 14818,
+      "endMs": 14972
+    },
+    {
+      "word": "出",
+      "startMs": 14972,
+      "endMs": 15126
+    },
+    {
+      "word": "片。",
+      "startMs": 15126,
+      "endMs": 15280
+    },
+    {
+      "word": "要",
+      "startMs": 16113,
+      "endMs": 16267
+    },
+    {
+      "word": "改",
+      "startMs": 16267,
+      "endMs": 16421
+    },
+    {
+      "word": "哪",
+      "startMs": 16421,
+      "endMs": 16575
+    },
+    {
+      "word": "儿，",
+      "startMs": 16575,
+      "endMs": 16729
+    },
+    {
+      "word": "改",
+      "startMs": 17113,
+      "endMs": 17267
+    },
+    {
+      "word": "配",
+      "startMs": 17267,
+      "endMs": 17421
+    },
+    {
+      "word": "置",
+      "startMs": 17421,
+      "endMs": 17575
+    },
+    {
+      "word": "里",
+      "startMs": 17575,
+      "endMs": 17728
+    },
+    {
+      "word": "一",
+      "startMs": 17728,
+      "endMs": 17882
+    },
+    {
+      "word": "行",
+      "startMs": 17882,
+      "endMs": 18036
+    },
+    {
+      "word": "字，",
+      "startMs": 18036,
+      "endMs": 18190
+    },
+    {
+      "word": "重",
+      "startMs": 18575,
+      "endMs": 18728
+    },
+    {
+      "word": "新",
+      "startMs": 18728,
+      "endMs": 18882
+    },
+    {
+      "word": "跑",
+      "startMs": 18882,
+      "endMs": 19036
+    },
+    {
+      "word": "一",
+      "startMs": 19036,
+      "endMs": 19190
+    },
+    {
+      "word": "下，",
+      "startMs": 19190,
+      "endMs": 19344
+    },
+    {
+      "word": "新",
+      "startMs": 19728,
+      "endMs": 19882
+    },
+    {
+      "word": "片",
+      "startMs": 19882,
+      "endMs": 20036
+    },
+    {
+      "word": "就",
+      "startMs": 20036,
+      "endMs": 20190
+    },
+    {
+      "word": "出",
+      "startMs": 20190,
+      "endMs": 20344
+    },
+    {
+      "word": "来",
+      "startMs": 20344,
+      "endMs": 20498
+    },
+    {
+      "word": "了，",
+      "startMs": 20498,
+      "endMs": 20651
+    },
+    {
+      "word": "不",
+      "startMs": 21036,
+      "endMs": 21190
+    },
+    {
+      "word": "碰",
+      "startMs": 21190,
+      "endMs": 21344
+    },
+    {
+      "word": "时",
+      "startMs": 21344,
+      "endMs": 21497
+    },
+    {
+      "word": "间",
+      "startMs": 21497,
+      "endMs": 21651
+    },
+    {
+      "word": "轴。",
+      "startMs": 21651,
+      "endMs": 21805
+    },
+    {
+      "word": "可",
+      "startMs": 22638,
+      "endMs": 22792
+    },
+    {
+      "word": "我",
+      "startMs": 22792,
+      "endMs": 22946
+    },
+    {
+      "word": "没",
+      "startMs": 22946,
+      "endMs": 23100
+    },
+    {
+      "word": "有",
+      "startMs": 23100,
+      "endMs": 23254
+    },
+    {
+      "word": "前",
+      "startMs": 23254,
+      "endMs": 23408
+    },
+    {
+      "word": "后",
+      "startMs": 23408,
+      "endMs": 23561
+    },
+    {
+      "word": "端",
+      "startMs": 23561,
+      "endMs": 23715
+    },
+    {
+      "word": "基",
+      "startMs": 23715,
+      "endMs": 23869
+    },
+    {
+      "word": "础，",
+      "startMs": 23869,
+      "endMs": 24023
+    },
+    {
+      "word": "这",
+      "startMs": 24408,
+      "endMs": 24561
+    },
+    {
+      "word": "套",
+      "startMs": 24561,
+      "endMs": 24715
+    },
+    {
+      "word": "不",
+      "startMs": 24715,
+      "endMs": 24869
+    },
+    {
+      "word": "是",
+      "startMs": 24869,
+      "endMs": 25023
+    },
+    {
+      "word": "我",
+      "startMs": 25023,
+      "endMs": 25177
+    },
+    {
+      "word": "手",
+      "startMs": 25177,
+      "endMs": 25331
+    },
+    {
+      "word": "写",
+      "startMs": 25331,
+      "endMs": 25484
+    },
+    {
+      "word": "的，",
+      "startMs": 25484,
+      "endMs": 25638
+    },
+    {
+      "word": "全",
+      "startMs": 26023,
+      "endMs": 26177
+    },
+    {
+      "word": "程",
+      "startMs": 26177,
+      "endMs": 26330
+    },
+    {
+      "word": "用",
+      "startMs": 26330,
+      "endMs": 26484
+    },
+    {
+      "word": "的",
+      "startMs": 26484,
+      "endMs": 26638
+    },
+    {
+      "word": "是",
+      "startMs": 26638,
+      "endMs": 26792
+    },
+    {
+      "word": "Vibe",
+      "startMs": 26792,
+      "endMs": 26895
+    },
+    {
+      "word": "Coding",
+      "startMs": 26895,
+      "endMs": 27016
+    },
+    {
+      "word": "用",
+      "startMs": 27016,
+      "endMs": 27170
+    },
+    {
+      "word": "大",
+      "startMs": 27170,
+      "endMs": 27324
+    },
+    {
+      "word": "白",
+      "startMs": 27324,
+      "endMs": 27478
+    },
+    {
+      "word": "话",
+      "startMs": 27478,
+      "endMs": 27632
+    },
+    {
+      "word": "把",
+      "startMs": 27632,
+      "endMs": 27786
+    },
+    {
+      "word": "想",
+      "startMs": 27786,
+      "endMs": 27939
+    },
+    {
+      "word": "法",
+      "startMs": 27939,
+      "endMs": 28093
+    },
+    {
+      "word": "讲",
+      "startMs": 28093,
+      "endMs": 28247
+    },
+    {
+      "word": "给",
+      "startMs": 28247,
+      "endMs": 28401
+    },
+    {
+      "word": "AI，",
+      "startMs": 28401,
+      "endMs": 28484
+    },
+    {
+      "word": "让",
+      "startMs": 28869,
+      "endMs": 29023
+    },
+    {
+      "word": "它",
+      "startMs": 29023,
+      "endMs": 29176
+    },
+    {
+      "word": "去",
+      "startMs": 29176,
+      "endMs": 29330
+    },
+    {
+      "word": "写",
+      "startMs": 29330,
+      "endMs": 29484
+    },
+    {
+      "word": "去",
+      "startMs": 29484,
+      "endMs": 29638
+    },
+    {
+      "word": "改，",
+      "startMs": 29638,
+      "endMs": 29792
+    },
+    {
+      "word": "我",
+      "startMs": 30176,
+      "endMs": 30330
+    },
+    {
+      "word": "只",
+      "startMs": 30330,
+      "endMs": 30484
+    },
+    {
+      "word": "管",
+      "startMs": 30484,
+      "endMs": 30639
+    },
+    {
+      "word": "说",
+      "startMs": 30639,
+      "endMs": 30792
+    },
+    {
+      "word": "清",
+      "startMs": 30792,
+      "endMs": 30946
+    },
+    {
+      "word": "要",
+      "startMs": 30946,
+      "endMs": 31100
+    },
+    {
+      "word": "什",
+      "startMs": 31100,
+      "endMs": 31254
+    },
+    {
+      "word": "么、",
+      "startMs": 31254,
+      "endMs": 31408
+    },
+    {
+      "word": "再",
+      "startMs": 31600,
+      "endMs": 31754
+    },
+    {
+      "word": "判",
+      "startMs": 31754,
+      "endMs": 31908
+    },
+    {
+      "word": "断",
+      "startMs": 31908,
+      "endMs": 32062
+    },
+    {
+      "word": "它",
+      "startMs": 32062,
+      "endMs": 32215
+    },
+    {
+      "word": "对",
+      "startMs": 32215,
+      "endMs": 32369
+    },
+    {
+      "word": "不",
+      "startMs": 32369,
+      "endMs": 32523
+    },
+    {
+      "word": "对。",
+      "startMs": 32523,
+      "endMs": 32677
+    },
+    {
+      "word": "这",
+      "startMs": 33510,
+      "endMs": 33664
+    },
+    {
+      "word": "期",
+      "startMs": 33664,
+      "endMs": 33818
+    },
+    {
+      "word": "就",
+      "startMs": 33818,
+      "endMs": 33972
+    },
+    {
+      "word": "两",
+      "startMs": 33972,
+      "endMs": 34125
+    },
+    {
+      "word": "步",
+      "startMs": 34125,
+      "endMs": 34279
+    },
+    {
+      "word": "先",
+      "startMs": 34279,
+      "endMs": 34433
+    },
+    {
+      "word": "选",
+      "startMs": 34433,
+      "endMs": 34587
+    },
+    {
+      "word": "技",
+      "startMs": 34587,
+      "endMs": 34741
+    },
+    {
+      "word": "术",
+      "startMs": 34741,
+      "endMs": 34895
+    },
+    {
+      "word": "路",
+      "startMs": 34895,
+      "endMs": 35048
+    },
+    {
+      "word": "线，",
+      "startMs": 35048,
+      "endMs": 35202
+    },
+    {
+      "word": "再",
+      "startMs": 35587,
+      "endMs": 35741
+    },
+    {
+      "word": "搭",
+      "startMs": 35741,
+      "endMs": 35895
+    },
+    {
+      "word": "渲",
+      "startMs": 35895,
+      "endMs": 36048
+    },
+    {
+      "word": "染",
+      "startMs": 36048,
+      "endMs": 36202
+    },
+    {
+      "word": "引",
+      "startMs": 36202,
+      "endMs": 36356
+    },
+    {
+      "word": "擎。",
+      "startMs": 36356,
+      "endMs": 36510
+    },
+    {
+      "word": "跟",
+      "startMs": 37343,
+      "endMs": 37497
+    },
+    {
+      "word": "着",
+      "startMs": 37497,
+      "endMs": 37651
+    },
+    {
+      "word": "走，",
+      "startMs": 37651,
+      "endMs": 37805
+    },
+    {
+      "word": "没",
+      "startMs": 38189,
+      "endMs": 38343
+    },
+    {
+      "word": "基",
+      "startMs": 38343,
+      "endMs": 38497
+    },
+    {
+      "word": "础",
+      "startMs": 38497,
+      "endMs": 38651
+    },
+    {
+      "word": "也",
+      "startMs": 38651,
+      "endMs": 38805
+    },
+    {
+      "word": "能",
+      "startMs": 38805,
+      "endMs": 38958
+    },
+    {
+      "word": "复",
+      "startMs": 38958,
+      "endMs": 39112
+    },
+    {
+      "word": "制。",
+      "startMs": 39112,
+      "endMs": 39266
+    },
+    {
+      "word": "第",
+      "startMs": 39266,
+      "endMs": 39422
+    },
+    {
+      "word": "一",
+      "startMs": 39422,
+      "endMs": 39579
+    },
+    {
+      "word": "步，",
+      "startMs": 39579,
+      "endMs": 39736
+    },
+    {
+      "word": "选",
+      "startMs": 40127,
+      "endMs": 40284
+    },
+    {
+      "word": "路",
+      "startMs": 40284,
+      "endMs": 40441
+    },
+    {
+      "word": "线。",
+      "startMs": 40441,
+      "endMs": 40598
+    },
+    {
+      "word": "我",
+      "startMs": 41447,
+      "endMs": 41603
+    },
+    {
+      "word": "没",
+      "startMs": 41603,
+      "endMs": 41760
+    },
+    {
+      "word": "自",
+      "startMs": 41760,
+      "endMs": 41917
+    },
+    {
+      "word": "己",
+      "startMs": 41917,
+      "endMs": 42073
+    },
+    {
+      "word": "啃",
+      "startMs": 42073,
+      "endMs": 42230
+    },
+    {
+      "word": "文",
+      "startMs": 42230,
+      "endMs": 42387
+    },
+    {
+      "word": "档，",
+      "startMs": 42387,
+      "endMs": 42544
+    },
+    {
+      "word": "是",
+      "startMs": 42935,
+      "endMs": 43092
+    },
+    {
+      "word": "把",
+      "startMs": 43092,
+      "endMs": 43249
+    },
+    {
+      "word": "选",
+      "startMs": 43249,
+      "endMs": 43406
+    },
+    {
+      "word": "择",
+      "startMs": 43406,
+      "endMs": 43562
+    },
+    {
+      "word": "题",
+      "startMs": 43562,
+      "endMs": 43719
+    },
+    {
+      "word": "丢",
+      "startMs": 43719,
+      "endMs": 43876
+    },
+    {
+      "word": "给",
+      "startMs": 43876,
+      "endMs": 44033
+    },
+    {
+      "word": "AI。",
+      "startMs": 44033,
+      "endMs": 44117
+    },
+    {
+      "word": "我",
+      "startMs": 44966,
+      "endMs": 45123
+    },
+    {
+      "word": "问",
+      "startMs": 45123,
+      "endMs": 45280
+    },
+    {
+      "word": "它",
+      "startMs": 45280,
+      "endMs": 45437
+    },
+    {
+      "word": "想",
+      "startMs": 45437,
+      "endMs": 45593
+    },
+    {
+      "word": "把",
+      "startMs": 45593,
+      "endMs": 45750
+    },
+    {
+      "word": "视",
+      "startMs": 45750,
+      "endMs": 45907
+    },
+    {
+      "word": "频",
+      "startMs": 45907,
+      "endMs": 46063
+    },
+    {
+      "word": "写",
+      "startMs": 46063,
+      "endMs": 46220
+    },
+    {
+      "word": "成",
+      "startMs": 46220,
+      "endMs": 46377
+    },
+    {
+      "word": "代",
+      "startMs": 46377,
+      "endMs": 46534
+    },
+    {
+      "word": "码、",
+      "startMs": 46534,
+      "endMs": 46690
+    },
+    {
+      "word": "让",
+      "startMs": 46886,
+      "endMs": 47043
+    },
+    {
+      "word": "程",
+      "startMs": 47043,
+      "endMs": 47200
+    },
+    {
+      "word": "序",
+      "startMs": 47200,
+      "endMs": 47356
+    },
+    {
+      "word": "自",
+      "startMs": 47356,
+      "endMs": 47513
+    },
+    {
+      "word": "动",
+      "startMs": 47513,
+      "endMs": 47670
+    },
+    {
+      "word": "出",
+      "startMs": 47670,
+      "endMs": 47827
+    },
+    {
+      "word": "片，",
+      "startMs": 47827,
+      "endMs": 47983
+    },
+    {
+      "word": "有",
+      "startMs": 48375,
+      "endMs": 48532
+    },
+    {
+      "word": "哪",
+      "startMs": 48532,
+      "endMs": 48689
+    },
+    {
+      "word": "些",
+      "startMs": 48689,
+      "endMs": 48845
+    },
+    {
+      "word": "现",
+      "startMs": 48845,
+      "endMs": 49002
+    },
+    {
+      "word": "成",
+      "startMs": 49002,
+      "endMs": 49159
+    },
+    {
+      "word": "路",
+      "startMs": 49159,
+      "endMs": 49315
+    },
+    {
+      "word": "线？",
+      "startMs": 49315,
+      "endMs": 49472
+    },
+    {
+      "word": "这",
+      "startMs": 50321,
+      "endMs": 50478
+    },
+    {
+      "word": "些",
+      "startMs": 50478,
+      "endMs": 50635
+    },
+    {
+      "word": "路",
+      "startMs": 50635,
+      "endMs": 50791
+    },
+    {
+      "word": "子",
+      "startMs": 50791,
+      "endMs": 50948
+    },
+    {
+      "word": "内",
+      "startMs": 50948,
+      "endMs": 51105
+    },
+    {
+      "word": "核",
+      "startMs": 51105,
+      "endMs": 51261
+    },
+    {
+      "word": "都",
+      "startMs": 51261,
+      "endMs": 51418
+    },
+    {
+      "word": "一",
+      "startMs": 51418,
+      "endMs": 51574
+    },
+    {
+      "word": "样",
+      "startMs": 51574,
+      "endMs": 51731
+    },
+    {
+      "word": "用",
+      "startMs": 51731,
+      "endMs": 51888
+    },
+    {
+      "word": "代",
+      "startMs": 51888,
+      "endMs": 52044
+    },
+    {
+      "word": "码",
+      "startMs": 52044,
+      "endMs": 52201
+    },
+    {
+      "word": "描",
+      "startMs": 52201,
+      "endMs": 52358
+    },
+    {
+      "word": "述",
+      "startMs": 52358,
+      "endMs": 52515
+    },
+    {
+      "word": "画",
+      "startMs": 52515,
+      "endMs": 52671
+    },
+    {
+      "word": "面、",
+      "startMs": 52671,
+      "endMs": 52828
+    },
+    {
+      "word": "编",
+      "startMs": 53024,
+      "endMs": 53181
+    },
+    {
+      "word": "译",
+      "startMs": 53181,
+      "endMs": 53337
+    },
+    {
+      "word": "成",
+      "startMs": 53337,
+      "endMs": 53494
+    },
+    {
+      "word": "帧、",
+      "startMs": 53494,
+      "endMs": 53651
+    },
+    {
+      "word": "合",
+      "startMs": 53847,
+      "endMs": 54004
+    },
+    {
+      "word": "成",
+      "startMs": 54004,
+      "endMs": 54160
+    },
+    {
+      "word": "视",
+      "startMs": 54160,
+      "endMs": 54317
+    },
+    {
+      "word": "频，",
+      "startMs": 54317,
+      "endMs": 54474
+    },
+    {
+      "word": "区",
+      "startMs": 54866,
+      "endMs": 55022
+    },
+    {
+      "word": "别",
+      "startMs": 55022,
+      "endMs": 55179
+    },
+    {
+      "word": "只",
+      "startMs": 55179,
+      "endMs": 55336
+    },
+    {
+      "word": "在",
+      "startMs": 55336,
+      "endMs": 55492
+    },
+    {
+      "word": "用",
+      "startMs": 55492,
+      "endMs": 55649
+    },
+    {
+      "word": "什",
+      "startMs": 55649,
+      "endMs": 55806
+    },
+    {
+      "word": "么",
+      "startMs": 55806,
+      "endMs": 55963
+    },
+    {
+      "word": "语",
+      "startMs": 55963,
+      "endMs": 56119
+    },
+    {
+      "word": "言、",
+      "startMs": 56119,
+      "endMs": 56276
+    },
+    {
+      "word": "什",
+      "startMs": 56472,
+      "endMs": 56629
+    },
+    {
+      "word": "么",
+      "startMs": 56629,
+      "endMs": 56785
+    },
+    {
+      "word": "引",
+      "startMs": 56785,
+      "endMs": 56942
+    },
+    {
+      "word": "擎。",
+      "startMs": 56942,
+      "endMs": 57099
+    },
+    {
+      "word": "AI",
+      "startMs": 57099,
+      "endMs": 57182
+    },
+    {
+      "word": "给",
+      "startMs": 57182,
+      "endMs": 57335
+    },
+    {
+      "word": "我",
+      "startMs": 57335,
+      "endMs": 57488
+    },
+    {
+      "word": "摆",
+      "startMs": 57488,
+      "endMs": 57642
+    },
+    {
+      "word": "出",
+      "startMs": 57642,
+      "endMs": 57795
+    },
+    {
+      "word": "六",
+      "startMs": 57795,
+      "endMs": 57948
+    },
+    {
+      "word": "条",
+      "startMs": 57948,
+      "endMs": 58101
+    },
+    {
+      "word": "路。",
+      "startMs": 58101,
+      "endMs": 58255
+    },
+    {
+      "word": "网",
+      "startMs": 59086,
+      "endMs": 59239
+    },
+    {
+      "word": "页",
+      "startMs": 59239,
+      "endMs": 59393
+    },
+    {
+      "word": "渲",
+      "startMs": 59393,
+      "endMs": 59547
+    },
+    {
+      "word": "染，",
+      "startMs": 59547,
+      "endMs": 59700
+    },
+    {
+      "word": "代",
+      "startMs": 60084,
+      "endMs": 60237
+    },
+    {
+      "word": "表",
+      "startMs": 60237,
+      "endMs": 60390
     },
     {
       "word": "Remotion，",
-      "startMs": 144250,
-      "endMs": 145650
+      "startMs": 60390,
+      "endMs": 60531
     },
     {
-      "word": "前端栈复杂排版没问题，",
-      "startMs": 145650,
-      "endMs": 148530
+      "word": "React",
+      "startMs": 60915,
+      "endMs": 61026
     },
     {
-      "word": "跨期模板复用没问题，",
-      "startMs": 148530,
-      "endMs": 151950
+      "word": "组",
+      "startMs": 61026,
+      "endMs": 61180
     },
     {
-      "word": "但零前端基础的项目别碰，",
-      "startMs": 151950,
-      "endMs": 154210
+      "word": "件",
+      "startMs": 61180,
+      "endMs": 61333
     },
     {
-      "word": "而且模块顶层读window会崩、",
-      "startMs": 154210,
-      "endMs": 155930
+      "word": "加",
+      "startMs": 61333,
+      "endMs": 61487
     },
     {
-      "word": "商业用途要BUSL授权。",
-      "startMs": 155930,
-      "endMs": 159310
+      "word": "CSS，",
+      "startMs": 61487,
+      "endMs": 61579
     },
     {
-      "word": "Motion Canvas，",
-      "startMs": 159310,
-      "endMs": 160510
+      "word": "无",
+      "startMs": 61963,
+      "endMs": 62116
     },
     {
-      "word": "时序动画很强，",
-      "startMs": 160510,
-      "endMs": 163570
+      "word": "头",
+      "startMs": 62116,
+      "endMs": 62270
     },
     {
-      "word": "但网页级Flex排版不如",
-      "startMs": 163570,
-      "endMs": 165050
+      "word": "浏",
+      "startMs": 62270,
+      "endMs": 62423
     },
     {
-      "word": "React生态。Manim，",
-      "startMs": 165050,
-      "endMs": 167530
+      "word": "览",
+      "startMs": 62423,
+      "endMs": 62576
     },
     {
-      "word": "数学可视化天花板，",
-      "startMs": 167530,
-      "endMs": 169050
+      "word": "器",
+      "startMs": 62576,
+      "endMs": 62730
     },
     {
-      "word": "但学习曲线陡、排版弱、",
-      "startMs": 169050,
-      "endMs": 170230
+      "word": "逐",
+      "startMs": 62730,
+      "endMs": 62883
     },
     {
-      "word": "渲染慢。MoviePy，",
-      "startMs": 170230,
-      "endMs": 172970
+      "word": "帧",
+      "startMs": 62883,
+      "endMs": 63037
     },
     {
-      "word": "纯Python简单拼接够用，",
-      "startMs": 172970,
-      "endMs": 174250
+      "word": "截",
+      "startMs": 63037,
+      "endMs": 63190
     },
     {
-      "word": "但复杂文字动效很痛苦。",
-      "startMs": 174250,
-      "endMs": 176930
+      "word": "图，",
+      "startMs": 63190,
+      "endMs": 63343
     },
     {
-      "word": "PixiJS做游戏级粒子效果，",
-      "startMs": 176930,
-      "endMs": 177850
+      "word": "适",
+      "startMs": 63727,
+      "endMs": 63880
     },
     {
-      "word": "但文本对齐是灾难。",
-      "startMs": 177850,
-      "endMs": 180030
+      "word": "合",
+      "startMs": 63880,
+      "endMs": 64034
     },
     {
-      "word": "FFmpeg做批量转码和字幕烧录，",
-      "startMs": 180030,
-      "endMs": 181290
+      "word": "复",
+      "startMs": 64034,
+      "endMs": 64187
     },
     {
-      "word": "但filtergraph",
-      "startMs": 181290,
-      "endMs": 183370
+      "word": "杂",
+      "startMs": 64187,
+      "endMs": 64341
     },
     {
-      "word": "语法人类基本看不懂。",
-      "startMs": 183370,
-      "endMs": 185350
+      "word": "排",
+      "startMs": 64341,
+      "endMs": 64494
     },
     {
-      "word": "怎么对号入座？",
-      "startMs": 185350,
-      "endMs": 186370
+      "word": "版。",
+      "startMs": 64494,
+      "endMs": 64647
     },
     {
-      "word": "我们这个频道要做的是一期一个模板、",
-      "startMs": 186370,
-      "endMs": 187150
+      "word": "Motion",
+      "startMs": 65478,
+      "endMs": 65600
     },
     {
-      "word": "字幕代码卡片高复用的硬核技术视频，",
-      "startMs": 187150,
-      "endMs": 189570
+      "word": "Canvas，",
+      "startMs": 65600,
+      "endMs": 65721
     },
     {
-      "word": "所以主线是Remotio",
-      "startMs": 189570,
-      "endMs": 190670
+      "word": "写",
+      "startMs": 66105,
+      "endMs": 66258
     },
     {
-      "word": "n做A轨成片，",
-      "startMs": 190670,
-      "endMs": 192930
+      "word": "函",
+      "startMs": 66258,
+      "endMs": 66412
     },
     {
-      "word": "MoviePy加FFmpeg做B轨拼接闪避。",
-      "startMs": 192930,
-      "endMs": 194010
+      "word": "数",
+      "startMs": 66412,
+      "endMs": 66565
     },
     {
-      "word": "选型不是哪个最火选哪个，要回到核心约束。",
-      "startMs": 194230,
-      "endMs": 196030
+      "word": "描",
+      "startMs": 66565,
+      "endMs": 66718
     },
     {
-      "word": "我们频道要的是：固定模板加内容批量替换，",
-      "startMs": 196030,
-      "endMs": 198410
+      "word": "述",
+      "startMs": 66718,
+      "endMs": 66872
     },
     {
-      "word": "让AI端到端接管，而且跨期可维护。",
-      "startMs": 198410,
-      "endMs": 201050
+      "word": "动",
+      "startMs": 66872,
+      "endMs": 67025
     },
     {
-      "word": "在这个约束下，Remotion胜",
-      "startMs": 201050,
-      "endMs": 203810
+      "word": "画",
+      "startMs": 67025,
+      "endMs": 67179
     },
     {
-      "word": "出有四个硬理由。第一，",
-      "startMs": 203810,
-      "endMs": 205770
+      "word": "时",
+      "startMs": 67179,
+      "endMs": 67332
     },
     {
-      "word": "也是决定性的——数据驱动模板，",
-      "startMs": 205770,
-      "endMs": 209250
+      "word": "序，",
+      "startMs": 67332,
+      "endMs": 67485
     },
     {
-      "word": "类型安全跨期复用。",
-      "startMs": 209250,
-      "endMs": 213250
+      "word": "适",
+      "startMs": 67869,
+      "endMs": 68022
     },
     {
-      "word": "Remotion的data.ts",
-      "startMs": 213250,
-      "endMs": 215070
+      "word": "合",
+      "startMs": 68022,
+      "endMs": 68176
     },
     {
-      "word": "到Episode到template四层结 构，",
-      "startMs": 215070,
-      "endMs": 218010
+      "word": "代",
+      "startMs": 68176,
+      "endMs": 68329
     },
     {
-      "word": "天生适合模板与数据分离。",
-      "startMs": 218010,
-      "endMs": 221170
+      "word": "码",
+      "startMs": 68329,
+      "endMs": 68483
     },
     {
-      "word": "TypeScript保证每期换数",
-      "startMs": 221170,
-      "endMs": 222610
+      "word": "演",
+      "startMs": 68483,
+      "endMs": 68635
     },
     {
-      "word": "据时格式不出错。第二，AI友好，",
-      "startMs": 222610,
-      "endMs": 225330
+      "word": "示。",
+      "startMs": 68635,
+      "endMs": 68789
     },
     {
-      "word": "每期只让AI填数据和微调CSS，",
-      "startMs": 225330,
-      "endMs": 226390
+      "word": "Manim，",
+      "startMs": 69620,
+      "endMs": 69732
     },
     {
-      "word": "幻觉空间最小。第三，CLI原生，",
-      "startMs": 226390,
-      "endMs": 229110
+      "word": "Python",
+      "startMs": 70116,
+      "endMs": 70237
     },
     {
-      "word": "npx remotion ren",
-      "startMs": 229110,
-      "endMs": 230430
+      "word": "描",
+      "startMs": 70237,
+      "endMs": 70390
     },
     {
-      "word": "der一行命令就能出片。第四，",
-      "startMs": 230430,
-      "endMs": 232690
+      "word": "述",
+      "startMs": 70390,
+      "endMs": 70543
     },
     {
-      "word": "网页生态红利，CSS、SVG、",
-      "startMs": 232690,
-      "endMs": 234010
+      "word": "几",
+      "startMs": 70543,
+      "endMs": 70697
     },
     {
-      "word": "Flexbox、所有前端动效库随手可用。",
-      "startMs": 234010,
-      "endMs": 235630
+      "word": "何",
+      "startMs": 70697,
+      "endMs": 70850
     },
     {
-      "word": "一个对照就能看清区别。",
-      "startMs": 235850,
-      "endMs": 237710
+      "word": "公",
+      "startMs": 70850,
+      "endMs": 71004
     },
     {
-      "word": "左边Remotion，",
-      "startMs": 237710,
-      "endMs": 241350
+      "word": "式，",
+      "startMs": 71004,
+      "endMs": 71157
     },
     {
-      "word": "TypeScript约束，",
-      "startMs": 241350,
-      "endMs": 243850
+      "word": "数",
+      "startMs": 71541,
+      "endMs": 71694
     },
     {
-      "word": "跨期类型安全，AI只填数据不碰结构，",
-      "startMs": 243850,
-      "endMs": 245690
+      "word": "学",
+      "startMs": 71694,
+      "endMs": 71847
     },
     {
-      "word": "改一处主题全期生效。",
-      "startMs": 245690,
-      "endMs": 246830
+      "word": "可",
+      "startMs": 71847,
+      "endMs": 72001
     },
     {
-      "word": "右边HyperFrames，",
-      "startMs": 246830,
-      "endMs": 249150
+      "word": "视",
+      "startMs": 72001,
+      "endMs": 72154
     },
     {
-      "word": "HTML无类型检查，",
-      "startMs": 249150,
-      "endMs": 250630
+      "word": "化",
+      "startMs": 72154,
+      "endMs": 72308
     },
     {
-      "word": "直接写HTML结构容易漂移，",
-      "startMs": 250630,
-      "endMs": 252010
+      "word": "神",
+      "startMs": 72308,
+      "endMs": 72461
     },
     {
-      "word": "十期以后维护是灾难。",
-      "startMs": 252010,
-      "endMs": 253870
+      "word": "器。",
+      "startMs": 72461,
+      "endMs": 72614
     },
     {
-      "word": "授权上HyperFrames是Apache更宽松，但在模板复用加AI接管这个维度",
-      "startMs": 253870,
-      "endMs": 256610
+      "word": "MoviePy，",
+      "startMs": 73445,
+      "endMs": 73576
     },
     {
-      "word": "代价也如实交代。第一，",
-      "startMs": 256890,
-      "endMs": 258410
+      "word": "Python",
+      "startMs": 73960,
+      "endMs": 74081
     },
     {
-      "word": "Remotion基于",
-      "startMs": 258410,
-      "endMs": 260190
+      "word": "操",
+      "startMs": 74081,
+      "endMs": 74235
     },
     {
-      "word": "React技术栈——",
-      "startMs": 260190,
-      "endMs": 261730
+      "word": "作",
+      "startMs": 74235,
+      "endMs": 74388
     },
     {
-      "word": "但不用担心，",
-      "startMs": 261730,
-      "endMs": 263370
+      "word": "像",
+      "startMs": 74388,
+      "endMs": 74542
     },
     {
-      "word": "本项目就是让AI来写",
-      "startMs": 263370,
-      "endMs": 264990
+      "word": "素",
+      "startMs": 74542,
+      "endMs": 74695
     },
     {
-      "word": "组件和填数据，",
-      "startMs": 264990,
-      "endMs": 266330
+      "word": "加",
+      "startMs": 74695,
+      "endMs": 74848
     },
     {
-      "word": "人把控架构就行，",
-      "startMs": 266330,
-      "endMs": 267650
+      "word": "FFmpeg，",
+      "startMs": 74848,
+      "endMs": 74970
     },
     {
-      "word": "前端基础不是门槛。",
-      "startMs": 267650,
-      "endMs": 269730
+      "word": "适",
+      "startMs": 75353,
+      "endMs": 75507
     },
     {
-      "word": "第二，BUSL商业授权，",
-      "startMs": 269730,
-      "endMs": 271010
+      "word": "合",
+      "startMs": 75507,
+      "endMs": 75660
     },
     {
-      "word": "规模化商用需要付费，",
-      "startMs": 271010,
-      "endMs": 272890
+      "word": "简",
+      "startMs": 75660,
+      "endMs": 75814
     },
     {
-      "word": "我们当前规模没影响。",
-      "startMs": 272890,
-      "endMs": 274950
+      "word": "单",
+      "startMs": 75814,
+      "endMs": 75967
     },
     {
-      "word": "第三，SSR环境约束，",
-      "startMs": 274950,
-      "endMs": 276670
+      "word": "拼",
+      "startMs": 75967,
+      "endMs": 76120
     },
     {
-      "word": "Node端求值时读w",
-      "startMs": 276670,
-      "endMs": 278130
+      "word": "接。",
+      "startMs": 76120,
+      "endMs": 76274
     },
     {
-      "word": "indow会崩。",
-      "startMs": 278130,
-      "endMs": 281850
+      "word": "PixiJS",
+      "startMs": 77105,
+      "endMs": 77226
     },
     {
-      "word": "这个坑怎么解？",
-      "startMs": 281850,
-      "endMs": 283270
+      "word": "这",
+      "startMs": 77226,
+      "endMs": 77380
     },
     {
-      "word": "后面第五段详细讲，一条MDC规则就能让AI自动规避，一次性封死。",
-      "startMs": 283270,
-      "endMs": 284470
+      "word": "类",
+      "startMs": 77380,
+      "endMs": 77533
     },
     {
-      "word": "视频的画面能用代码控制，",
-      "startMs": 284740,
-      "endMs": 286880
+      "word": "画",
+      "startMs": 77533,
+      "endMs": 77686
     },
     {
-      "word": "那制作视频的工作流本身，",
-      "startMs": 286880,
-      "endMs": 289480
+      "word": "布",
+      "startMs": 77686,
+      "endMs": 77840
     },
     {
-      "word": "能不能也做成代码？",
-      "startMs": 289480,
-      "endMs": 291020
+      "word": "引",
+      "startMs": 77840,
+      "endMs": 77993
     },
     {
-      "word": "我们的答案是——能。",
-      "startMs": 291020,
-      "endMs": 292460
+      "word": "擎，",
+      "startMs": 77993,
+      "endMs": 78147
     },
     {
-      "word": "这才是频道真正的护城河。",
-      "startMs": 292460,
-      "endMs": 294860
+      "word": "Canvas",
+      "startMs": 78530,
+      "endMs": 78652
     },
     {
-      "word": "看这条线。01选题分析，",
-      "startMs": 294860,
-      "endMs": 295940
+      "word": "上",
+      "startMs": 78652,
+      "endMs": 78805
     },
     {
-      "word": "02内容策划，03视听编排，",
-      "startMs": 295940,
-      "endMs": 299420
+      "word": "逐",
+      "startMs": 78805,
+      "endMs": 78958
     },
     {
-      "word": "04脚本撰写，05视频组装，",
-      "startMs": 299420,
-      "endMs": 301600
+      "word": "帧",
+      "startMs": 78958,
+      "endMs": 79112
     },
     {
-      "word": "06分发适配，07资源归档。",
-      "startMs": 301600,
-      "endMs": 303260
+      "word": "画，",
+      "startMs": 79112,
+      "endMs": 79265
     },
     {
-      "word": "七个阶段，每个阶段都有对",
-      "startMs": 303260,
-      "endMs": 305300
+      "word": "做",
+      "startMs": 79649,
+      "endMs": 79802
     },
     {
-      "word": "应的角色定义和工作流文件，",
-      "startMs": 305300,
-      "endMs": 308220
+      "word": "复",
+      "startMs": 79802,
+      "endMs": 79956
     },
     {
-      "word": "真实存在于我们的仓库里。",
-      "startMs": 308220,
-      "endMs": 311540
+      "word": "杂",
+      "startMs": 79956,
+      "endMs": 80109
     },
     {
-      "word": "这就是流程即代码——Pr",
-      "startMs": 311540,
-      "endMs": 312780
+      "word": "粒",
+      "startMs": 80109,
+      "endMs": 80262
     },
     {
-      "word": "ocess-as-Code。",
-      "startMs": 312780,
-      "endMs": 315020
+      "word": "子。",
+      "startMs": 80262,
+      "endMs": 80416
     },
     {
-      "word": "怎么做到的？三件套。角色等于systemprompt——定义每个岗位的视角、能",
-      "startMs": 315330,
-      "endMs": 317330
+      "word": "FFmpeg",
+      "startMs": 81247,
+      "endMs": 81368
     },
     {
-      "word": "把这三件套摆出来，一个最小编排器就能驱动整条线。",
-      "startMs": 339640,
-      "endMs": 342400
+      "word": "加",
+      "startMs": 81368,
+      "endMs": 81522
     },
     {
-      "word": "看这段Python伪代码。",
-      "startMs": 342400,
-      "endMs": 344000
+      "word": "脚",
+      "startMs": 81522,
+      "endMs": 81675
     },
     {
-      "word": "扫描所有产物的frontmatter，",
-      "startMs": 344000,
-      "endMs": 345760
+      "word": "本，",
+      "startMs": 81675,
+      "endMs": 81828
     },
     {
-      "word": "找到status是approved的阶段 ，",
-      "startMs": 345760,
-      "endMs": 347380
+      "word": "命",
+      "startMs": 82212,
+      "endMs": 82365
     },
     {
-      "word": "读取对应的角色文件作为system prompt，",
-      "startMs": 347380,
-      "endMs": 349620
+      "word": "令",
+      "startMs": 82365,
+      "endMs": 82519
     },
     {
-      "word": "读取工作流作为user prompt，",
-      "startMs": 349620,
-      "endMs": 352560
+      "word": "行",
+      "startMs": 82519,
+      "endMs": 82672
     },
     {
-      "word": "喂给LLM，自动推进下一阶段。",
-      "startMs": 352560,
-      "endMs": 355060
+      "word": "合",
+      "startMs": 82672,
+      "endMs": 82826
     },
     {
-      "word": "python-frontmatter这个 库真实存在，",
-      "startMs": 355060,
-      "endMs": 356420
+      "word": "成，",
+      "startMs": 82826,
+      "endMs": 82979
     },
     {
-      "word": "这段代码不是PPT——虽然目前还是p",
-      "startMs": 356420,
-      "endMs": 359480
+      "word": "适",
+      "startMs": 83363,
+      "endMs": 83516
     },
     {
-      "word": "aper spec，",
-      "startMs": 359480,
-      "endMs": 361120
+      "word": "合",
+      "startMs": 83516,
+      "endMs": 83669
     },
     {
-      "word": "但架构已经跑通了。",
-      "startMs": 361120,
-      "endMs": 363620
+      "word": "批",
+      "startMs": 83669,
+      "endMs": 83823
     },
     {
-      "word": "真正的难点是多模态物理限制。",
-      "startMs": 363780,
-      "endMs": 366340
+      "word": "量",
+      "startMs": 83823,
+      "endMs": 83976
     },
     {
-      "word": "A轨——概念动画——可以全自动，",
-      "startMs": 366340,
-      "endMs": 370220
+      "word": "转",
+      "startMs": 83976,
+      "endMs": 84130
     },
     {
-      "word": "AI生成数据，Remotion组件渲染，",
-      "startMs": 370220,
-      "endMs": 371600
+      "word": "码、",
+      "startMs": 84130,
+      "endMs": 84283
     },
     {
-      "word": "不用人碰。B轨——真实IDE录屏—",
-      "startMs": 371600,
-      "endMs": 373100
+      "word": "字",
+      "startMs": 84475,
+      "endMs": 84628
     },
     {
-      "word": "—我们有个规矩叫TAD-01，",
-      "startMs": 373100,
-      "endMs": 374660
+      "word": "幕",
+      "startMs": 84628,
+      "endMs": 84782
     },
     {
-      "word": "强制真人录制，禁止AIGC伪界面。",
-      "startMs": 374660,
-      "endMs": 377800
+      "word": "烧",
+      "startMs": 84782,
+      "endMs": 84935
     },
     {
-      "word": "所以流程里要设计挂起等待机制，",
-      "startMs": 377800,
-      "endMs": 378400
+      "word": "录。",
+      "startMs": 84935,
+      "endMs": 85088
     },
     {
-      "word": "B轨没到位就先挂着。正因为流程是代码，",
-      "startMs": 378400,
-      "endMs": 381480
+      "word": "六",
+      "startMs": 85919,
+      "endMs": 86073
     },
     {
-      "word": "本期录屏要真实跑通的也是一段可复现的提示词链。",
-      "startMs": 381480,
-      "endMs": 383040
+      "word": "条",
+      "startMs": 86073,
+      "endMs": 86226
     },
     {
-      "word": "Prompt第一条：基于remot",
-      "startMs": 383040,
-      "endMs": 385400
+      "word": "路",
+      "startMs": 86226,
+      "endMs": 86380
     },
     {
-      "word": "ion-composer现有的Co",
-      "startMs": 385400,
-      "endMs": 388880
+      "word": "描",
+      "startMs": 86380,
+      "endMs": 86534
     },
     {
-      "word": "mparisonCard组件，",
-      "startMs": 388880,
-      "endMs": 389780
+      "word": "述",
+      "startMs": 86534,
+      "endMs": 86687
     },
     {
-      "word": "生成对比卡片的数据配置，只产出数据，",
-      "startMs": 389780,
-      "endMs": 393640
+      "word": "层",
+      "startMs": 86687,
+      "endMs": 86840
     },
     {
-      "word": "不要新建组件。Prompt第二条：",
-      "startMs": 393640,
-      "endMs": 397560
+      "word": "不",
+      "startMs": 86840,
+      "endMs": 86994
     },
     {
-      "word": "为Cursor在.cursor/r",
-      "startMs": 397560,
-      "endMs": 400140
+      "word": "同，",
+      "startMs": 86994,
+      "endMs": 87147
     },
     {
-      "word": "ules下编写一份MDC规则，",
-      "startMs": 400140,
-      "endMs": 400920
+      "word": "但",
+      "startMs": 87531,
+      "endMs": 87684
     },
     {
-      "word": "约束Remotion组件自动加上window的安全守卫。",
-      "startMs": 400920,
-      "endMs": 404720
+      "word": "都",
+      "startMs": 87684,
+      "endMs": 87838
     },
     {
-      "word": "到了实操。第一个原则——首选数据驱动现成组件，",
-      "startMs": 404980,
-      "endMs": 405720
+      "word": "通",
+      "startMs": 87838,
+      "endMs": 87991
     },
     {
-      "word": "不要从零手写。看左边，反面示例，",
-      "startMs": 405720,
-      "endMs": 409759
+      "word": "向",
+      "startMs": 87991,
+      "endMs": 88144
     },
     {
-      "word": "为这一期从零写一个Comparis",
-      "startMs": 409759,
-      "endMs": 410860
+      "word": "同",
+      "startMs": 88144,
+      "endMs": 88298
     },
     {
-      "word": "onScene.tsx，手写布局、",
-      "startMs": 410860,
-      "endMs": 416860
+      "word": "一",
+      "startMs": 88298,
+      "endMs": 88451
     },
     {
-      "word": "手写样式、手写动画。",
-      "startMs": 416860,
-      "endMs": 419960
+      "word": "件",
+      "startMs": 88451,
+      "endMs": 88605
     },
     {
-      "word": "这违反了固定模板加内容替换的原则，",
-      "startMs": 419960,
-      "endMs": 421900
+      "word": "事",
+      "startMs": 88605,
+      "endMs": 88758
     },
     {
-      "word": "而且完全忽略了仓库里现成的Comp",
-      "startMs": 421900,
-      "endMs": 423840
+      "word": "把",
+      "startMs": 88758,
+      "endMs": 88911
     },
     {
-      "word": "arisonCard组件。看右边，",
-      "startMs": 423840,
-      "endMs": 425879
+      "word": "画",
+      "startMs": 88911,
+      "endMs": 89065
     },
     {
-      "word": "正确做法。你只产出一个data对象",
-      "startMs": 425879,
-      "endMs": 427439
+      "word": "面",
+      "startMs": 89065,
+      "endMs": 89218
     },
     {
-      "word": "——left方案、right方案，",
-      "startMs": 427439,
-      "endMs": 429780
+      "word": "编",
+      "startMs": 89218,
+      "endMs": 89372
     },
     {
-      "word": "各自的title、points、",
-      "startMs": 429780,
-      "endMs": 431780
+      "word": "译",
+      "startMs": 89372,
+      "endMs": 89525
     },
     {
-      "word": "status——然后丢给Compa",
-      "startMs": 431780,
-      "endMs": 433640
+      "word": "成",
+      "startMs": 89525,
+      "endMs": 89678
     },
     {
-      "word": "risonCard渲染。数据和模板分离，",
-      "startMs": 433640,
-      "endMs": 435259
+      "word": "帧。",
+      "startMs": 89678,
+      "endMs": 89832
     },
     {
-      "word": "下一期只换数据就行。这才是数据驱动模板的正确用法。",
-      "startMs": 435259,
-      "endMs": 438200
+      "word": "光",
+      "startMs": 89833,
+      "endMs": 89985
     },
     {
-      "word": "第二个避坑点——SSR环境约束。",
-      "startMs": 438430,
-      "endMs": 441310
+      "word": "报",
+      "startMs": 89985,
+      "endMs": 90137
     },
     {
-      "word": "Remotion渲染分两个阶段。第一阶段，",
-      "startMs": 441310,
-      "endMs": 443129
+      "word": "菜",
+      "startMs": 90137,
+      "endMs": 90290
     },
     {
-      "word": "Node端打包并求值Composition列表，",
-      "startMs": 443129,
-      "endMs": 444970
+      "word": "名",
+      "startMs": 90290,
+      "endMs": 90442
     },
     {
-      "word": "这一步拿时长、拿尺寸、做任务拆分。",
-      "startMs": 444970,
-      "endMs": 449449
+      "word": "没",
+      "startMs": 90442,
+      "endMs": 90594
     },
     {
-      "word": "第二阶段，无头Chrome逐帧截图再合成。",
-      "startMs": 449449,
-      "endMs": 452709
+      "word": "用。",
+      "startMs": 90594,
+      "endMs": 90747
     },
     {
-      "word": "崩溃点在第一步——你的代码在模块顶层读",
-      "startMs": 452709,
-      "endMs": 454970
+      "word": "AI",
+      "startMs": 91572,
+      "endMs": 91654
     },
     {
-      "word": "了window.innerWidth，",
-      "startMs": 454970,
-      "endMs": 457649
+      "word": "默",
+      "startMs": 91654,
+      "endMs": 91807
     },
     {
-      "word": "Node环境没有window对象，",
-      "startMs": 457649,
-      "endMs": 459530
+      "word": "认",
+      "startMs": 91807,
+      "endMs": 91959
     },
     {
-      "word": "直接报ReferenceError。",
-      "startMs": 459530,
-      "endMs": 461509
+      "word": "给",
+      "startMs": 91959,
+      "endMs": 92112
     },
     {
-      "word": "这不是逐帧SSR的问题，",
-      "startMs": 461509,
-      "endMs": 463829
+      "word": "你",
+      "startMs": 92112,
+      "endMs": 92265
     },
     {
-      "word": "这是模块求值阶段的问题——知道区别，",
-      "startMs": 463829,
-      "endMs": 466490
+      "word": "一",
+      "startMs": 92265,
+      "endMs": 92417
     },
     {
-      "word": "你才知道往哪查bug。怎么修？",
-      "startMs": 466490,
-      "endMs": 468730
+      "word": "份",
+      "startMs": 92417,
+      "endMs": 92569
     },
     {
-      "word": "加typeof window守卫。",
-      "startMs": 468730,
-      "endMs": 471389
+      "word": "四",
+      "startMs": 92569,
+      "endMs": 92722
     },
     {
-      "word": "然后把这条写进.cursor/rule",
-      "startMs": 471389,
-      "endMs": 473910
+      "word": "平",
+      "startMs": 92722,
+      "endMs": 92874
     },
     {
-      "word": "s/remotion-ssr.mdc文件 ，",
-      "startMs": 473910,
-      "endMs": 475790
+      "word": "八",
+      "startMs": 92874,
+      "endMs": 93026
     },
     {
-      "word": "globs指向remotion-com",
-      "startMs": 475790,
-      "endMs": 478210
+      "word": "稳",
+      "startMs": 93026,
+      "endMs": 93179
     },
     {
-      "word": "poser的src目录，以后AI生成组件就自动带守卫。一次性把这个约束封死，不用",
-      "startMs": 478210,
-      "endMs": 481250
+      "word": "的",
+      "startMs": 93179,
+      "endMs": 93331
     },
     {
-      "word": "到了最后一步——产出数据、套组件、",
-      "startMs": 481480,
-      "endMs": 484640
+      "word": "百",
+      "startMs": 93331,
+      "endMs": 93484
     },
     {
-      "word": "渲染出片。这一步人不用逐行写代码。",
-      "startMs": 484640,
-      "endMs": 486740
+      "word": "科",
+      "startMs": 93484,
+      "endMs": 93636
     },
     {
-      "word": "把活拆成AI能稳定接手的形状。",
-      "startMs": 486740,
-      "endMs": 490040
+      "word": "对",
+      "startMs": 93636,
+      "endMs": 93788
     },
     {
-      "word": "第一步，让AI填数据和套现成组件。",
-      "startMs": 490040,
-      "endMs": 493060
+      "word": "比，",
+      "startMs": 93788,
+      "endMs": 93941
     },
     {
-      "word": "人给出每段要对比什么要展示什么，",
-      "startMs": 493060,
-      "endMs": 495040
+      "word": "每",
+      "startMs": 94322,
+      "endMs": 94474
     },
     {
-      "word": "AI按数据驱动范式产出data，",
-      "startMs": 495040,
-      "endMs": 497020
+      "word": "个",
+      "startMs": 94474,
+      "endMs": 94627
     },
     {
-      "word": "复用ComparisonCard、",
-      "startMs": 497020,
-      "endMs": 498280
+      "word": "都",
+      "startMs": 94627,
+      "endMs": 94779
     },
     {
-      "word": "charts等组件，不从零造轮子。",
-      "startMs": 498280,
-      "endMs": 501360
+      "word": "说",
+      "startMs": 94779,
+      "endMs": 94931
     },
     {
-      "word": "第二步，用规则替AI兜底边界。",
-      "startMs": 501360,
-      "endMs": 504220
+      "word": "好",
+      "startMs": 94931,
+      "endMs": 95084
     },
     {
-      "word": "SSR守卫写进MDC规则，",
-      "startMs": 504220,
-      "endMs": 505660
+      "word": "话，",
+      "startMs": 95084,
+      "endMs": 95236
     },
     {
-      "word": "AI生成组件时自动带。第三步，",
-      "startMs": 505660,
-      "endMs": 507600
+      "word": "这",
+      "startMs": 95617,
+      "endMs": 95770
     },
     {
-      "word": "渲染命令交给AI或脚本代跑。",
-      "startMs": 507600,
-      "endMs": 508600
+      "word": "帮",
+      "startMs": 95770,
+      "endMs": 95922
     },
     {
-      "word": "cd到remotion-com",
-      "startMs": 508600,
-      "endMs": 509780
+      "word": "不",
+      "startMs": 95922,
+      "endMs": 96074
     },
     {
-      "word": "poser目录，npx rem",
-      "startMs": 509780,
-      "endMs": 511939
+      "word": "了",
+      "startMs": 96074,
+      "endMs": 96227
     },
     {
-      "word": "otion studio可视化调试，",
-      "startMs": 511939,
-      "endMs": 513500
+      "word": "你",
+      "startMs": 96227,
+      "endMs": 96379
     },
     {
-      "word": "npx remotion re",
-      "startMs": 513500,
-      "endMs": 515399
+      "word": "做",
+      "startMs": 96379,
+      "endMs": 96532
     },
     {
-      "word": "nder直接出片。纯命令行，",
-      "startMs": 515399,
-      "endMs": 517820
+      "word": "决",
+      "startMs": 96532,
+      "endMs": 96684
     },
     {
-      "word": "可以上CI，人只看产物。",
-      "startMs": 517820,
-      "endMs": 520879
+      "word": "定。",
+      "startMs": 96684,
+      "endMs": 96836
     },
     {
-      "word": "代码即视频加流程即代码，把内容生产从手工活变成可维护的工程流水线。",
-      "startMs": 521070,
-      "endMs": 527450
+      "word": "真",
+      "startMs": 97662,
+      "endMs": 97814
     },
     {
-      "word": "代码即视频的范式，Remotion只是其中一条路线，",
-      "startMs": 527450,
-      "endMs": 531530
+      "word": "正",
+      "startMs": 97814,
+      "endMs": 97967
     },
     {
-      "word": "但它在数据驱动和AI接管这个维度上目前最优。",
-      "startMs": 531530,
-      "endMs": 535190
+      "word": "有",
+      "startMs": 97967,
+      "endMs": 98119
     },
     {
-      "word": "而流程即代码——角色等于prompt、工作流等于步骤、",
-      "startMs": 535190,
-      "endMs": 539970
+      "word": "用",
+      "startMs": 98119,
+      "endMs": 98271
     },
     {
-      "word": "frontmatter等于状态机——这套自家流水线本",
-      "startMs": 539970,
-      "endMs": 543830
+      "word": "的",
+      "startMs": 98271,
+      "endMs": 98424
     },
     {
-      "word": "身就是最好的Dogfooding证据。开源仓库在简介，",
-      "startMs": 543830,
-      "endMs": 546050
+      "word": "是",
+      "startMs": 98424,
+      "endMs": 98576
     },
     {
-      "word": "自取。下期，我们攻克字幕与卡点——Whisper毫秒",
-      "startMs": 546050,
-      "endMs": 551150
+      "word": "每",
+      "startMs": 98576,
+      "endMs": 98729
     },
     {
-      "word": "级时间戳怎么自动驱动弹跳字幕。关注，别错过。",
-      "startMs": 551150,
-      "endMs": 553630
+      "word": "条",
+      "startMs": 98729,
+      "endMs": 98881
+    },
+    {
+      "word": "路",
+      "startMs": 98881,
+      "endMs": 99033
+    },
+    {
+      "word": "什",
+      "startMs": 99033,
+      "endMs": 99186
+    },
+    {
+      "word": "么",
+      "startMs": 99186,
+      "endMs": 99338
+    },
+    {
+      "word": "时",
+      "startMs": 99338,
+      "endMs": 99491
+    },
+    {
+      "word": "候",
+      "startMs": 99491,
+      "endMs": 99643
+    },
+    {
+      "word": "不",
+      "startMs": 99643,
+      "endMs": 99795
+    },
+    {
+      "word": "好",
+      "startMs": 99795,
+      "endMs": 99948
+    },
+    {
+      "word": "使、",
+      "startMs": 99948,
+      "endMs": 100100
+    },
+    {
+      "word": "会",
+      "startMs": 100291,
+      "endMs": 100443
+    },
+    {
+      "word": "在",
+      "startMs": 100443,
+      "endMs": 100596
+    },
+    {
+      "word": "哪",
+      "startMs": 100596,
+      "endMs": 100748
+    },
+    {
+      "word": "步",
+      "startMs": 100748,
+      "endMs": 100900
+    },
+    {
+      "word": "翻",
+      "startMs": 100900,
+      "endMs": 101052
+    },
+    {
+      "word": "车。",
+      "startMs": 101052,
+      "endMs": 101205
+    },
+    {
+      "word": "所",
+      "startMs": 102030,
+      "endMs": 102182
+    },
+    {
+      "word": "以",
+      "startMs": 102182,
+      "endMs": 102335
+    },
+    {
+      "word": "我",
+      "startMs": 102335,
+      "endMs": 102487
+    },
+    {
+      "word": "追",
+      "startMs": 102487,
+      "endMs": 102640
+    },
+    {
+      "word": "问",
+      "startMs": 102640,
+      "endMs": 102792
+    },
+    {
+      "word": "每",
+      "startMs": 102792,
+      "endMs": 102944
+    },
+    {
+      "word": "个",
+      "startMs": 102944,
+      "endMs": 103097
+    },
+    {
+      "word": "方",
+      "startMs": 103097,
+      "endMs": 103249
+    },
+    {
+      "word": "案",
+      "startMs": 103249,
+      "endMs": 103402
+    },
+    {
+      "word": "什",
+      "startMs": 103402,
+      "endMs": 103554
+    },
+    {
+      "word": "么",
+      "startMs": 103554,
+      "endMs": 103706
+    },
+    {
+      "word": "情",
+      "startMs": 103706,
+      "endMs": 103859
+    },
+    {
+      "word": "况",
+      "startMs": 103859,
+      "endMs": 104011
+    },
+    {
+      "word": "不",
+      "startMs": 104011,
+      "endMs": 104164
+    },
+    {
+      "word": "适",
+      "startMs": 104164,
+      "endMs": 104316
+    },
+    {
+      "word": "用、",
+      "startMs": 104316,
+      "endMs": 104468
+    },
+    {
+      "word": "有",
+      "startMs": 104659,
+      "endMs": 104811
+    },
+    {
+      "word": "哪",
+      "startMs": 104811,
+      "endMs": 104964
+    },
+    {
+      "word": "些",
+      "startMs": 104964,
+      "endMs": 105116
+    },
+    {
+      "word": "已",
+      "startMs": 105116,
+      "endMs": 105268
+    },
+    {
+      "word": "知",
+      "startMs": 105268,
+      "endMs": 105421
+    },
+    {
+      "word": "坑？",
+      "startMs": 105421,
+      "endMs": 105573
+    },
+    {
+      "word": "这",
+      "startMs": 106399,
+      "endMs": 106551
+    },
+    {
+      "word": "才",
+      "startMs": 106551,
+      "endMs": 106704
+    },
+    {
+      "word": "逼",
+      "startMs": 106704,
+      "endMs": 106856
+    },
+    {
+      "word": "出",
+      "startMs": 106856,
+      "endMs": 107008
+    },
+    {
+      "word": "有",
+      "startMs": 107008,
+      "endMs": 107161
+    },
+    {
+      "word": "判",
+      "startMs": 107161,
+      "endMs": 107313
+    },
+    {
+      "word": "断",
+      "startMs": 107313,
+      "endMs": 107466
+    },
+    {
+      "word": "价",
+      "startMs": 107466,
+      "endMs": 107618
+    },
+    {
+      "word": "值",
+      "startMs": 107618,
+      "endMs": 107770
+    },
+    {
+      "word": "的",
+      "startMs": 107770,
+      "endMs": 107923
+    },
+    {
+      "word": "表。",
+      "startMs": 107923,
+      "endMs": 108075
+    },
+    {
+      "word": "Remotion",
+      "startMs": 108901,
+      "endMs": 109040
+    },
+    {
+      "word": "适",
+      "startMs": 109040,
+      "endMs": 109193
+    },
+    {
+      "word": "合",
+      "startMs": 109193,
+      "endMs": 109345
+    },
+    {
+      "word": "前",
+      "startMs": 109345,
+      "endMs": 109497
+    },
+    {
+      "word": "端",
+      "startMs": 109497,
+      "endMs": 109650
+    },
+    {
+      "word": "栈、",
+      "startMs": 109650,
+      "endMs": 109802
+    },
+    {
+      "word": "复",
+      "startMs": 109993,
+      "endMs": 110145
+    },
+    {
+      "word": "杂",
+      "startMs": 110145,
+      "endMs": 110298
+    },
+    {
+      "word": "排",
+      "startMs": 110298,
+      "endMs": 110450
+    },
+    {
+      "word": "版、",
+      "startMs": 110450,
+      "endMs": 110602
+    },
+    {
+      "word": "跨",
+      "startMs": 110793,
+      "endMs": 110945
+    },
+    {
+      "word": "期",
+      "startMs": 110945,
+      "endMs": 111098
+    },
+    {
+      "word": "复",
+      "startMs": 111098,
+      "endMs": 111250
+    },
+    {
+      "word": "用，",
+      "startMs": 111250,
+      "endMs": 111402
+    },
+    {
+      "word": "但",
+      "startMs": 111783,
+      "endMs": 111936
+    },
+    {
+      "word": "组",
+      "startMs": 111936,
+      "endMs": 112088
+    },
+    {
+      "word": "件",
+      "startMs": 112088,
+      "endMs": 112241
+    },
+    {
+      "word": "顶",
+      "startMs": 112241,
+      "endMs": 112393
+    },
+    {
+      "word": "层",
+      "startMs": 112393,
+      "endMs": 112545
+    },
+    {
+      "word": "直",
+      "startMs": 112545,
+      "endMs": 112698
+    },
+    {
+      "word": "接",
+      "startMs": 112698,
+      "endMs": 112850
+    },
+    {
+      "word": "读",
+      "startMs": 112850,
+      "endMs": 113003
+    },
+    {
+      "word": "浏",
+      "startMs": 113003,
+      "endMs": 113155
+    },
+    {
+      "word": "览",
+      "startMs": 113155,
+      "endMs": 113307
+    },
+    {
+      "word": "器",
+      "startMs": 113307,
+      "endMs": 113460
+    },
+    {
+      "word": "对",
+      "startMs": 113460,
+      "endMs": 113612
+    },
+    {
+      "word": "象",
+      "startMs": 113612,
+      "endMs": 113765
+    },
+    {
+      "word": "会",
+      "startMs": 113765,
+      "endMs": 113917
+    },
+    {
+      "word": "在",
+      "startMs": 113917,
+      "endMs": 114069
+    },
+    {
+      "word": "打",
+      "startMs": 114069,
+      "endMs": 114222
+    },
+    {
+      "word": "包",
+      "startMs": 114222,
+      "endMs": 114374
+    },
+    {
+      "word": "阶",
+      "startMs": 114374,
+      "endMs": 114527
+    },
+    {
+      "word": "段",
+      "startMs": 114527,
+      "endMs": 114679
+    },
+    {
+      "word": "崩，",
+      "startMs": 114679,
+      "endMs": 114831
+    },
+    {
+      "word": "授",
+      "startMs": 115212,
+      "endMs": 115365
+    },
+    {
+      "word": "权",
+      "startMs": 115365,
+      "endMs": 115517
+    },
+    {
+      "word": "还",
+      "startMs": 115517,
+      "endMs": 115670
+    },
+    {
+      "word": "是",
+      "startMs": 115670,
+      "endMs": 115822
+    },
+    {
+      "word": "BUSL，",
+      "startMs": 115822,
+      "endMs": 115924
+    },
+    {
+      "word": "规",
+      "startMs": 116305,
+      "endMs": 116457
+    },
+    {
+      "word": "模",
+      "startMs": 116457,
+      "endMs": 116609
+    },
+    {
+      "word": "化",
+      "startMs": 116609,
+      "endMs": 116762
+    },
+    {
+      "word": "要",
+      "startMs": 116762,
+      "endMs": 116914
+    },
+    {
+      "word": "付",
+      "startMs": 116914,
+      "endMs": 117067
+    },
+    {
+      "word": "费。",
+      "startMs": 117067,
+      "endMs": 117219
+    },
+    {
+      "word": "Motion",
+      "startMs": 118044,
+      "endMs": 118165
+    },
+    {
+      "word": "Canvas",
+      "startMs": 118165,
+      "endMs": 118286
+    },
+    {
+      "word": "时",
+      "startMs": 118286,
+      "endMs": 118438
+    },
+    {
+      "word": "序",
+      "startMs": 118438,
+      "endMs": 118591
+    },
+    {
+      "word": "强，",
+      "startMs": 118591,
+      "endMs": 118743
+    },
+    {
+      "word": "但",
+      "startMs": 119124,
+      "endMs": 119276
+    },
+    {
+      "word": "排",
+      "startMs": 119276,
+      "endMs": 119429
+    },
+    {
+      "word": "版",
+      "startMs": 119429,
+      "endMs": 119581
+    },
+    {
+      "word": "生",
+      "startMs": 119581,
+      "endMs": 119733
+    },
+    {
+      "word": "态",
+      "startMs": 119733,
+      "endMs": 119887
+    },
+    {
+      "word": "小。",
+      "startMs": 119887,
+      "endMs": 120039
+    },
+    {
+      "word": "Manim",
+      "startMs": 120864,
+      "endMs": 120975
+    },
+    {
+      "word": "是",
+      "startMs": 120975,
+      "endMs": 121128
+    },
+    {
+      "word": "数",
+      "startMs": 121128,
+      "endMs": 121280
+    },
+    {
+      "word": "学",
+      "startMs": 121280,
+      "endMs": 121433
+    },
+    {
+      "word": "可",
+      "startMs": 121433,
+      "endMs": 121585
+    },
+    {
+      "word": "视",
+      "startMs": 121585,
+      "endMs": 121738
+    },
+    {
+      "word": "化",
+      "startMs": 121738,
+      "endMs": 121890
+    },
+    {
+      "word": "天",
+      "startMs": 121890,
+      "endMs": 122042
+    },
+    {
+      "word": "花",
+      "startMs": 122042,
+      "endMs": 122195
+    },
+    {
+      "word": "板，",
+      "startMs": 122195,
+      "endMs": 122347
+    },
+    {
+      "word": "但",
+      "startMs": 122728,
+      "endMs": 122880
+    },
+    {
+      "word": "学",
+      "startMs": 122880,
+      "endMs": 123033
+    },
+    {
+      "word": "习",
+      "startMs": 123033,
+      "endMs": 123185
+    },
+    {
+      "word": "陡、",
+      "startMs": 123185,
+      "endMs": 123338
+    },
+    {
+      "word": "排",
+      "startMs": 123528,
+      "endMs": 123681
+    },
+    {
+      "word": "版",
+      "startMs": 123681,
+      "endMs": 123833
+    },
+    {
+      "word": "弱、",
+      "startMs": 123833,
+      "endMs": 123985
+    },
+    {
+      "word": "渲",
+      "startMs": 124176,
+      "endMs": 124328
+    },
+    {
+      "word": "染",
+      "startMs": 124328,
+      "endMs": 124481
+    },
+    {
+      "word": "慢。",
+      "startMs": 124481,
+      "endMs": 124633
+    },
+    {
+      "word": "MoviePy",
+      "startMs": 125459,
+      "endMs": 125589
+    },
+    {
+      "word": "简",
+      "startMs": 125589,
+      "endMs": 125741
+    },
+    {
+      "word": "单",
+      "startMs": 125741,
+      "endMs": 125894
+    },
+    {
+      "word": "拼",
+      "startMs": 125894,
+      "endMs": 126046
+    },
+    {
+      "word": "接",
+      "startMs": 126046,
+      "endMs": 126198
+    },
+    {
+      "word": "够",
+      "startMs": 126198,
+      "endMs": 126351
+    },
+    {
+      "word": "用，",
+      "startMs": 126351,
+      "endMs": 126503
+    },
+    {
+      "word": "但",
+      "startMs": 126884,
+      "endMs": 127036
+    },
+    {
+      "word": "复",
+      "startMs": 127036,
+      "endMs": 127189
+    },
+    {
+      "word": "杂",
+      "startMs": 127189,
+      "endMs": 127341
+    },
+    {
+      "word": "文",
+      "startMs": 127341,
+      "endMs": 127494
+    },
+    {
+      "word": "字",
+      "startMs": 127494,
+      "endMs": 127646
+    },
+    {
+      "word": "动",
+      "startMs": 127646,
+      "endMs": 127798
+    },
+    {
+      "word": "效",
+      "startMs": 127798,
+      "endMs": 127951
+    },
+    {
+      "word": "很",
+      "startMs": 127951,
+      "endMs": 128103
+    },
+    {
+      "word": "痛",
+      "startMs": 128103,
+      "endMs": 128256
+    },
+    {
+      "word": "苦。",
+      "startMs": 128256,
+      "endMs": 128408
+    },
+    {
+      "word": "PixiJS",
+      "startMs": 129234,
+      "endMs": 129354
+    },
+    {
+      "word": "做",
+      "startMs": 129354,
+      "endMs": 129507
+    },
+    {
+      "word": "粒",
+      "startMs": 129507,
+      "endMs": 129659
+    },
+    {
+      "word": "子",
+      "startMs": 129659,
+      "endMs": 129811
+    },
+    {
+      "word": "在",
+      "startMs": 129811,
+      "endMs": 129964
+    },
+    {
+      "word": "行，",
+      "startMs": 129964,
+      "endMs": 130116
+    },
+    {
+      "word": "但",
+      "startMs": 130497,
+      "endMs": 130650
+    },
+    {
+      "word": "文",
+      "startMs": 130650,
+      "endMs": 130802
+    },
+    {
+      "word": "字",
+      "startMs": 130802,
+      "endMs": 130954
+    },
+    {
+      "word": "对",
+      "startMs": 130954,
+      "endMs": 131107
+    },
+    {
+      "word": "齐",
+      "startMs": 131107,
+      "endMs": 131259
+    },
+    {
+      "word": "是",
+      "startMs": 131259,
+      "endMs": 131412
+    },
+    {
+      "word": "灾",
+      "startMs": 131412,
+      "endMs": 131564
+    },
+    {
+      "word": "难。",
+      "startMs": 131564,
+      "endMs": 131716
+    },
+    {
+      "word": "FFmpeg",
+      "startMs": 132542,
+      "endMs": 132662
+    },
+    {
+      "word": "适",
+      "startMs": 132662,
+      "endMs": 132815
+    },
+    {
+      "word": "合",
+      "startMs": 132815,
+      "endMs": 132967
+    },
+    {
+      "word": "兜",
+      "startMs": 132967,
+      "endMs": 133120
+    },
+    {
+      "word": "底",
+      "startMs": 133120,
+      "endMs": 133272
+    },
+    {
+      "word": "合",
+      "startMs": 133272,
+      "endMs": 133424
+    },
+    {
+      "word": "成，",
+      "startMs": 133424,
+      "endMs": 133576
+    },
+    {
+      "word": "但",
+      "startMs": 133958,
+      "endMs": 134110
+    },
+    {
+      "word": "命",
+      "startMs": 134110,
+      "endMs": 134262
+    },
+    {
+      "word": "令",
+      "startMs": 134262,
+      "endMs": 134414
+    },
+    {
+      "word": "晦",
+      "startMs": 134414,
+      "endMs": 134567
+    },
+    {
+      "word": "涩",
+      "startMs": 134567,
+      "endMs": 134719
+    },
+    {
+      "word": "难",
+      "startMs": 134719,
+      "endMs": 134872
+    },
+    {
+      "word": "调。",
+      "startMs": 134872,
+      "endMs": 135024
+    },
+    {
+      "word": "这",
+      "startMs": 135849,
+      "endMs": 136002
+    },
+    {
+      "word": "一",
+      "startMs": 136002,
+      "endMs": 136154
+    },
+    {
+      "word": "步",
+      "startMs": 136154,
+      "endMs": 136307
+    },
+    {
+      "word": "最",
+      "startMs": 136307,
+      "endMs": 136459
+    },
+    {
+      "word": "关",
+      "startMs": 136459,
+      "endMs": 136611
+    },
+    {
+      "word": "键",
+      "startMs": 136611,
+      "endMs": 136764
+    },
+    {
+      "word": "人",
+      "startMs": 136764,
+      "endMs": 136916
+    },
+    {
+      "word": "盯",
+      "startMs": 136916,
+      "endMs": 137069
+    },
+    {
+      "word": "着",
+      "startMs": 137069,
+      "endMs": 137221
+    },
+    {
+      "word": "坑",
+      "startMs": 137221,
+      "endMs": 137373
+    },
+    {
+      "word": "那",
+      "startMs": 137373,
+      "endMs": 137526
+    },
+    {
+      "word": "列",
+      "startMs": 137526,
+      "endMs": 137678
+    },
+    {
+      "word": "做",
+      "startMs": 137678,
+      "endMs": 137831
+    },
+    {
+      "word": "减",
+      "startMs": 137831,
+      "endMs": 137983
+    },
+    {
+      "word": "法，",
+      "startMs": 137983,
+      "endMs": 138135
+    },
+    {
+      "word": "AI",
+      "startMs": 138516,
+      "endMs": 138599
+    },
+    {
+      "word": "铺",
+      "startMs": 138599,
+      "endMs": 138751
+    },
+    {
+      "word": "信",
+      "startMs": 138751,
+      "endMs": 138904
+    },
+    {
+      "word": "息，",
+      "startMs": 138904,
+      "endMs": 139056
+    },
+    {
+      "word": "判",
+      "startMs": 139437,
+      "endMs": 139590
+    },
+    {
+      "word": "断",
+      "startMs": 139590,
+      "endMs": 139742
+    },
+    {
+      "word": "自",
+      "startMs": 139742,
+      "endMs": 139894
+    },
+    {
+      "word": "己",
+      "startMs": 139894,
+      "endMs": 140047
+    },
+    {
+      "word": "来。",
+      "startMs": 140047,
+      "endMs": 140199
+    },
+    {
+      "word": "坑",
+      "startMs": 140200,
+      "endMs": 140380
+    },
+    {
+      "word": "看",
+      "startMs": 140380,
+      "endMs": 140560
+    },
+    {
+      "word": "清",
+      "startMs": 140560,
+      "endMs": 140741
+    },
+    {
+      "word": "了，",
+      "startMs": 140741,
+      "endMs": 140921
+    },
+    {
+      "word": "最",
+      "startMs": 141372,
+      "endMs": 141552
+    },
+    {
+      "word": "后",
+      "startMs": 141552,
+      "endMs": 141732
+    },
+    {
+      "word": "回",
+      "startMs": 141732,
+      "endMs": 141913
+    },
+    {
+      "word": "到",
+      "startMs": 141913,
+      "endMs": 142093
+    },
+    {
+      "word": "我",
+      "startMs": 142093,
+      "endMs": 142273
+    },
+    {
+      "word": "自",
+      "startMs": 142273,
+      "endMs": 142454
+    },
+    {
+      "word": "己",
+      "startMs": 142454,
+      "endMs": 142634
+    },
+    {
+      "word": "的",
+      "startMs": 142634,
+      "endMs": 142814
+    },
+    {
+      "word": "需",
+      "startMs": 142814,
+      "endMs": 142995
+    },
+    {
+      "word": "求",
+      "startMs": 142995,
+      "endMs": 143175
+    },
+    {
+      "word": "拍",
+      "startMs": 143175,
+      "endMs": 143355
+    },
+    {
+      "word": "板。",
+      "startMs": 143355,
+      "endMs": 143536
+    },
+    {
+      "word": "我",
+      "startMs": 144513,
+      "endMs": 144693
+    },
+    {
+      "word": "把",
+      "startMs": 144693,
+      "endMs": 144873
+    },
+    {
+      "word": "约",
+      "startMs": 144873,
+      "endMs": 145054
+    },
+    {
+      "word": "束",
+      "startMs": 145054,
+      "endMs": 145234
+    },
+    {
+      "word": "讲",
+      "startMs": 145234,
+      "endMs": 145414
+    },
+    {
+      "word": "给",
+      "startMs": 145414,
+      "endMs": 145595
+    },
+    {
+      "word": "AI",
+      "startMs": 145595,
+      "endMs": 145692
+    },
+    {
+      "word": "要",
+      "startMs": 145692,
+      "endMs": 145873
+    },
+    {
+      "word": "一",
+      "startMs": 145873,
+      "endMs": 146053
+    },
+    {
+      "word": "期",
+      "startMs": 146053,
+      "endMs": 146233
+    },
+    {
+      "word": "一",
+      "startMs": 146233,
+      "endMs": 146414
+    },
+    {
+      "word": "个",
+      "startMs": 146414,
+      "endMs": 146594
+    },
+    {
+      "word": "固",
+      "startMs": 146594,
+      "endMs": 146774
+    },
+    {
+      "word": "定",
+      "startMs": 146774,
+      "endMs": 146955
+    },
+    {
+      "word": "模",
+      "startMs": 146955,
+      "endMs": 147135
+    },
+    {
+      "word": "板、",
+      "startMs": 147135,
+      "endMs": 147315
+    },
+    {
+      "word": "换",
+      "startMs": 147541,
+      "endMs": 147721
+    },
+    {
+      "word": "数",
+      "startMs": 147721,
+      "endMs": 147901
+    },
+    {
+      "word": "据",
+      "startMs": 147901,
+      "endMs": 148082
+    },
+    {
+      "word": "就",
+      "startMs": 148082,
+      "endMs": 148262
+    },
+    {
+      "word": "批",
+      "startMs": 148262,
+      "endMs": 148442
+    },
+    {
+      "word": "量",
+      "startMs": 148442,
+      "endMs": 148623
+    },
+    {
+      "word": "出",
+      "startMs": 148623,
+      "endMs": 148803
+    },
+    {
+      "word": "几",
+      "startMs": 148803,
+      "endMs": 148983
+    },
+    {
+      "word": "十",
+      "startMs": 148983,
+      "endMs": 149164
+    },
+    {
+      "word": "期",
+      "startMs": 149164,
+      "endMs": 149344
+    },
+    {
+      "word": "要",
+      "startMs": 149344,
+      "endMs": 149524
+    },
+    {
+      "word": "让",
+      "startMs": 149524,
+      "endMs": 149705
+    },
+    {
+      "word": "AI",
+      "startMs": 149705,
+      "endMs": 149802
+    },
+    {
+      "word": "自",
+      "startMs": 149802,
+      "endMs": 149983
+    },
+    {
+      "word": "己",
+      "startMs": 149983,
+      "endMs": 150163
+    },
+    {
+      "word": "改",
+      "startMs": 150163,
+      "endMs": 150343
+    },
+    {
+      "word": "内",
+      "startMs": 150343,
+      "endMs": 150524
+    },
+    {
+      "word": "容",
+      "startMs": 150524,
+      "endMs": 150704
+    },
+    {
+      "word": "还",
+      "startMs": 150704,
+      "endMs": 150884
+    },
+    {
+      "word": "不",
+      "startMs": 150884,
+      "endMs": 151065
+    },
+    {
+      "word": "容",
+      "startMs": 151065,
+      "endMs": 151245
+    },
+    {
+      "word": "易",
+      "startMs": 151245,
+      "endMs": 151425
+    },
+    {
+      "word": "错",
+      "startMs": 151425,
+      "endMs": 151606
+    },
+    {
+      "word": "要",
+      "startMs": 151606,
+      "endMs": 151786
+    },
+    {
+      "word": "跨",
+      "startMs": 151786,
+      "endMs": 151966
+    },
+    {
+      "word": "好",
+      "startMs": 151966,
+      "endMs": 152147
+    },
+    {
+      "word": "多",
+      "startMs": 152147,
+      "endMs": 152327
+    },
+    {
+      "word": "期",
+      "startMs": 152327,
+      "endMs": 152507
+    },
+    {
+      "word": "都",
+      "startMs": 152507,
+      "endMs": 152688
+    },
+    {
+      "word": "好",
+      "startMs": 152688,
+      "endMs": 152868
+    },
+    {
+      "word": "维",
+      "startMs": 152868,
+      "endMs": 153048
+    },
+    {
+      "word": "护。",
+      "startMs": 153048,
+      "endMs": 153229
+    },
+    {
+      "word": "对",
+      "startMs": 154206,
+      "endMs": 154386
+    },
+    {
+      "word": "着",
+      "startMs": 154386,
+      "endMs": 154566
+    },
+    {
+      "word": "这",
+      "startMs": 154566,
+      "endMs": 154747
+    },
+    {
+      "word": "三",
+      "startMs": 154747,
+      "endMs": 154926
+    },
+    {
+      "word": "条，",
+      "startMs": 154926,
+      "endMs": 155107
+    },
+    {
+      "word": "Remotion",
+      "startMs": 155557,
+      "endMs": 155723
+    },
+    {
+      "word": "明",
+      "startMs": 155723,
+      "endMs": 155903
+    },
+    {
+      "word": "显",
+      "startMs": 155903,
+      "endMs": 156083
+    },
+    {
+      "word": "胜",
+      "startMs": 156083,
+      "endMs": 156264
+    },
+    {
+      "word": "出",
+      "startMs": 156264,
+      "endMs": 156444
+    },
+    {
+      "word": "组",
+      "startMs": 156444,
+      "endMs": 156624
+    },
+    {
+      "word": "件",
+      "startMs": 156624,
+      "endMs": 156805
+    },
+    {
+      "word": "加",
+      "startMs": 156805,
+      "endMs": 156985
+    },
+    {
+      "word": "数",
+      "startMs": 156985,
+      "endMs": 157165
+    },
+    {
+      "word": "据",
+      "startMs": 157165,
+      "endMs": 157346
+    },
+    {
+      "word": "分",
+      "startMs": 157346,
+      "endMs": 157526
+    },
+    {
+      "word": "离，",
+      "startMs": 157526,
+      "endMs": 157706
+    },
+    {
+      "word": "改",
+      "startMs": 158157,
+      "endMs": 158338
+    },
+    {
+      "word": "一",
+      "startMs": 158338,
+      "endMs": 158518
+    },
+    {
+      "word": "处",
+      "startMs": 158518,
+      "endMs": 158698
+    },
+    {
+      "word": "全",
+      "startMs": 158698,
+      "endMs": 158879
+    },
+    {
+      "word": "系",
+      "startMs": 158879,
+      "endMs": 159059
+    },
+    {
+      "word": "列",
+      "startMs": 159059,
+      "endMs": 159239
+    },
+    {
+      "word": "生",
+      "startMs": 159239,
+      "endMs": 159420
+    },
+    {
+      "word": "效",
+      "startMs": 159420,
+      "endMs": 159600
+    },
+    {
+      "word": "每",
+      "startMs": 159600,
+      "endMs": 159780
+    },
+    {
+      "word": "期",
+      "startMs": 159780,
+      "endMs": 159961
+    },
+    {
+      "word": "只",
+      "startMs": 159961,
+      "endMs": 160141
+    },
+    {
+      "word": "让",
+      "startMs": 160141,
+      "endMs": 160321
+    },
+    {
+      "word": "AI",
+      "startMs": 160321,
+      "endMs": 160419
+    },
+    {
+      "word": "填",
+      "startMs": 160419,
+      "endMs": 160599
+    },
+    {
+      "word": "数",
+      "startMs": 160599,
+      "endMs": 160780
+    },
+    {
+      "word": "据",
+      "startMs": 160780,
+      "endMs": 160960
+    },
+    {
+      "word": "套",
+      "startMs": 160960,
+      "endMs": 161140
+    },
+    {
+      "word": "现",
+      "startMs": 161140,
+      "endMs": 161321
+    },
+    {
+      "word": "成",
+      "startMs": 161321,
+      "endMs": 161501
+    },
+    {
+      "word": "组",
+      "startMs": 161501,
+      "endMs": 161681
+    },
+    {
+      "word": "件，",
+      "startMs": 161681,
+      "endMs": 161862
+    },
+    {
+      "word": "最",
+      "startMs": 162312,
+      "endMs": 162493
+    },
+    {
+      "word": "不",
+      "startMs": 162493,
+      "endMs": 162673
+    },
+    {
+      "word": "容",
+      "startMs": 162673,
+      "endMs": 162853
+    },
+    {
+      "word": "易",
+      "startMs": 162853,
+      "endMs": 163034
+    },
+    {
+      "word": "出",
+      "startMs": 163034,
+      "endMs": 163214
+    },
+    {
+      "word": "错",
+      "startMs": 163214,
+      "endMs": 163394
+    },
+    {
+      "word": "一",
+      "startMs": 163394,
+      "endMs": 163575
+    },
+    {
+      "word": "行",
+      "startMs": 163575,
+      "endMs": 163755
+    },
+    {
+      "word": "命",
+      "startMs": 163755,
+      "endMs": 163935
+    },
+    {
+      "word": "令",
+      "startMs": 163935,
+      "endMs": 164116
+    },
+    {
+      "word": "就",
+      "startMs": 164116,
+      "endMs": 164296
+    },
+    {
+      "word": "出",
+      "startMs": 164296,
+      "endMs": 164476
+    },
+    {
+      "word": "片",
+      "startMs": 164476,
+      "endMs": 164657
+    },
+    {
+      "word": "网",
+      "startMs": 164657,
+      "endMs": 164837
+    },
+    {
+      "word": "页",
+      "startMs": 164837,
+      "endMs": 165017
+    },
+    {
+      "word": "生",
+      "startMs": 165017,
+      "endMs": 165198
+    },
+    {
+      "word": "态",
+      "startMs": 165198,
+      "endMs": 165378
+    },
+    {
+      "word": "随",
+      "startMs": 165378,
+      "endMs": 165558
+    },
+    {
+      "word": "手",
+      "startMs": 165558,
+      "endMs": 165739
+    },
+    {
+      "word": "能",
+      "startMs": 165739,
+      "endMs": 165919
+    },
+    {
+      "word": "用。",
+      "startMs": 165919,
+      "endMs": 166100
+    },
+    {
+      "word": "我",
+      "startMs": 166100,
+      "endMs": 166264
+    },
+    {
+      "word": "还",
+      "startMs": 166264,
+      "endMs": 166429
+    },
+    {
+      "word": "让",
+      "startMs": 166429,
+      "endMs": 166594
+    },
+    {
+      "word": "AI",
+      "startMs": 166594,
+      "endMs": 166683
+    },
+    {
+      "word": "把",
+      "startMs": 166683,
+      "endMs": 166847
+    },
+    {
+      "word": "Remotion",
+      "startMs": 166847,
+      "endMs": 166998
+    },
+    {
+      "word": "跟",
+      "startMs": 166998,
+      "endMs": 167163
+    },
+    {
+      "word": "复",
+      "startMs": 167163,
+      "endMs": 167328
+    },
+    {
+      "word": "制",
+      "startMs": 167328,
+      "endMs": 167493
+    },
+    {
+      "word": "粘",
+      "startMs": 167493,
+      "endMs": 167657
+    },
+    {
+      "word": "贴",
+      "startMs": 167657,
+      "endMs": 167823
+    },
+    {
+      "word": "HTML",
+      "startMs": 167823,
+      "endMs": 167933
+    },
+    {
+      "word": "那",
+      "startMs": 167933,
+      "endMs": 168098
+    },
+    {
+      "word": "种",
+      "startMs": 168098,
+      "endMs": 168262
+    },
+    {
+      "word": "土",
+      "startMs": 168262,
+      "endMs": 168427
+    },
+    {
+      "word": "办",
+      "startMs": 168427,
+      "endMs": 168592
+    },
+    {
+      "word": "法",
+      "startMs": 168592,
+      "endMs": 168757
+    },
+    {
+      "word": "做",
+      "startMs": 168757,
+      "endMs": 168921
+    },
+    {
+      "word": "对",
+      "startMs": 168921,
+      "endMs": 169086
+    },
+    {
+      "word": "照。",
+      "startMs": 169086,
+      "endMs": 169251
+    },
+    {
+      "word": "模",
+      "startMs": 170144,
+      "endMs": 170308
+    },
+    {
+      "word": "板",
+      "startMs": 170308,
+      "endMs": 170473
+    },
+    {
+      "word": "复",
+      "startMs": 170473,
+      "endMs": 170638
+    },
+    {
+      "word": "用，",
+      "startMs": 170638,
+      "endMs": 170803
+    },
+    {
+      "word": "Remotion",
+      "startMs": 171215,
+      "endMs": 171366
+    },
+    {
+      "word": "改",
+      "startMs": 171366,
+      "endMs": 171531
+    },
+    {
+      "word": "一",
+      "startMs": 171531,
+      "endMs": 171695
+    },
+    {
+      "word": "处",
+      "startMs": 171695,
+      "endMs": 171860
+    },
+    {
+      "word": "全",
+      "startMs": 171860,
+      "endMs": 172025
+    },
+    {
+      "word": "系",
+      "startMs": 172025,
+      "endMs": 172190
+    },
+    {
+      "word": "列",
+      "startMs": 172190,
+      "endMs": 172354
+    },
+    {
+      "word": "生",
+      "startMs": 172354,
+      "endMs": 172519
+    },
+    {
+      "word": "效，",
+      "startMs": 172519,
+      "endMs": 172684
+    },
+    {
+      "word": "复",
+      "startMs": 173096,
+      "endMs": 173261
+    },
+    {
+      "word": "制",
+      "startMs": 173261,
+      "endMs": 173426
+    },
+    {
+      "word": "粘",
+      "startMs": 173426,
+      "endMs": 173590
+    },
+    {
+      "word": "贴",
+      "startMs": 173590,
+      "endMs": 173755
+    },
+    {
+      "word": "越",
+      "startMs": 173755,
+      "endMs": 173920
+    },
+    {
+      "word": "改",
+      "startMs": 173920,
+      "endMs": 174085
+    },
+    {
+      "word": "越",
+      "startMs": 174085,
+      "endMs": 174249
+    },
+    {
+      "word": "乱",
+      "startMs": 174249,
+      "endMs": 174414
+    },
+    {
+      "word": "让",
+      "startMs": 174414,
+      "endMs": 174579
+    },
+    {
+      "word": "AI",
+      "startMs": 174579,
+      "endMs": 174668
+    },
+    {
+      "word": "接",
+      "startMs": 174668,
+      "endMs": 174833
+    },
+    {
+      "word": "手，",
+      "startMs": 174833,
+      "endMs": 174998
+    },
+    {
+      "word": "Remotion",
+      "startMs": 175410,
+      "endMs": 175561
+    },
+    {
+      "word": "结",
+      "startMs": 175561,
+      "endMs": 175726
+    },
+    {
+      "word": "构",
+      "startMs": 175726,
+      "endMs": 175890
+    },
+    {
+      "word": "稳",
+      "startMs": 175890,
+      "endMs": 176055
+    },
+    {
+      "word": "只",
+      "startMs": 176055,
+      "endMs": 176220
+    },
+    {
+      "word": "填",
+      "startMs": 176220,
+      "endMs": 176385
+    },
+    {
+      "word": "数",
+      "startMs": 176385,
+      "endMs": 176550
+    },
+    {
+      "word": "据，",
+      "startMs": 176550,
+      "endMs": 176714
+    },
+    {
+      "word": "复",
+      "startMs": 177126,
+      "endMs": 177291
+    },
+    {
+      "word": "制",
+      "startMs": 177291,
+      "endMs": 177456
+    },
+    {
+      "word": "粘",
+      "startMs": 177456,
+      "endMs": 177621
+    },
+    {
+      "word": "贴",
+      "startMs": 177621,
+      "endMs": 177785
+    },
+    {
+      "word": "容",
+      "startMs": 177785,
+      "endMs": 177950
+    },
+    {
+      "word": "易",
+      "startMs": 177950,
+      "endMs": 178115
+    },
+    {
+      "word": "跑",
+      "startMs": 178115,
+      "endMs": 178280
+    },
+    {
+      "word": "偏",
+      "startMs": 178280,
+      "endMs": 178445
+    },
+    {
+      "word": "长",
+      "startMs": 178445,
+      "endMs": 178609
+    },
+    {
+      "word": "期",
+      "startMs": 178609,
+      "endMs": 178774
+    },
+    {
+      "word": "维",
+      "startMs": 178774,
+      "endMs": 178938
+    },
+    {
+      "word": "护，",
+      "startMs": 178938,
+      "endMs": 179103
+    },
+    {
+      "word": "Remotion",
+      "startMs": 179515,
+      "endMs": 179666
+    },
+    {
+      "word": "十",
+      "startMs": 179666,
+      "endMs": 179831
+    },
+    {
+      "word": "期",
+      "startMs": 179831,
+      "endMs": 179996
+    },
+    {
+      "word": "后",
+      "startMs": 179996,
+      "endMs": 180160
+    },
+    {
+      "word": "还",
+      "startMs": 180160,
+      "endMs": 180325
+    },
+    {
+      "word": "能",
+      "startMs": 180325,
+      "endMs": 180490
+    },
+    {
+      "word": "管，",
+      "startMs": 180490,
+      "endMs": 180655
+    },
+    {
+      "word": "复",
+      "startMs": 181067,
+      "endMs": 181232
+    },
+    {
+      "word": "制",
+      "startMs": 181232,
+      "endMs": 181396
+    },
+    {
+      "word": "粘",
+      "startMs": 181396,
+      "endMs": 181561
+    },
+    {
+      "word": "贴",
+      "startMs": 181561,
+      "endMs": 181726
+    },
+    {
+      "word": "就",
+      "startMs": 181726,
+      "endMs": 181891
+    },
+    {
+      "word": "是",
+      "startMs": 181891,
+      "endMs": 182055
+    },
+    {
+      "word": "灾",
+      "startMs": 182055,
+      "endMs": 182220
+    },
+    {
+      "word": "难。",
+      "startMs": 182220,
+      "endMs": 182385
+    },
+    {
+      "word": "代",
+      "startMs": 183278,
+      "endMs": 183442
+    },
+    {
+      "word": "价",
+      "startMs": 183442,
+      "endMs": 183607
+    },
+    {
+      "word": "也",
+      "startMs": 183607,
+      "endMs": 183772
+    },
+    {
+      "word": "如",
+      "startMs": 183772,
+      "endMs": 183937
+    },
+    {
+      "word": "实",
+      "startMs": 183937,
+      "endMs": 184102
+    },
+    {
+      "word": "说",
+      "startMs": 184102,
+      "endMs": 184266
+    },
+    {
+      "word": "React",
+      "startMs": 184266,
+      "endMs": 184387
+    },
+    {
+      "word": "栈、",
+      "startMs": 184387,
+      "endMs": 184551
+    },
+    {
+      "word": "BUSL",
+      "startMs": 184757,
+      "endMs": 184867
+    },
+    {
+      "word": "授",
+      "startMs": 184867,
+      "endMs": 185032
+    },
+    {
+      "word": "权、",
+      "startMs": 185032,
+      "endMs": 185197
+    },
+    {
+      "word": "规",
+      "startMs": 185403,
+      "endMs": 185567
+    },
+    {
+      "word": "模",
+      "startMs": 185567,
+      "endMs": 185732
+    },
+    {
+      "word": "化",
+      "startMs": 185732,
+      "endMs": 185897
+    },
+    {
+      "word": "商",
+      "startMs": 185897,
+      "endMs": 186062
+    },
+    {
+      "word": "用",
+      "startMs": 186062,
+      "endMs": 186227
+    },
+    {
+      "word": "要",
+      "startMs": 186227,
+      "endMs": 186391
+    },
+    {
+      "word": "给",
+      "startMs": 186391,
+      "endMs": 186556
+    },
+    {
+      "word": "钱。",
+      "startMs": 186556,
+      "endMs": 186721
+    },
+    {
+      "word": "但",
+      "startMs": 187614,
+      "endMs": 187778
+    },
+    {
+      "word": "前",
+      "startMs": 187778,
+      "endMs": 187943
+    },
+    {
+      "word": "端",
+      "startMs": 187943,
+      "endMs": 188108
+    },
+    {
+      "word": "不",
+      "startMs": 188108,
+      "endMs": 188273
+    },
+    {
+      "word": "用",
+      "startMs": 188273,
+      "endMs": 188437
+    },
+    {
+      "word": "怕",
+      "startMs": 188437,
+      "endMs": 188602
+    },
+    {
+      "word": "让",
+      "startMs": 188602,
+      "endMs": 188767
+    },
+    {
+      "word": "AI",
+      "startMs": 188767,
+      "endMs": 188856
+    },
+    {
+      "word": "写、",
+      "startMs": 188856,
+      "endMs": 189021
+    },
+    {
+      "word": "我",
+      "startMs": 189227,
+      "endMs": 189392
+    },
+    {
+      "word": "把",
+      "startMs": 189392,
+      "endMs": 189557
+    },
+    {
+      "word": "方",
+      "startMs": 189557,
+      "endMs": 189721
+    },
+    {
+      "word": "向，",
+      "startMs": 189721,
+      "endMs": 189886
+    },
+    {
+      "word": "这",
+      "startMs": 190298,
+      "endMs": 190463
+    },
+    {
+      "word": "正",
+      "startMs": 190463,
+      "endMs": 190628
+    },
+    {
+      "word": "是",
+      "startMs": 190628,
+      "endMs": 190793
+    },
+    {
+      "word": "Vibe",
+      "startMs": 190793,
+      "endMs": 190902
+    },
+    {
+      "word": "Coding。",
+      "startMs": 190902,
+      "endMs": 191033
+    },
+    {
+      "word": "路",
+      "startMs": 191033,
+      "endMs": 191195
+    },
+    {
+      "word": "线",
+      "startMs": 191195,
+      "endMs": 191357
+    },
+    {
+      "word": "定",
+      "startMs": 191357,
+      "endMs": 191519
+    },
+    {
+      "word": "了，",
+      "startMs": 191519,
+      "endMs": 191681
+    },
+    {
+      "word": "第",
+      "startMs": 192086,
+      "endMs": 192248
+    },
+    {
+      "word": "二",
+      "startMs": 192248,
+      "endMs": 192410
+    },
+    {
+      "word": "步",
+      "startMs": 192410,
+      "endMs": 192572
+    },
+    {
+      "word": "搭",
+      "startMs": 192572,
+      "endMs": 192734
+    },
+    {
+      "word": "引",
+      "startMs": 192734,
+      "endMs": 192896
+    },
+    {
+      "word": "擎。",
+      "startMs": 192896,
+      "endMs": 193058
+    },
+    {
+      "word": "好",
+      "startMs": 193936,
+      "endMs": 194098
+    },
+    {
+      "word": "消",
+      "startMs": 194098,
+      "endMs": 194260
+    },
+    {
+      "word": "息",
+      "startMs": 194260,
+      "endMs": 194422
+    },
+    {
+      "word": "是，",
+      "startMs": 194422,
+      "endMs": 194584
+    },
+    {
+      "word": "搭",
+      "startMs": 194989,
+      "endMs": 195151
+    },
+    {
+      "word": "引",
+      "startMs": 195151,
+      "endMs": 195313
+    },
+    {
+      "word": "擎",
+      "startMs": 195313,
+      "endMs": 195475
+    },
+    {
+      "word": "也",
+      "startMs": 195475,
+      "endMs": 195637
+    },
+    {
+      "word": "不",
+      "startMs": 195637,
+      "endMs": 195799
+    },
+    {
+      "word": "靠",
+      "startMs": 195799,
+      "endMs": 195961
+    },
+    {
+      "word": "手",
+      "startMs": 195961,
+      "endMs": 196123
+    },
+    {
+      "word": "写，",
+      "startMs": 196123,
+      "endMs": 196285
+    },
+    {
+      "word": "靠",
+      "startMs": 196690,
+      "endMs": 196852
+    },
+    {
+      "word": "跟",
+      "startMs": 196852,
+      "endMs": 197014
+    },
+    {
+      "word": "AI",
+      "startMs": 197014,
+      "endMs": 197102
+    },
+    {
+      "word": "一",
+      "startMs": 197102,
+      "endMs": 197264
+    },
+    {
+      "word": "起",
+      "startMs": 197264,
+      "endMs": 197426
+    },
+    {
+      "word": "把",
+      "startMs": 197426,
+      "endMs": 197588
+    },
+    {
+      "word": "配",
+      "startMs": 197588,
+      "endMs": 197750
+    },
+    {
+      "word": "置",
+      "startMs": 197750,
+      "endMs": 197912
+    },
+    {
+      "word": "和",
+      "startMs": 197912,
+      "endMs": 198074
+    },
+    {
+      "word": "组",
+      "startMs": 198074,
+      "endMs": 198237
+    },
+    {
+      "word": "件",
+      "startMs": 198237,
+      "endMs": 198399
+    },
+    {
+      "word": "对",
+      "startMs": 198399,
+      "endMs": 198561
+    },
+    {
+      "word": "上。",
+      "startMs": 198561,
+      "endMs": 198723
+    },
+    {
+      "word": "仓",
+      "startMs": 199600,
+      "endMs": 199762
+    },
+    {
+      "word": "库",
+      "startMs": 199762,
+      "endMs": 199924
+    },
+    {
+      "word": "里",
+      "startMs": 199924,
+      "endMs": 200086
+    },
+    {
+      "word": "的",
+      "startMs": 200086,
+      "endMs": 200249
+    },
+    {
+      "word": "引",
+      "startMs": 200249,
+      "endMs": 200411
+    },
+    {
+      "word": "擎",
+      "startMs": 200411,
+      "endMs": 200573
+    },
+    {
+      "word": "叫",
+      "startMs": 200573,
+      "endMs": 200735
+    },
+    {
+      "word": "remotion-composer，",
+      "startMs": 200735,
+      "endMs": 200974
+    },
+    {
+      "word": "干",
+      "startMs": 201379,
+      "endMs": 201541
+    },
+    {
+      "word": "活",
+      "startMs": 201541,
+      "endMs": 201703
+    },
+    {
+      "word": "很",
+      "startMs": 201703,
+      "endMs": 201866
+    },
+    {
+      "word": "直",
+      "startMs": 201866,
+      "endMs": 202028
+    },
+    {
+      "word": "白",
+      "startMs": 202028,
+      "endMs": 202190
+    },
+    {
+      "word": "你",
+      "startMs": 202190,
+      "endMs": 202352
+    },
+    {
+      "word": "写",
+      "startMs": 202352,
+      "endMs": 202514
+    },
+    {
+      "word": "一",
+      "startMs": 202514,
+      "endMs": 202676
+    },
+    {
+      "word": "份",
+      "startMs": 202676,
+      "endMs": 202838
+    },
+    {
+      "word": "配",
+      "startMs": 202838,
+      "endMs": 202999
+    },
+    {
+      "word": "置，",
+      "startMs": 202999,
+      "endMs": 203161
+    },
+    {
+      "word": "说",
+      "startMs": 203566,
+      "endMs": 203728
+    },
+    {
+      "word": "清",
+      "startMs": 203728,
+      "endMs": 203890
+    },
+    {
+      "word": "这",
+      "startMs": 203890,
+      "endMs": 204052
+    },
+    {
+      "word": "段",
+      "startMs": 204052,
+      "endMs": 204214
+    },
+    {
+      "word": "是",
+      "startMs": 204214,
+      "endMs": 204376
+    },
+    {
+      "word": "什",
+      "startMs": 204376,
+      "endMs": 204539
+    },
+    {
+      "word": "么",
+      "startMs": 204539,
+      "endMs": 204701
+    },
+    {
+      "word": "画",
+      "startMs": 204701,
+      "endMs": 204863
+    },
+    {
+      "word": "面，",
+      "startMs": 204863,
+      "endMs": 205025
+    },
+    {
+      "word": "主",
+      "startMs": 205430,
+      "endMs": 205592
+    },
+    {
+      "word": "程",
+      "startMs": 205592,
+      "endMs": 205754
+    },
+    {
+      "word": "序",
+      "startMs": 205754,
+      "endMs": 205916
+    },
+    {
+      "word": "Explainer",
+      "startMs": 205916,
+      "endMs": 206075
+    },
+    {
+      "word": "就",
+      "startMs": 206075,
+      "endMs": 206237
+    },
+    {
+      "word": "按",
+      "startMs": 206237,
+      "endMs": 206399
+    },
+    {
+      "word": "配",
+      "startMs": 206399,
+      "endMs": 206561
+    },
+    {
+      "word": "置",
+      "startMs": 206561,
+      "endMs": 206723
+    },
+    {
+      "word": "里",
+      "startMs": 206723,
+      "endMs": 206885
+    },
+    {
+      "word": "的",
+      "startMs": 206885,
+      "endMs": 207047
+    },
+    {
+      "word": "type",
+      "startMs": 207047,
+      "endMs": 207155
+    },
+    {
+      "word": "字",
+      "startMs": 207155,
+      "endMs": 207317
+    },
+    {
+      "word": "段",
+      "startMs": 207317,
+      "endMs": 207479
+    },
+    {
+      "word": "自",
+      "startMs": 207479,
+      "endMs": 207641
+    },
+    {
+      "word": "动",
+      "startMs": 207641,
+      "endMs": 207803
+    },
+    {
+      "word": "找",
+      "startMs": 207803,
+      "endMs": 207965
+    },
+    {
+      "word": "对",
+      "startMs": 207965,
+      "endMs": 208127
+    },
+    {
+      "word": "应",
+      "startMs": 208127,
+      "endMs": 208289
+    },
+    {
+      "word": "组",
+      "startMs": 208289,
+      "endMs": 208451
+    },
+    {
+      "word": "件",
+      "startMs": 208451,
+      "endMs": 208613
+    },
+    {
+      "word": "去",
+      "startMs": 208613,
+      "endMs": 208775
+    },
+    {
+      "word": "渲。",
+      "startMs": 208775,
+      "endMs": 208937
+    },
+    {
+      "word": "comparison",
+      "startMs": 209815,
+      "endMs": 209984
+    },
+    {
+      "word": "是",
+      "startMs": 209984,
+      "endMs": 210146
+    },
+    {
+      "word": "对",
+      "startMs": 210146,
+      "endMs": 210308
+    },
+    {
+      "word": "比",
+      "startMs": 210308,
+      "endMs": 210470
+    },
+    {
+      "word": "卡，",
+      "startMs": 210470,
+      "endMs": 210632
+    },
+    {
+      "word": "terminal",
+      "startMs": 211037,
+      "endMs": 211186
+    },
+    {
+      "word": "_scene",
+      "startMs": 211186,
+      "endMs": 211314
+    },
+    {
+      "word": "合",
+      "startMs": 211314,
+      "endMs": 211476
+    },
+    {
+      "word": "成",
+      "startMs": 211476,
+      "endMs": 211638
+    },
+    {
+      "word": "终",
+      "startMs": 211638,
+      "endMs": 211800
+    },
+    {
+      "word": "端、",
+      "startMs": 211800,
+      "endMs": 211962
+    },
+    {
+      "word": "逐",
+      "startMs": 212165,
+      "endMs": 212327
+    },
+    {
+      "word": "行",
+      "startMs": 212327,
+      "endMs": 212489
+    },
+    {
+      "word": "打",
+      "startMs": 212489,
+      "endMs": 212651
+    },
+    {
+      "word": "字",
+      "startMs": 212651,
+      "endMs": 212813
+    },
+    {
+      "word": "不",
+      "startMs": 212813,
+      "endMs": 212975
+    },
+    {
+      "word": "用",
+      "startMs": 212975,
+      "endMs": 213137
+    },
+    {
+      "word": "真",
+      "startMs": 213137,
+      "endMs": 213299
+    },
+    {
+      "word": "录",
+      "startMs": 213299,
+      "endMs": 213461
+    },
+    {
+      "word": "屏，",
+      "startMs": 213461,
+      "endMs": 213623
+    },
+    {
+      "word": "screenshot",
+      "startMs": 214028,
+      "endMs": 214197
+    },
+    {
+      "word": "_scene",
+      "startMs": 214197,
+      "endMs": 214325
+    },
+    {
+      "word": "丢",
+      "startMs": 214325,
+      "endMs": 214487
+    },
+    {
+      "word": "截",
+      "startMs": 214487,
+      "endMs": 214649
+    },
+    {
+      "word": "图",
+      "startMs": 214649,
+      "endMs": 214811
+    },
+    {
+      "word": "叠",
+      "startMs": 214811,
+      "endMs": 214973
+    },
+    {
+      "word": "光",
+      "startMs": 214973,
+      "endMs": 215135
+    },
+    {
+      "word": "标，",
+      "startMs": 215135,
+      "endMs": 215297
+    },
+    {
+      "word": "还",
+      "startMs": 215702,
+      "endMs": 215864
+    },
+    {
+      "word": "有",
+      "startMs": 215864,
+      "endMs": 216026
+    },
+    {
+      "word": "图",
+      "startMs": 216026,
+      "endMs": 216188
+    },
+    {
+      "word": "表、",
+      "startMs": 216188,
+      "endMs": 216351
+    },
+    {
+      "word": "概",
+      "startMs": 216553,
+      "endMs": 216715
+    },
+    {
+      "word": "念",
+      "startMs": 216715,
+      "endMs": 216877
+    },
+    {
+      "word": "图、",
+      "startMs": 216877,
+      "endMs": 217039
+    },
+    {
+      "word": "分",
+      "startMs": 217242,
+      "endMs": 217404
+    },
+    {
+      "word": "屏。",
+      "startMs": 217404,
+      "endMs": 217566
+    },
+    {
+      "word": "重",
+      "startMs": 217566,
+      "endMs": 217734
+    },
+    {
+      "word": "点",
+      "startMs": 217734,
+      "endMs": 217903
+    },
+    {
+      "word": "来",
+      "startMs": 217903,
+      "endMs": 218071
+    },
+    {
+      "word": "了，",
+      "startMs": 218071,
+      "endMs": 218240
+    },
+    {
+      "word": "这",
+      "startMs": 218661,
+      "endMs": 218830
+    },
+    {
+      "word": "是",
+      "startMs": 218830,
+      "endMs": 218998
+    },
+    {
+      "word": "用",
+      "startMs": 218998,
+      "endMs": 219167
+    },
+    {
+      "word": "Vibe",
+      "startMs": 219167,
+      "endMs": 219279
+    },
+    {
+      "word": "Coding",
+      "startMs": 219279,
+      "endMs": 219412
+    },
+    {
+      "word": "做",
+      "startMs": 219412,
+      "endMs": 219581
+    },
+    {
+      "word": "视",
+      "startMs": 219581,
+      "endMs": 219749
+    },
+    {
+      "word": "频",
+      "startMs": 219749,
+      "endMs": 219918
+    },
+    {
+      "word": "最",
+      "startMs": 219918,
+      "endMs": 220087
+    },
+    {
+      "word": "省",
+      "startMs": 220087,
+      "endMs": 220255
+    },
+    {
+      "word": "心",
+      "startMs": 220255,
+      "endMs": 220424
+    },
+    {
+      "word": "的",
+      "startMs": 220424,
+      "endMs": 220592
+    },
+    {
+      "word": "地",
+      "startMs": 220592,
+      "endMs": 220761
+    },
+    {
+      "word": "方",
+      "startMs": 220761,
+      "endMs": 220929
+    },
+    {
+      "word": "我",
+      "startMs": 220929,
+      "endMs": 221098
+    },
+    {
+      "word": "不",
+      "startMs": 221098,
+      "endMs": 221266
+    },
+    {
+      "word": "让",
+      "startMs": 221266,
+      "endMs": 221435
+    },
+    {
+      "word": "AI",
+      "startMs": 221435,
+      "endMs": 221526
+    },
+    {
+      "word": "发",
+      "startMs": 221526,
+      "endMs": 221695
+    },
+    {
+      "word": "明",
+      "startMs": 221695,
+      "endMs": 221863
+    },
+    {
+      "word": "新",
+      "startMs": 221863,
+      "endMs": 222032
+    },
+    {
+      "word": "组",
+      "startMs": 222032,
+      "endMs": 222200
+    },
+    {
+      "word": "件，",
+      "startMs": 222200,
+      "endMs": 222369
+    },
+    {
+      "word": "只",
+      "startMs": 222790,
+      "endMs": 222959
+    },
+    {
+      "word": "让",
+      "startMs": 222959,
+      "endMs": 223127
+    },
+    {
+      "word": "它",
+      "startMs": 223127,
+      "endMs": 223296
+    },
+    {
+      "word": "照",
+      "startMs": 223296,
+      "endMs": 223464
+    },
+    {
+      "word": "现",
+      "startMs": 223464,
+      "endMs": 223633
+    },
+    {
+      "word": "成",
+      "startMs": 223633,
+      "endMs": 223801
+    },
+    {
+      "word": "组",
+      "startMs": 223801,
+      "endMs": 223970
+    },
+    {
+      "word": "件",
+      "startMs": 223970,
+      "endMs": 224139
+    },
+    {
+      "word": "填",
+      "startMs": 224139,
+      "endMs": 224307
+    },
+    {
+      "word": "配",
+      "startMs": 224307,
+      "endMs": 224476
+    },
+    {
+      "word": "置。",
+      "startMs": 224476,
+      "endMs": 224644
+    },
+    {
+      "word": "比",
+      "startMs": 225557,
+      "endMs": 225726
+    },
+    {
+      "word": "如",
+      "startMs": 225726,
+      "endMs": 225894
+    },
+    {
+      "word": "要",
+      "startMs": 225894,
+      "endMs": 226063
+    },
+    {
+      "word": "个",
+      "startMs": 226063,
+      "endMs": 226231
+    },
+    {
+      "word": "对",
+      "startMs": 226231,
+      "endMs": 226400
+    },
+    {
+      "word": "比",
+      "startMs": 226400,
+      "endMs": 226568
+    },
+    {
+      "word": "卡，",
+      "startMs": 226568,
+      "endMs": 226737
+    },
+    {
+      "word": "我",
+      "startMs": 227158,
+      "endMs": 227327
+    },
+    {
+      "word": "说",
+      "startMs": 227327,
+      "endMs": 227495
+    },
+    {
+      "word": "左",
+      "startMs": 227495,
+      "endMs": 227664
+    },
+    {
+      "word": "边",
+      "startMs": 227664,
+      "endMs": 227832
+    },
+    {
+      "word": "传",
+      "startMs": 227832,
+      "endMs": 228001
+    },
+    {
+      "word": "统",
+      "startMs": 228001,
+      "endMs": 228169
+    },
+    {
+      "word": "剪",
+      "startMs": 228169,
+      "endMs": 228338
+    },
+    {
+      "word": "辑、",
+      "startMs": 228338,
+      "endMs": 228506
+    },
+    {
+      "word": "右",
+      "startMs": 228717,
+      "endMs": 228886
+    },
+    {
+      "word": "边",
+      "startMs": 228886,
+      "endMs": 229054
+    },
+    {
+      "word": "代",
+      "startMs": 229054,
+      "endMs": 229223
+    },
+    {
+      "word": "码",
+      "startMs": 229223,
+      "endMs": 229391
+    },
+    {
+      "word": "即",
+      "startMs": 229391,
+      "endMs": 229560
+    },
+    {
+      "word": "视",
+      "startMs": 229560,
+      "endMs": 229728
+    },
+    {
+      "word": "频，",
+      "startMs": 229728,
+      "endMs": 229897
+    },
+    {
+      "word": "AI",
+      "startMs": 230318,
+      "endMs": 230410
+    },
+    {
+      "word": "产",
+      "startMs": 230410,
+      "endMs": 230577
+    },
+    {
+      "word": "出",
+      "startMs": 230577,
+      "endMs": 230746
+    },
+    {
+      "word": "的",
+      "startMs": 230746,
+      "endMs": 230914
+    },
+    {
+      "word": "就",
+      "startMs": 230914,
+      "endMs": 231083
+    },
+    {
+      "word": "是",
+      "startMs": 231083,
+      "endMs": 231252
+    },
+    {
+      "word": "一",
+      "startMs": 231252,
+      "endMs": 231420
+    },
+    {
+      "word": "段",
+      "startMs": 231420,
+      "endMs": 231589
+    },
+    {
+      "word": "配",
+      "startMs": 231589,
+      "endMs": 231757
+    },
+    {
+      "word": "置",
+      "startMs": 231757,
+      "endMs": 231926
+    },
+    {
+      "word": "type",
+      "startMs": 231926,
+      "endMs": 232038
+    },
+    {
+      "word": "写",
+      "startMs": 232038,
+      "endMs": 232207
+    },
+    {
+      "word": "comparison，",
+      "startMs": 232207,
+      "endMs": 232382
+    },
+    {
+      "word": "标",
+      "startMs": 232804,
+      "endMs": 232972
+    },
+    {
+      "word": "题、",
+      "startMs": 232972,
+      "endMs": 233141
+    },
+    {
+      "word": "左",
+      "startMs": 233351,
+      "endMs": 233520
+    },
+    {
+      "word": "右",
+      "startMs": 233520,
+      "endMs": 233688
+    },
+    {
+      "word": "两",
+      "startMs": 233688,
+      "endMs": 233857
+    },
+    {
+      "word": "栏",
+      "startMs": 233857,
+      "endMs": 234025
+    },
+    {
+      "word": "的",
+      "startMs": 234025,
+      "endMs": 234194
+    },
+    {
+      "word": "标",
+      "startMs": 234194,
+      "endMs": 234363
+    },
+    {
+      "word": "签",
+      "startMs": 234363,
+      "endMs": 234531
+    },
+    {
+      "word": "和",
+      "startMs": 234531,
+      "endMs": 234700
+    },
+    {
+      "word": "内",
+      "startMs": 234700,
+      "endMs": 234868
+    },
+    {
+      "word": "容",
+      "startMs": 234868,
+      "endMs": 235037
+    },
+    {
+      "word": "填",
+      "startMs": 235037,
+      "endMs": 235205
+    },
+    {
+      "word": "好，",
+      "startMs": 235205,
+      "endMs": 235374
+    },
+    {
+      "word": "完",
+      "startMs": 235795,
+      "endMs": 235964
+    },
+    {
+      "word": "事。",
+      "startMs": 235964,
+      "endMs": 236132
+    },
+    {
+      "word": "为",
+      "startMs": 236133,
+      "endMs": 236290
+    },
+    {
+      "word": "什",
+      "startMs": 236290,
+      "endMs": 236448
+    },
+    {
+      "word": "么",
+      "startMs": 236448,
+      "endMs": 236606
+    },
+    {
+      "word": "这",
+      "startMs": 236606,
+      "endMs": 236764
+    },
+    {
+      "word": "么",
+      "startMs": 236764,
+      "endMs": 236922
+    },
+    {
+      "word": "干",
+      "startMs": 236922,
+      "endMs": 237080
+    },
+    {
+      "word": "最",
+      "startMs": 237080,
+      "endMs": 237238
+    },
+    {
+      "word": "稳？",
+      "startMs": 237238,
+      "endMs": 237396
+    },
+    {
+      "word": "看",
+      "startMs": 238251,
+      "endMs": 238409
+    },
+    {
+      "word": "对",
+      "startMs": 238409,
+      "endMs": 238567
+    },
+    {
+      "word": "照。",
+      "startMs": 238567,
+      "endMs": 238725
+    },
+    {
+      "word": "左",
+      "startMs": 239581,
+      "endMs": 239739
+    },
+    {
+      "word": "边",
+      "startMs": 239739,
+      "endMs": 239897
+    },
+    {
+      "word": "反",
+      "startMs": 239897,
+      "endMs": 240055
+    },
+    {
+      "word": "面",
+      "startMs": 240055,
+      "endMs": 240213
+    },
+    {
+      "word": "让",
+      "startMs": 240213,
+      "endMs": 240370
+    },
+    {
+      "word": "AI",
+      "startMs": 240370,
+      "endMs": 240456
+    },
+    {
+      "word": "为",
+      "startMs": 240456,
+      "endMs": 240614
+    },
+    {
+      "word": "这",
+      "startMs": 240614,
+      "endMs": 240772
+    },
+    {
+      "word": "期",
+      "startMs": 240772,
+      "endMs": 240930
+    },
+    {
+      "word": "从",
+      "startMs": 240930,
+      "endMs": 241088
+    },
+    {
+      "word": "零",
+      "startMs": 241088,
+      "endMs": 241246
+    },
+    {
+      "word": "手",
+      "startMs": 241246,
+      "endMs": 241404
+    },
+    {
+      "word": "写",
+      "startMs": 241404,
+      "endMs": 241562
+    },
+    {
+      "word": "新",
+      "startMs": 241562,
+      "endMs": 241720
+    },
+    {
+      "word": "组",
+      "startMs": 241720,
+      "endMs": 241877
+    },
+    {
+      "word": "件，",
+      "startMs": 241877,
+      "endMs": 242035
+    },
+    {
+      "word": "既",
+      "startMs": 242430,
+      "endMs": 242588
+    },
+    {
+      "word": "重",
+      "startMs": 242588,
+      "endMs": 242746
+    },
+    {
+      "word": "复",
+      "startMs": 242746,
+      "endMs": 242904
+    },
+    {
+      "word": "造",
+      "startMs": 242904,
+      "endMs": 243062
+    },
+    {
+      "word": "轮",
+      "startMs": 243062,
+      "endMs": 243220
+    },
+    {
+      "word": "子，",
+      "startMs": 243220,
+      "endMs": 243378
+    },
+    {
+      "word": "又",
+      "startMs": 243773,
+      "endMs": 243931
+    },
+    {
+      "word": "把",
+      "startMs": 243931,
+      "endMs": 244089
+    },
+    {
+      "word": "换",
+      "startMs": 244089,
+      "endMs": 244247
+    },
+    {
+      "word": "数",
+      "startMs": 244247,
+      "endMs": 244404
+    },
+    {
+      "word": "据",
+      "startMs": 244404,
+      "endMs": 244562
+    },
+    {
+      "word": "就",
+      "startMs": 244562,
+      "endMs": 244720
+    },
+    {
+      "word": "复",
+      "startMs": 244720,
+      "endMs": 244878
+    },
+    {
+      "word": "用",
+      "startMs": 244878,
+      "endMs": 245036
+    },
+    {
+      "word": "弄",
+      "startMs": 245036,
+      "endMs": 245194
+    },
+    {
+      "word": "没",
+      "startMs": 245194,
+      "endMs": 245352
+    },
+    {
+      "word": "了。",
+      "startMs": 245352,
+      "endMs": 245510
+    },
+    {
+      "word": "右",
+      "startMs": 246366,
+      "endMs": 246523
+    },
+    {
+      "word": "边",
+      "startMs": 246523,
+      "endMs": 246681
+    },
+    {
+      "word": "正",
+      "startMs": 246681,
+      "endMs": 246839
+    },
+    {
+      "word": "确",
+      "startMs": 246839,
+      "endMs": 246997
+    },
+    {
+      "word": "只",
+      "startMs": 246997,
+      "endMs": 247155
+    },
+    {
+      "word": "产",
+      "startMs": 247155,
+      "endMs": 247313
+    },
+    {
+      "word": "出",
+      "startMs": 247313,
+      "endMs": 247471
+    },
+    {
+      "word": "一",
+      "startMs": 247471,
+      "endMs": 247629
+    },
+    {
+      "word": "份",
+      "startMs": 247629,
+      "endMs": 247786
+    },
+    {
+      "word": "数",
+      "startMs": 247786,
+      "endMs": 247944
+    },
+    {
+      "word": "据，",
+      "startMs": 247944,
+      "endMs": 248102
+    },
+    {
+      "word": "丢",
+      "startMs": 248497,
+      "endMs": 248655
+    },
+    {
+      "word": "给",
+      "startMs": 248655,
+      "endMs": 248813
+    },
+    {
+      "word": "现",
+      "startMs": 248813,
+      "endMs": 248971
+    },
+    {
+      "word": "成",
+      "startMs": 248971,
+      "endMs": 249129
+    },
+    {
+      "word": "组",
+      "startMs": 249129,
+      "endMs": 249287
+    },
+    {
+      "word": "件",
+      "startMs": 249287,
+      "endMs": 249445
+    },
+    {
+      "word": "渲。",
+      "startMs": 249445,
+      "endMs": 249603
+    },
+    {
+      "word": "关",
+      "startMs": 250458,
+      "endMs": 250616
+    },
+    {
+      "word": "键",
+      "startMs": 250616,
+      "endMs": 250774
+    },
+    {
+      "word": "是",
+      "startMs": 250774,
+      "endMs": 250932
+    },
+    {
+      "word": "Remotion",
+      "startMs": 250932,
+      "endMs": 251077
+    },
+    {
+      "word": "用",
+      "startMs": 251077,
+      "endMs": 251235
+    },
+    {
+      "word": "TypeScript",
+      "startMs": 251235,
+      "endMs": 251399
+    },
+    {
+      "word": "给",
+      "startMs": 251399,
+      "endMs": 251557
+    },
+    {
+      "word": "每",
+      "startMs": 251557,
+      "endMs": 251715
+    },
+    {
+      "word": "个",
+      "startMs": 251715,
+      "endMs": 251873
+    },
+    {
+      "word": "type",
+      "startMs": 251873,
+      "endMs": 251978
+    },
+    {
+      "word": "的",
+      "startMs": 251978,
+      "endMs": 252136
+    },
+    {
+      "word": "字",
+      "startMs": 252136,
+      "endMs": 252294
+    },
+    {
+      "word": "段",
+      "startMs": 252294,
+      "endMs": 252452
+    },
+    {
+      "word": "定",
+      "startMs": 252452,
+      "endMs": 252610
+    },
+    {
+      "word": "死",
+      "startMs": 252610,
+      "endMs": 252768
+    },
+    {
+      "word": "了",
+      "startMs": 252768,
+      "endMs": 252926
+    },
+    {
+      "word": "格",
+      "startMs": 252926,
+      "endMs": 253084
+    },
+    {
+      "word": "式，",
+      "startMs": 253084,
+      "endMs": 253242
+    },
+    {
+      "word": "AI",
+      "startMs": 253637,
+      "endMs": 253722
+    },
+    {
+      "word": "填",
+      "startMs": 253722,
+      "endMs": 253880
+    },
+    {
+      "word": "错",
+      "startMs": 253880,
+      "endMs": 254038
+    },
+    {
+      "word": "漏",
+      "startMs": 254038,
+      "endMs": 254196
+    },
+    {
+      "word": "填，",
+      "startMs": 254196,
+      "endMs": 254354
+    },
+    {
+      "word": "编",
+      "startMs": 254749,
+      "endMs": 254907
+    },
+    {
+      "word": "译",
+      "startMs": 254907,
+      "endMs": 255065
+    },
+    {
+      "word": "立",
+      "startMs": 255065,
+      "endMs": 255223
+    },
+    {
+      "word": "刻",
+      "startMs": 255223,
+      "endMs": 255381
+    },
+    {
+      "word": "报",
+      "startMs": 255381,
+      "endMs": 255538
+    },
+    {
+      "word": "错。",
+      "startMs": 255538,
+      "endMs": 255696
+    },
+    {
+      "word": "它",
+      "startMs": 256552,
+      "endMs": 256710
+    },
+    {
+      "word": "只",
+      "startMs": 256710,
+      "endMs": 256868
+    },
+    {
+      "word": "能",
+      "startMs": 256868,
+      "endMs": 257026
+    },
+    {
+      "word": "在",
+      "startMs": 257026,
+      "endMs": 257184
+    },
+    {
+      "word": "固",
+      "startMs": 257184,
+      "endMs": 257342
+    },
+    {
+      "word": "定",
+      "startMs": 257342,
+      "endMs": 257500
+    },
+    {
+      "word": "格",
+      "startMs": 257500,
+      "endMs": 257657
+    },
+    {
+      "word": "子",
+      "startMs": 257657,
+      "endMs": 257815
+    },
+    {
+      "word": "里",
+      "startMs": 257815,
+      "endMs": 257973
+    },
+    {
+      "word": "填",
+      "startMs": 257973,
+      "endMs": 258131
+    },
+    {
+      "word": "空，",
+      "startMs": 258131,
+      "endMs": 258289
+    },
+    {
+      "word": "乱",
+      "startMs": 258684,
+      "endMs": 258842
+    },
+    {
+      "word": "发",
+      "startMs": 258842,
+      "endMs": 259000
+    },
+    {
+      "word": "挥",
+      "startMs": 259000,
+      "endMs": 259158
+    },
+    {
+      "word": "空",
+      "startMs": 259158,
+      "endMs": 259316
+    },
+    {
+      "word": "间",
+      "startMs": 259316,
+      "endMs": 259474
+    },
+    {
+      "word": "压",
+      "startMs": 259474,
+      "endMs": 259632
+    },
+    {
+      "word": "到",
+      "startMs": 259632,
+      "endMs": 259790
+    },
+    {
+      "word": "最",
+      "startMs": 259790,
+      "endMs": 259948
+    },
+    {
+      "word": "小",
+      "startMs": 259948,
+      "endMs": 260105
+    },
+    {
+      "word": "这",
+      "startMs": 260105,
+      "endMs": 260263
+    },
+    {
+      "word": "就",
+      "startMs": 260263,
+      "endMs": 260421
+    },
+    {
+      "word": "是",
+      "startMs": 260421,
+      "endMs": 260579
+    },
+    {
+      "word": "没",
+      "startMs": 260579,
+      "endMs": 260737
+    },
+    {
+      "word": "基",
+      "startMs": 260737,
+      "endMs": 260895
+    },
+    {
+      "word": "础",
+      "startMs": 260895,
+      "endMs": 261053
+    },
+    {
+      "word": "也",
+      "startMs": 261053,
+      "endMs": 261211
+    },
+    {
+      "word": "能",
+      "startMs": 261211,
+      "endMs": 261369
+    },
+    {
+      "word": "让",
+      "startMs": 261369,
+      "endMs": 261527
+    },
+    {
+      "word": "它",
+      "startMs": 261527,
+      "endMs": 261685
+    },
+    {
+      "word": "干",
+      "startMs": 261685,
+      "endMs": 261843
+    },
+    {
+      "word": "得",
+      "startMs": 261843,
+      "endMs": 262001
+    },
+    {
+      "word": "住",
+      "startMs": 262001,
+      "endMs": 262159
+    },
+    {
+      "word": "的",
+      "startMs": 262159,
+      "endMs": 262317
+    },
+    {
+      "word": "原",
+      "startMs": 262317,
+      "endMs": 262475
+    },
+    {
+      "word": "因。",
+      "startMs": 262475,
+      "endMs": 262633
+    },
+    {
+      "word": "引",
+      "startMs": 262633,
+      "endMs": 262811
+    },
+    {
+      "word": "擎",
+      "startMs": 262811,
+      "endMs": 262989
+    },
+    {
+      "word": "里",
+      "startMs": 262989,
+      "endMs": 263168
+    },
+    {
+      "word": "还",
+      "startMs": 263168,
+      "endMs": 263346
+    },
+    {
+      "word": "有",
+      "startMs": 263346,
+      "endMs": 263525
+    },
+    {
+      "word": "个",
+      "startMs": 263525,
+      "endMs": 263703
+    },
+    {
+      "word": "3D",
+      "startMs": 263703,
+      "endMs": 263799
+    },
+    {
+      "word": "主",
+      "startMs": 263799,
+      "endMs": 263978
+    },
+    {
+      "word": "持",
+      "startMs": 263978,
+      "endMs": 264157
+    },
+    {
+      "word": "人",
+      "startMs": 264157,
+      "endMs": 264336
+    },
+    {
+      "word": "VRMAvatar，",
+      "startMs": 264336,
+      "endMs": 264510
+    },
+    {
+      "word": "定",
+      "startMs": 264957,
+      "endMs": 265135
+    },
+    {
+      "word": "位",
+      "startMs": 265135,
+      "endMs": 265314
+    },
+    {
+      "word": "先",
+      "startMs": 265314,
+      "endMs": 265492
+    },
+    {
+      "word": "说",
+      "startMs": 265492,
+      "endMs": 265671
+    },
+    {
+      "word": "死",
+      "startMs": 265671,
+      "endMs": 265849
+    },
+    {
+      "word": "它",
+      "startMs": 265849,
+      "endMs": 266028
+    },
+    {
+      "word": "只",
+      "startMs": 266028,
+      "endMs": 266206
+    },
+    {
+      "word": "是",
+      "startMs": 266206,
+      "endMs": 266385
+    },
+    {
+      "word": "陪",
+      "startMs": 266385,
+      "endMs": 266563
+    },
+    {
+      "word": "衬",
+      "startMs": 266563,
+      "endMs": 266742
+    },
+    {
+      "word": "串",
+      "startMs": 266742,
+      "endMs": 266920
+    },
+    {
+      "word": "场，",
+      "startMs": 266920,
+      "endMs": 267099
+    },
+    {
+      "word": "不",
+      "startMs": 267545,
+      "endMs": 267723
+    },
+    {
+      "word": "是",
+      "startMs": 267723,
+      "endMs": 267902
+    },
+    {
+      "word": "主",
+      "startMs": 267902,
+      "endMs": 268080
+    },
+    {
+      "word": "角。",
+      "startMs": 268080,
+      "endMs": 268259
+    },
+    {
+      "word": "整",
+      "startMs": 269226,
+      "endMs": 269404
+    },
+    {
+      "word": "体",
+      "startMs": 269404,
+      "endMs": 269583
+    },
+    {
+      "word": "渲",
+      "startMs": 269583,
+      "endMs": 269761
+    },
+    {
+      "word": "一",
+      "startMs": 269761,
+      "endMs": 269940
+    },
+    {
+      "word": "次，",
+      "startMs": 269940,
+      "endMs": 270118
+    },
+    {
+      "word": "再",
+      "startMs": 270564,
+      "endMs": 270743
+    },
+    {
+      "word": "按",
+      "startMs": 270743,
+      "endMs": 270921
+    },
+    {
+      "word": "场",
+      "startMs": 270921,
+      "endMs": 271100
+    },
+    {
+      "word": "景",
+      "startMs": 271100,
+      "endMs": 271278
+    },
+    {
+      "word": "裁",
+      "startMs": 271278,
+      "endMs": 271457
+    },
+    {
+      "word": "出",
+      "startMs": 271457,
+      "endMs": 271635
+    },
+    {
+      "word": "半",
+      "startMs": 271635,
+      "endMs": 271814
+    },
+    {
+      "word": "身、",
+      "startMs": 271814,
+      "endMs": 271992
+    },
+    {
+      "word": "全",
+      "startMs": 272215,
+      "endMs": 272394
+    },
+    {
+      "word": "身",
+      "startMs": 272394,
+      "endMs": 272572
+    },
+    {
+      "word": "景",
+      "startMs": 272572,
+      "endMs": 272751
+    },
+    {
+      "word": "别，",
+      "startMs": 272751,
+      "endMs": 272929
+    },
+    {
+      "word": "不",
+      "startMs": 273376,
+      "endMs": 273554
+    },
+    {
+      "word": "用",
+      "startMs": 273554,
+      "endMs": 273733
+    },
+    {
+      "word": "每",
+      "startMs": 273733,
+      "endMs": 273911
+    },
+    {
+      "word": "段",
+      "startMs": 273911,
+      "endMs": 274090
+    },
+    {
+      "word": "重",
+      "startMs": 274090,
+      "endMs": 274268
+    },
+    {
+      "word": "搭。",
+      "startMs": 274268,
+      "endMs": 274447
+    },
+    {
+      "word": "之",
+      "startMs": 275413,
+      "endMs": 275592
+    },
+    {
+      "word": "前",
+      "startMs": 275592,
+      "endMs": 275770
+    },
+    {
+      "word": "它",
+      "startMs": 275770,
+      "endMs": 275949
+    },
+    {
+      "word": "待",
+      "startMs": 275949,
+      "endMs": 276127
+    },
+    {
+      "word": "机",
+      "startMs": 276127,
+      "endMs": 276306
+    },
+    {
+      "word": "只",
+      "startMs": 276306,
+      "endMs": 276484
+    },
+    {
+      "word": "摆",
+      "startMs": 276484,
+      "endMs": 276663
+    },
+    {
+      "word": "髋",
+      "startMs": 276663,
+      "endMs": 276841
+    },
+    {
+      "word": "部，",
+      "startMs": 276841,
+      "endMs": 277019
+    },
+    {
+      "word": "整",
+      "startMs": 277465,
+      "endMs": 277644
+    },
+    {
+      "word": "条",
+      "startMs": 277644,
+      "endMs": 277822
+    },
+    {
+      "word": "腿",
+      "startMs": 277822,
+      "endMs": 278001
+    },
+    {
+      "word": "带",
+      "startMs": 278001,
+      "endMs": 278179
+    },
+    {
+      "word": "着",
+      "startMs": 278179,
+      "endMs": 278358
+    },
+    {
+      "word": "脚",
+      "startMs": 278358,
+      "endMs": 278536
+    },
+    {
+      "word": "像",
+      "startMs": 278536,
+      "endMs": 278715
+    },
+    {
+      "word": "钟",
+      "startMs": 278715,
+      "endMs": 278893
+    },
+    {
+      "word": "摆",
+      "startMs": 278893,
+      "endMs": 279072
+    },
+    {
+      "word": "一",
+      "startMs": 279072,
+      "endMs": 279250
+    },
+    {
+      "word": "样",
+      "startMs": 279250,
+      "endMs": 279429
+    },
+    {
+      "word": "甩",
+      "startMs": 279429,
+      "endMs": 279607
+    },
+    {
+      "word": "修",
+      "startMs": 279607,
+      "endMs": 279786
+    },
+    {
+      "word": "法",
+      "startMs": 279786,
+      "endMs": 279964
+    },
+    {
+      "word": "是",
+      "startMs": 279964,
+      "endMs": 280143
+    },
+    {
+      "word": "在",
+      "startMs": 280143,
+      "endMs": 280321
+    },
+    {
+      "word": "大",
+      "startMs": 280321,
+      "endMs": 280500
+    },
+    {
+      "word": "腿",
+      "startMs": 280500,
+      "endMs": 280678
+    },
+    {
+      "word": "上",
+      "startMs": 280678,
+      "endMs": 280857
+    },
+    {
+      "word": "把",
+      "startMs": 280857,
+      "endMs": 281035
+    },
+    {
+      "word": "髋",
+      "startMs": 281035,
+      "endMs": 281214
+    },
+    {
+      "word": "部",
+      "startMs": 281214,
+      "endMs": 281392
+    },
+    {
+      "word": "摆",
+      "startMs": 281392,
+      "endMs": 281571
+    },
+    {
+      "word": "动",
+      "startMs": 281571,
+      "endMs": 281749
+    },
+    {
+      "word": "反",
+      "startMs": 281749,
+      "endMs": 281928
+    },
+    {
+      "word": "向",
+      "startMs": 281928,
+      "endMs": 282106
+    },
+    {
+      "word": "抵",
+      "startMs": 282106,
+      "endMs": 282285
+    },
+    {
+      "word": "消，",
+      "startMs": 282285,
+      "endMs": 282463
+    },
+    {
+      "word": "让",
+      "startMs": 282909,
+      "endMs": 283088
+    },
+    {
+      "word": "脚",
+      "startMs": 283088,
+      "endMs": 283266
+    },
+    {
+      "word": "踩",
+      "startMs": 283266,
+      "endMs": 283445
+    },
+    {
+      "word": "原",
+      "startMs": 283445,
+      "endMs": 283623
+    },
+    {
+      "word": "地。",
+      "startMs": 283623,
+      "endMs": 283802
+    },
+    {
+      "word": "还",
+      "startMs": 284769,
+      "endMs": 284947
+    },
+    {
+      "word": "有",
+      "startMs": 284947,
+      "endMs": 285126
+    },
+    {
+      "word": "条",
+      "startMs": 285126,
+      "endMs": 285304
+    },
+    {
+      "word": "边",
+      "startMs": 285304,
+      "endMs": 285483
+    },
+    {
+      "word": "界",
+      "startMs": 285483,
+      "endMs": 285661
+    },
+    {
+      "word": "坚",
+      "startMs": 285661,
+      "endMs": 285840
+    },
+    {
+      "word": "决",
+      "startMs": 285840,
+      "endMs": 286018
+    },
+    {
+      "word": "不",
+      "startMs": 286018,
+      "endMs": 286197
+    },
+    {
+      "word": "做",
+      "startMs": 286197,
+      "endMs": 286375
+    },
+    {
+      "word": "对",
+      "startMs": 286375,
+      "endMs": 286554
+    },
+    {
+      "word": "口",
+      "startMs": 286554,
+      "endMs": 286732
+    },
+    {
+      "word": "型",
+      "startMs": 286732,
+      "endMs": 286911
+    },
+    {
+      "word": "数",
+      "startMs": 286911,
+      "endMs": 287089
+    },
+    {
+      "word": "字",
+      "startMs": 287089,
+      "endMs": 287268
+    },
+    {
+      "word": "人、",
+      "startMs": 287268,
+      "endMs": 287446
+    },
+    {
+      "word": "不",
+      "startMs": 287669,
+      "endMs": 287848
+    },
+    {
+      "word": "做",
+      "startMs": 287848,
+      "endMs": 288026
+    },
+    {
+      "word": "AI",
+      "startMs": 288026,
+      "endMs": 288123
+    },
+    {
+      "word": "假",
+      "startMs": 288123,
+      "endMs": 288301
+    },
+    {
+      "word": "界",
+      "startMs": 288301,
+      "endMs": 288480
+    },
+    {
+      "word": "面，",
+      "startMs": 288480,
+      "endMs": 288658
+    },
+    {
+      "word": "可",
+      "startMs": 289105,
+      "endMs": 289283
+    },
+    {
+      "word": "信",
+      "startMs": 289283,
+      "endMs": 289462
+    },
+    {
+      "word": "度",
+      "startMs": 289462,
+      "endMs": 289640
+    },
+    {
+      "word": "靠",
+      "startMs": 289640,
+      "endMs": 289819
+    },
+    {
+      "word": "真",
+      "startMs": 289819,
+      "endMs": 289997
+    },
+    {
+      "word": "实",
+      "startMs": 289997,
+      "endMs": 290176
+    },
+    {
+      "word": "录",
+      "startMs": 290176,
+      "endMs": 290354
+    },
+    {
+      "word": "屏。",
+      "startMs": 290354,
+      "endMs": 290533
+    },
+    {
+      "word": "搭",
+      "startMs": 290533,
+      "endMs": 290695
+    },
+    {
+      "word": "引",
+      "startMs": 290695,
+      "endMs": 290858
+    },
+    {
+      "word": "擎",
+      "startMs": 290858,
+      "endMs": 291021
+    },
+    {
+      "word": "唯",
+      "startMs": 291021,
+      "endMs": 291183
+    },
+    {
+      "word": "一",
+      "startMs": 291183,
+      "endMs": 291346
+    },
+    {
+      "word": "反",
+      "startMs": 291346,
+      "endMs": 291509
+    },
+    {
+      "word": "复",
+      "startMs": 291509,
+      "endMs": 291671
+    },
+    {
+      "word": "踩",
+      "startMs": 291671,
+      "endMs": 291834
+    },
+    {
+      "word": "的",
+      "startMs": 291834,
+      "endMs": 291997
+    },
+    {
+      "word": "坑",
+      "startMs": 291997,
+      "endMs": 292159
+    },
+    {
+      "word": "是",
+      "startMs": 292159,
+      "endMs": 292322
+    },
+    {
+      "word": "SSR。",
+      "startMs": 292322,
+      "endMs": 292420
+    },
+    {
+      "word": "看",
+      "startMs": 293301,
+      "endMs": 293464
+    },
+    {
+      "word": "左",
+      "startMs": 293464,
+      "endMs": 293627
+    },
+    {
+      "word": "边",
+      "startMs": 293627,
+      "endMs": 293789
+    },
+    {
+      "word": "组",
+      "startMs": 293789,
+      "endMs": 293952
+    },
+    {
+      "word": "件",
+      "startMs": 293952,
+      "endMs": 294115
+    },
+    {
+      "word": "最",
+      "startMs": 294115,
+      "endMs": 294277
+    },
+    {
+      "word": "外",
+      "startMs": 294277,
+      "endMs": 294440
+    },
+    {
+      "word": "层",
+      "startMs": 294440,
+      "endMs": 294603
+    },
+    {
+      "word": "直",
+      "startMs": 294603,
+      "endMs": 294765
+    },
+    {
+      "word": "接",
+      "startMs": 294765,
+      "endMs": 294928
+    },
+    {
+      "word": "读",
+      "startMs": 294928,
+      "endMs": 295091
+    },
+    {
+      "word": "了",
+      "startMs": 295091,
+      "endMs": 295254
+    },
+    {
+      "word": "window，",
+      "startMs": 295254,
+      "endMs": 295382
+    },
+    {
+      "word": "可",
+      "startMs": 295789,
+      "endMs": 295952
+    },
+    {
+      "word": "Remotion",
+      "startMs": 295952,
+      "endMs": 296101
+    },
+    {
+      "word": "打",
+      "startMs": 296101,
+      "endMs": 296263
+    },
+    {
+      "word": "包",
+      "startMs": 296263,
+      "endMs": 296426
+    },
+    {
+      "word": "阶",
+      "startMs": 296426,
+      "endMs": 296589
+    },
+    {
+      "word": "段",
+      "startMs": 296589,
+      "endMs": 296752
+    },
+    {
+      "word": "跑",
+      "startMs": 296752,
+      "endMs": 296914
+    },
+    {
+      "word": "在",
+      "startMs": 296914,
+      "endMs": 297077
+    },
+    {
+      "word": "Node",
+      "startMs": 297077,
+      "endMs": 297185
+    },
+    {
+      "word": "里、",
+      "startMs": 297185,
+      "endMs": 297348
+    },
+    {
+      "word": "还",
+      "startMs": 297551,
+      "endMs": 297714
+    },
+    {
+      "word": "没",
+      "startMs": 297714,
+      "endMs": 297877
+    },
+    {
+      "word": "进",
+      "startMs": 297877,
+      "endMs": 298039
+    },
+    {
+      "word": "浏",
+      "startMs": 298039,
+      "endMs": 298202
+    },
+    {
+      "word": "览",
+      "startMs": 298202,
+      "endMs": 298365
+    },
+    {
+      "word": "器，",
+      "startMs": 298365,
+      "endMs": 298527
+    },
+    {
+      "word": "没",
+      "startMs": 298934,
+      "endMs": 299097
+    },
+    {
+      "word": "有",
+      "startMs": 299097,
+      "endMs": 299259
+    },
+    {
+      "word": "window",
+      "startMs": 299259,
+      "endMs": 299388
+    },
+    {
+      "word": "这",
+      "startMs": 299388,
+      "endMs": 299551
+    },
+    {
+      "word": "对",
+      "startMs": 299551,
+      "endMs": 299714
+    },
+    {
+      "word": "象，",
+      "startMs": 299714,
+      "endMs": 299876
+    },
+    {
+      "word": "直",
+      "startMs": 300283,
+      "endMs": 300446
+    },
+    {
+      "word": "接",
+      "startMs": 300446,
+      "endMs": 300608
+    },
+    {
+      "word": "报",
+      "startMs": 300608,
+      "endMs": 300771
+    },
+    {
+      "word": "ReferenceError、",
+      "startMs": 300771,
+      "endMs": 300981
+    },
+    {
+      "word": "渲",
+      "startMs": 301184,
+      "endMs": 301347
+    },
+    {
+      "word": "染",
+      "startMs": 301347,
+      "endMs": 301510
+    },
+    {
+      "word": "红",
+      "startMs": 301510,
+      "endMs": 301672
+    },
+    {
+      "word": "屏。",
+      "startMs": 301672,
+      "endMs": 301835
+    },
+    {
+      "word": "看",
+      "startMs": 302716,
+      "endMs": 302879
+    },
+    {
+      "word": "右",
+      "startMs": 302879,
+      "endMs": 303042
+    },
+    {
+      "word": "边",
+      "startMs": 303042,
+      "endMs": 303204
+    },
+    {
+      "word": "怎",
+      "startMs": 303204,
+      "endMs": 303367
+    },
+    {
+      "word": "么",
+      "startMs": 303367,
+      "endMs": 303529
+    },
+    {
+      "word": "修",
+      "startMs": 303529,
+      "endMs": 303692
+    },
+    {
+      "word": "加",
+      "startMs": 303692,
+      "endMs": 303854
+    },
+    {
+      "word": "个",
+      "startMs": 303854,
+      "endMs": 304017
+    },
+    {
+      "word": "typeof",
+      "startMs": 304017,
+      "endMs": 304146
+    },
+    {
+      "word": "window",
+      "startMs": 304146,
+      "endMs": 304275
+    },
+    {
+      "word": "判",
+      "startMs": 304275,
+      "endMs": 304437
+    },
+    {
+      "word": "断，",
+      "startMs": 304437,
+      "endMs": 304600
+    },
+    {
+      "word": "是",
+      "startMs": 305007,
+      "endMs": 305169
+    },
+    {
+      "word": "浏",
+      "startMs": 305169,
+      "endMs": 305332
+    },
+    {
+      "word": "览",
+      "startMs": 305332,
+      "endMs": 305495
+    },
+    {
+      "word": "器",
+      "startMs": 305495,
+      "endMs": 305657
+    },
+    {
+      "word": "才",
+      "startMs": 305657,
+      "endMs": 305820
+    },
+    {
+      "word": "读，",
+      "startMs": 305820,
+      "endMs": 305983
+    },
+    {
+      "word": "不",
+      "startMs": 306389,
+      "endMs": 306552
+    },
+    {
+      "word": "是",
+      "startMs": 306552,
+      "endMs": 306715
+    },
+    {
+      "word": "就",
+      "startMs": 306715,
+      "endMs": 306877
+    },
+    {
+      "word": "给",
+      "startMs": 306877,
+      "endMs": 307040
+    },
+    {
+      "word": "默",
+      "startMs": 307040,
+      "endMs": 307203
+    },
+    {
+      "word": "认",
+      "startMs": 307203,
+      "endMs": 307365
+    },
+    {
+      "word": "值。",
+      "startMs": 307365,
+      "endMs": 307528
+    },
+    {
+      "word": "更",
+      "startMs": 308409,
+      "endMs": 308572
+    },
+    {
+      "word": "聪",
+      "startMs": 308572,
+      "endMs": 308735
+    },
+    {
+      "word": "明",
+      "startMs": 308735,
+      "endMs": 308897
+    },
+    {
+      "word": "的",
+      "startMs": 308897,
+      "endMs": 309060
+    },
+    {
+      "word": "不",
+      "startMs": 309060,
+      "endMs": 309223
+    },
+    {
+      "word": "是",
+      "startMs": 309223,
+      "endMs": 309385
+    },
+    {
+      "word": "每",
+      "startMs": 309385,
+      "endMs": 309548
+    },
+    {
+      "word": "次",
+      "startMs": 309548,
+      "endMs": 309711
+    },
+    {
+      "word": "盯",
+      "startMs": 309711,
+      "endMs": 309873
+    },
+    {
+      "word": "AI，",
+      "startMs": 309873,
+      "endMs": 309962
+    },
+    {
+      "word": "是",
+      "startMs": 310368,
+      "endMs": 310531
+    },
+    {
+      "word": "把",
+      "startMs": 310531,
+      "endMs": 310694
+    },
+    {
+      "word": "这",
+      "startMs": 310694,
+      "endMs": 310856
+    },
+    {
+      "word": "条",
+      "startMs": 310856,
+      "endMs": 311019
+    },
+    {
+      "word": "规",
+      "startMs": 311019,
+      "endMs": 311182
+    },
+    {
+      "word": "则",
+      "startMs": 311182,
+      "endMs": 311344
+    },
+    {
+      "word": "一",
+      "startMs": 311344,
+      "endMs": 311507
+    },
+    {
+      "word": "次",
+      "startMs": 311507,
+      "endMs": 311670
+    },
+    {
+      "word": "写",
+      "startMs": 311670,
+      "endMs": 311832
+    },
+    {
+      "word": "死",
+      "startMs": 311832,
+      "endMs": 311995
+    },
+    {
+      "word": "写",
+      "startMs": 311995,
+      "endMs": 312158
+    },
+    {
+      "word": "进.",
+      "startMs": 312158,
+      "endMs": 312320
+    },
+    {
+      "word": "cursor",
+      "startMs": 313202,
+      "endMs": 313330
+    },
+    {
+      "word": "rules",
+      "startMs": 313330,
+      "endMs": 313449
+    },
+    {
+      "word": "一",
+      "startMs": 313449,
+      "endMs": 313612
+    },
+    {
+      "word": "份",
+      "startMs": 313612,
+      "endMs": 313774
+    },
+    {
+      "word": "mdc",
+      "startMs": 313774,
+      "endMs": 313873
+    },
+    {
+      "word": "文",
+      "startMs": 313873,
+      "endMs": 314035
+    },
+    {
+      "word": "件，",
+      "startMs": 314035,
+      "endMs": 314198
+    },
+    {
+      "word": "指",
+      "startMs": 314605,
+      "endMs": 314767
+    },
+    {
+      "word": "向",
+      "startMs": 314767,
+      "endMs": 314930
+    },
+    {
+      "word": "引",
+      "startMs": 314930,
+      "endMs": 315093
+    },
+    {
+      "word": "擎",
+      "startMs": 315093,
+      "endMs": 315255
+    },
+    {
+      "word": "源",
+      "startMs": 315255,
+      "endMs": 315418
+    },
+    {
+      "word": "码",
+      "startMs": 315418,
+      "endMs": 315581
+    },
+    {
+      "word": "目",
+      "startMs": 315581,
+      "endMs": 315743
+    },
+    {
+      "word": "录，",
+      "startMs": 315743,
+      "endMs": 315906
+    },
+    {
+      "word": "以",
+      "startMs": 316313,
+      "endMs": 316475
+    },
+    {
+      "word": "后",
+      "startMs": 316475,
+      "endMs": 316638
+    },
+    {
+      "word": "AI",
+      "startMs": 316638,
+      "endMs": 316726
+    },
+    {
+      "word": "生",
+      "startMs": 316726,
+      "endMs": 316889
+    },
+    {
+      "word": "成",
+      "startMs": 316889,
+      "endMs": 317052
+    },
+    {
+      "word": "组",
+      "startMs": 317052,
+      "endMs": 317214
+    },
+    {
+      "word": "件",
+      "startMs": 317214,
+      "endMs": 317377
+    },
+    {
+      "word": "自",
+      "startMs": 317377,
+      "endMs": 317540
+    },
+    {
+      "word": "动",
+      "startMs": 317540,
+      "endMs": 317702
+    },
+    {
+      "word": "带",
+      "startMs": 317702,
+      "endMs": 317865
+    },
+    {
+      "word": "上，",
+      "startMs": 317865,
+      "endMs": 318028
+    },
+    {
+      "word": "不",
+      "startMs": 318434,
+      "endMs": 318597
+    },
+    {
+      "word": "用",
+      "startMs": 318597,
+      "endMs": 318760
+    },
+    {
+      "word": "人",
+      "startMs": 318760,
+      "endMs": 318922
+    },
+    {
+      "word": "盯。",
+      "startMs": 318922,
+      "endMs": 319085
+    },
+    {
+      "word": "这",
+      "startMs": 319966,
+      "endMs": 320129
+    },
+    {
+      "word": "就",
+      "startMs": 320129,
+      "endMs": 320292
+    },
+    {
+      "word": "是",
+      "startMs": 320292,
+      "endMs": 320454
+    },
+    {
+      "word": "Vibe",
+      "startMs": 320454,
+      "endMs": 320563
+    },
+    {
+      "word": "Coding",
+      "startMs": 320563,
+      "endMs": 320691
+    },
+    {
+      "word": "的",
+      "startMs": 320691,
+      "endMs": 320854
+    },
+    {
+      "word": "要",
+      "startMs": 320854,
+      "endMs": 321017
+    },
+    {
+      "word": "点",
+      "startMs": 321017,
+      "endMs": 321179
+    },
+    {
+      "word": "重",
+      "startMs": 321179,
+      "endMs": 321342
+    },
+    {
+      "word": "复",
+      "startMs": 321342,
+      "endMs": 321505
+    },
+    {
+      "word": "的",
+      "startMs": 321505,
+      "endMs": 321668
+    },
+    {
+      "word": "约",
+      "startMs": 321668,
+      "endMs": 321830
+    },
+    {
+      "word": "束",
+      "startMs": 321830,
+      "endMs": 321993
+    },
+    {
+      "word": "用",
+      "startMs": 321993,
+      "endMs": 322156
+    },
+    {
+      "word": "规",
+      "startMs": 322156,
+      "endMs": 322318
+    },
+    {
+      "word": "则",
+      "startMs": 322318,
+      "endMs": 322482
+    },
+    {
+      "word": "固",
+      "startMs": 322482,
+      "endMs": 322644
+    },
+    {
+      "word": "化",
+      "startMs": 322644,
+      "endMs": 322807
+    },
+    {
+      "word": "交",
+      "startMs": 322807,
+      "endMs": 322970
+    },
+    {
+      "word": "给",
+      "startMs": 322970,
+      "endMs": 323132
+    },
+    {
+      "word": "AI，",
+      "startMs": 323132,
+      "endMs": 323220
+    },
+    {
+      "word": "别",
+      "startMs": 323627,
+      "endMs": 323790
+    },
+    {
+      "word": "每",
+      "startMs": 323790,
+      "endMs": 323952
+    },
+    {
+      "word": "次",
+      "startMs": 323952,
+      "endMs": 324115
+    },
+    {
+      "word": "口",
+      "startMs": 324115,
+      "endMs": 324278
+    },
+    {
+      "word": "头",
+      "startMs": 324278,
+      "endMs": 324440
+    },
+    {
+      "word": "提",
+      "startMs": 324440,
+      "endMs": 324603
+    },
+    {
+      "word": "醒。",
+      "startMs": 324603,
+      "endMs": 324766
+    },
+    {
+      "word": "到",
+      "startMs": 324766,
+      "endMs": 324941
+    },
+    {
+      "word": "了",
+      "startMs": 324941,
+      "endMs": 325116
+    },
+    {
+      "word": "出",
+      "startMs": 325116,
+      "endMs": 325291
+    },
+    {
+      "word": "片，",
+      "startMs": 325291,
+      "endMs": 325467
+    },
+    {
+      "word": "人",
+      "startMs": 325905,
+      "endMs": 326080
+    },
+    {
+      "word": "不",
+      "startMs": 326080,
+      "endMs": 326256
+    },
+    {
+      "word": "用",
+      "startMs": 326256,
+      "endMs": 326431
+    },
+    {
+      "word": "写",
+      "startMs": 326431,
+      "endMs": 326606
+    },
+    {
+      "word": "代",
+      "startMs": 326606,
+      "endMs": 326782
+    },
+    {
+      "word": "码、",
+      "startMs": 326782,
+      "endMs": 326957
+    },
+    {
+      "word": "不",
+      "startMs": 327176,
+      "endMs": 327352
+    },
+    {
+      "word": "用",
+      "startMs": 327352,
+      "endMs": 327527
+    },
+    {
+      "word": "背",
+      "startMs": 327527,
+      "endMs": 327702
+    },
+    {
+      "word": "命",
+      "startMs": 327702,
+      "endMs": 327877
+    },
+    {
+      "word": "令，",
+      "startMs": 327877,
+      "endMs": 328053
+    },
+    {
+      "word": "让",
+      "startMs": 328491,
+      "endMs": 328666
+    },
+    {
+      "word": "AI",
+      "startMs": 328666,
+      "endMs": 328761
+    },
+    {
+      "word": "在",
+      "startMs": 328761,
+      "endMs": 328937
+    },
+    {
+      "word": "终",
+      "startMs": 328937,
+      "endMs": 329112
+    },
+    {
+      "word": "端",
+      "startMs": 329112,
+      "endMs": 329287
+    },
+    {
+      "word": "里",
+      "startMs": 329287,
+      "endMs": 329463
+    },
+    {
+      "word": "跑",
+      "startMs": 329463,
+      "endMs": 329638
+    },
+    {
+      "word": "就",
+      "startMs": 329638,
+      "endMs": 329813
+    },
+    {
+      "word": "行。",
+      "startMs": 329813,
+      "endMs": 329989
+    },
+    {
+      "word": "cd",
+      "startMs": 330938,
+      "endMs": 331033
+    },
+    {
+      "word": "进",
+      "startMs": 331033,
+      "endMs": 331209
+    },
+    {
+      "word": "remotion-composer，",
+      "startMs": 331209,
+      "endMs": 331468
+    },
+    {
+      "word": "npx",
+      "startMs": 331906,
+      "endMs": 332012
+    },
+    {
+      "word": "remotion",
+      "startMs": 332012,
+      "endMs": 332173
+    },
+    {
+      "word": "studio",
+      "startMs": 332173,
+      "endMs": 332312
+    },
+    {
+      "word": "可",
+      "startMs": 332312,
+      "endMs": 332487
+    },
+    {
+      "word": "视",
+      "startMs": 332487,
+      "endMs": 332662
+    },
+    {
+      "word": "化",
+      "startMs": 332662,
+      "endMs": 332838
+    },
+    {
+      "word": "调",
+      "startMs": 332838,
+      "endMs": 333013
+    },
+    {
+      "word": "试，",
+      "startMs": 333013,
+      "endMs": 333188
+    },
+    {
+      "word": "npx",
+      "startMs": 333627,
+      "endMs": 333733
+    },
+    {
+      "word": "remotion",
+      "startMs": 333733,
+      "endMs": 333893
+    },
+    {
+      "word": "render",
+      "startMs": 333893,
+      "endMs": 334032
+    },
+    {
+      "word": "直",
+      "startMs": 334032,
+      "endMs": 334207
+    },
+    {
+      "word": "接",
+      "startMs": 334207,
+      "endMs": 334383
+    },
+    {
+      "word": "出",
+      "startMs": 334383,
+      "endMs": 334558
+    },
+    {
+      "word": "片。",
+      "startMs": 334558,
+      "endMs": 334733
+    },
+    {
+      "word": "纯",
+      "startMs": 335683,
+      "endMs": 335858
+    },
+    {
+      "word": "命",
+      "startMs": 335858,
+      "endMs": 336034
+    },
+    {
+      "word": "令",
+      "startMs": 336034,
+      "endMs": 336209
+    },
+    {
+      "word": "行，",
+      "startMs": 336209,
+      "endMs": 336384
+    },
+    {
+      "word": "以",
+      "startMs": 336823,
+      "endMs": 336998
+    },
+    {
+      "word": "后",
+      "startMs": 336998,
+      "endMs": 337173
+    },
+    {
+      "word": "接",
+      "startMs": 337173,
+      "endMs": 337349
+    },
+    {
+      "word": "自",
+      "startMs": 337349,
+      "endMs": 337524
+    },
+    {
+      "word": "动",
+      "startMs": 337524,
+      "endMs": 337699
+    },
+    {
+      "word": "化、",
+      "startMs": 337699,
+      "endMs": 337875
+    },
+    {
+      "word": "上",
+      "startMs": 338094,
+      "endMs": 338269
+    },
+    {
+      "word": "云",
+      "startMs": 338269,
+      "endMs": 338444
+    },
+    {
+      "word": "都",
+      "startMs": 338444,
+      "endMs": 338619
+    },
+    {
+      "word": "方",
+      "startMs": 338619,
+      "endMs": 338794
+    },
+    {
+      "word": "便。",
+      "startMs": 338794,
+      "endMs": 338970
+    },
+    {
+      "word": "具",
+      "startMs": 339919,
+      "endMs": 340095
+    },
+    {
+      "word": "体",
+      "startMs": 340095,
+      "endMs": 340270
+    },
+    {
+      "word": "的",
+      "startMs": 340270,
+      "endMs": 340445
+    },
+    {
+      "word": "Composition",
+      "startMs": 340445,
+      "endMs": 340639
+    },
+    {
+      "word": "注",
+      "startMs": 340639,
+      "endMs": 340814
+    },
+    {
+      "word": "册",
+      "startMs": 340814,
+      "endMs": 340990
+    },
+    {
+      "word": "名，",
+      "startMs": 340990,
+      "endMs": 341165
+    },
+    {
+      "word": "录",
+      "startMs": 341603,
+      "endMs": 341778
+    },
+    {
+      "word": "制",
+      "startMs": 341778,
+      "endMs": 341954
+    },
+    {
+      "word": "前",
+      "startMs": 341954,
+      "endMs": 342129
+    },
+    {
+      "word": "让",
+      "startMs": 342129,
+      "endMs": 342304
+    },
+    {
+      "word": "AI",
+      "startMs": 342304,
+      "endMs": 342399
+    },
+    {
+      "word": "跑",
+      "startMs": 342399,
+      "endMs": 342575
+    },
+    {
+      "word": "一",
+      "startMs": 342575,
+      "endMs": 342750
+    },
+    {
+      "word": "次",
+      "startMs": 342750,
+      "endMs": 342925
+    },
+    {
+      "word": "studio",
+      "startMs": 342925,
+      "endMs": 343064
+    },
+    {
+      "word": "核",
+      "startMs": 343064,
+      "endMs": 343240
+    },
+    {
+      "word": "对",
+      "startMs": 343240,
+      "endMs": 343415
+    },
+    {
+      "word": "就",
+      "startMs": 343415,
+      "endMs": 343590
+    },
+    {
+      "word": "好。",
+      "startMs": 343590,
+      "endMs": 343766
+    },
+    {
+      "word": "回",
+      "startMs": 343766,
+      "endMs": 343927
+    },
+    {
+      "word": "头",
+      "startMs": 343927,
+      "endMs": 344088
+    },
+    {
+      "word": "看",
+      "startMs": 344088,
+      "endMs": 344250
+    },
+    {
+      "word": "就",
+      "startMs": 344250,
+      "endMs": 344411
+    },
+    {
+      "word": "两",
+      "startMs": 344411,
+      "endMs": 344572
+    },
+    {
+      "word": "步",
+      "startMs": 344572,
+      "endMs": 344734
+    },
+    {
+      "word": "用",
+      "startMs": 344734,
+      "endMs": 344895
+    },
+    {
+      "word": "Vibe",
+      "startMs": 344895,
+      "endMs": 345002
+    },
+    {
+      "word": "Coding",
+      "startMs": 345002,
+      "endMs": 345130
+    },
+    {
+      "word": "选",
+      "startMs": 345130,
+      "endMs": 345291
+    },
+    {
+      "word": "路",
+      "startMs": 345291,
+      "endMs": 345453
+    },
+    {
+      "word": "线，",
+      "startMs": 345453,
+      "endMs": 345615
+    },
+    {
+      "word": "让",
+      "startMs": 346017,
+      "endMs": 346179
+    },
+    {
+      "word": "AI",
+      "startMs": 346179,
+      "endMs": 346266
+    },
+    {
+      "word": "铺",
+      "startMs": 346266,
+      "endMs": 346428
+    },
+    {
+      "word": "信",
+      "startMs": 346428,
+      "endMs": 346590
+    },
+    {
+      "word": "息",
+      "startMs": 346590,
+      "endMs": 346751
+    },
+    {
+      "word": "列",
+      "startMs": 346751,
+      "endMs": 346912
+    },
+    {
+      "word": "坑、",
+      "startMs": 346912,
+      "endMs": 347074
+    },
+    {
+      "word": "人",
+      "startMs": 347275,
+      "endMs": 347437
+    },
+    {
+      "word": "对",
+      "startMs": 347437,
+      "endMs": 347598
+    },
+    {
+      "word": "着",
+      "startMs": 347598,
+      "endMs": 347759
+    },
+    {
+      "word": "约",
+      "startMs": 347759,
+      "endMs": 347921
+    },
+    {
+      "word": "束",
+      "startMs": 347921,
+      "endMs": 348082
+    },
+    {
+      "word": "拍",
+      "startMs": 348082,
+      "endMs": 348244
+    },
+    {
+      "word": "板",
+      "startMs": 348244,
+      "endMs": 348405
+    },
+    {
+      "word": "再",
+      "startMs": 348405,
+      "endMs": 348566
+    },
+    {
+      "word": "搭",
+      "startMs": 348566,
+      "endMs": 348728
+    },
+    {
+      "word": "引",
+      "startMs": 348728,
+      "endMs": 348889
+    },
+    {
+      "word": "擎，",
+      "startMs": 348889,
+      "endMs": 349050
+    },
+    {
+      "word": "填",
+      "startMs": 349454,
+      "endMs": 349615
+    },
+    {
+      "word": "配",
+      "startMs": 349615,
+      "endMs": 349777
+    },
+    {
+      "word": "置、",
+      "startMs": 349777,
+      "endMs": 349938
+    },
+    {
+      "word": "套",
+      "startMs": 350140,
+      "endMs": 350301
+    },
+    {
+      "word": "组",
+      "startMs": 350301,
+      "endMs": 350462
+    },
+    {
+      "word": "件、",
+      "startMs": 350462,
+      "endMs": 350624
+    },
+    {
+      "word": "规",
+      "startMs": 350826,
+      "endMs": 350987
+    },
+    {
+      "word": "则",
+      "startMs": 350987,
+      "endMs": 351148
+    },
+    {
+      "word": "兜",
+      "startMs": 351148,
+      "endMs": 351310
+    },
+    {
+      "word": "底、",
+      "startMs": 351310,
+      "endMs": 351471
+    },
+    {
+      "word": "AI",
+      "startMs": 351673,
+      "endMs": 351760
+    },
+    {
+      "word": "跑",
+      "startMs": 351760,
+      "endMs": 351922
+    },
+    {
+      "word": "渲",
+      "startMs": 351922,
+      "endMs": 352083
+    },
+    {
+      "word": "染。",
+      "startMs": 352083,
+      "endMs": 352244
+    },
+    {
+      "word": "你",
+      "startMs": 353118,
+      "endMs": 353280
+    },
+    {
+      "word": "要",
+      "startMs": 353280,
+      "endMs": 353441
+    },
+    {
+      "word": "会",
+      "startMs": 353441,
+      "endMs": 353602
+    },
+    {
+      "word": "的",
+      "startMs": 353602,
+      "endMs": 353764
+    },
+    {
+      "word": "不",
+      "startMs": 353764,
+      "endMs": 353925
+    },
+    {
+      "word": "是",
+      "startMs": 353925,
+      "endMs": 354087
+    },
+    {
+      "word": "写",
+      "startMs": 354087,
+      "endMs": 354248
+    },
+    {
+      "word": "代",
+      "startMs": 354248,
+      "endMs": 354409
+    },
+    {
+      "word": "码，",
+      "startMs": 354409,
+      "endMs": 354571
+    },
+    {
+      "word": "是",
+      "startMs": 354974,
+      "endMs": 355136
+    },
+    {
+      "word": "讲",
+      "startMs": 355136,
+      "endMs": 355297
+    },
+    {
+      "word": "清",
+      "startMs": 355297,
+      "endMs": 355458
+    },
+    {
+      "word": "需",
+      "startMs": 355458,
+      "endMs": 355620
+    },
+    {
+      "word": "求、",
+      "startMs": 355620,
+      "endMs": 355781
+    },
+    {
+      "word": "看",
+      "startMs": 355983,
+      "endMs": 356144
+    },
+    {
+      "word": "住",
+      "startMs": 356144,
+      "endMs": 356305
+    },
+    {
+      "word": "坑、",
+      "startMs": 356305,
+      "endMs": 356467
+    },
+    {
+      "word": "把",
+      "startMs": 356669,
+      "endMs": 356830
+    },
+    {
+      "word": "规",
+      "startMs": 356830,
+      "endMs": 356991
+    },
+    {
+      "word": "则",
+      "startMs": 356991,
+      "endMs": 357152
+    },
+    {
+      "word": "固",
+      "startMs": 357152,
+      "endMs": 357313
+    },
+    {
+      "word": "化",
+      "startMs": 357313,
+      "endMs": 357475
+    },
+    {
+      "word": "给",
+      "startMs": 357475,
+      "endMs": 357636
+    },
+    {
+      "word": "AI",
+      "startMs": 357636,
+      "endMs": 357724
+    },
+    {
+      "word": "没",
+      "startMs": 357724,
+      "endMs": 357885
+    },
+    {
+      "word": "基",
+      "startMs": 357885,
+      "endMs": 358046
+    },
+    {
+      "word": "础",
+      "startMs": 358046,
+      "endMs": 358208
+    },
+    {
+      "word": "也",
+      "startMs": 358208,
+      "endMs": 358369
+    },
+    {
+      "word": "能",
+      "startMs": 358369,
+      "endMs": 358530
+    },
+    {
+      "word": "复",
+      "startMs": 358530,
+      "endMs": 358692
+    },
+    {
+      "word": "制。",
+      "startMs": 358692,
+      "endMs": 358853
+    },
+    {
+      "word": "下",
+      "startMs": 359727,
+      "endMs": 359889
+    },
+    {
+      "word": "期",
+      "startMs": 359889,
+      "endMs": 360050
+    },
+    {
+      "word": "EP03，",
+      "startMs": 360050,
+      "endMs": 360158
+    },
+    {
+      "word": "用",
+      "startMs": 360561,
+      "endMs": 360722
+    },
+    {
+      "word": "Whisper",
+      "startMs": 360722,
+      "endMs": 360860
+    },
+    {
+      "word": "让",
+      "startMs": 360860,
+      "endMs": 361022
+    },
+    {
+      "word": "字",
+      "startMs": 361022,
+      "endMs": 361183
+    },
+    {
+      "word": "幕",
+      "startMs": 361183,
+      "endMs": 361344
+    },
+    {
+      "word": "踩",
+      "startMs": 361344,
+      "endMs": 361506
+    },
+    {
+      "word": "着",
+      "startMs": 361506,
+      "endMs": 361667
+    },
+    {
+      "word": "话",
+      "startMs": 361667,
+      "endMs": 361828
+    },
+    {
+      "word": "音",
+      "startMs": 361828,
+      "endMs": 361990
+    },
+    {
+      "word": "跳。",
+      "startMs": 361990,
+      "endMs": 362151
+    },
+    {
+      "word": "关",
+      "startMs": 363025,
+      "endMs": 363187
+    },
+    {
+      "word": "注",
+      "startMs": 363187,
+      "endMs": 363348
+    },
+    {
+      "word": "别",
+      "startMs": 363348,
+      "endMs": 363509
+    },
+    {
+      "word": "错",
+      "startMs": 363509,
+      "endMs": 363671
+    },
+    {
+      "word": "过。",
+      "startMs": 363671,
+      "endMs": 363832
     }
   ],
-  "avatar": {
-    "enabled": true,
-    "default": "bust-right"
+  "audio": {
+    "narration": {
+      "src": "ep02-narration.wav",
+      "volume": 1
+    }
   }
 }
