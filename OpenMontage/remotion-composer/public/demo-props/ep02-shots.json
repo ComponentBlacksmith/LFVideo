@@ -719,5 +719,10 @@
     }
   ],
   "overlays": [],
-  "captions": []
+  "captions": [],
+  "avatar": {
+    "enabled": true,
+    "layer": "background",
+    "clip": "avatars/Sitting.fbx"
+  }
 }

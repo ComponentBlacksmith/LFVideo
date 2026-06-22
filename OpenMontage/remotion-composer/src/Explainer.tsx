@@ -332,6 +332,14 @@ interface AvatarConfig extends AvatarSceneConfig {
   default?: string;
   /** Optional per-episode "scene type → preset" overrides of the built-ins. */
   byType?: Record<string, string>;
+  /**
+   * "overlay" (default): host is a cropped corner/bust placed over the UI.
+   * "background": host fills the whole canvas as a bottom layer and the UI
+   * floats on top with transparent scene backgrounds.
+   */
+  layer?: "overlay" | "background";
+  /** Mixamo FBX clip (public/ relative path) driving the host's body. */
+  clip?: string;
 }
 
 export interface ExplainerProps {
@@ -579,6 +587,14 @@ interface SceneContext {
   bgColor: string;
   textColor: string;
   accent: string;
+  /** When true, scenes drop their full-bleed backdrop so a layer below shows through. */
+  transparentBg: boolean;
+}
+
+// Background variant for custom-template scenes, forced transparent when the
+// host is rendered as a full-frame background layer.
+function sceneBg(ctx: SceneContext): any {
+  return ctx.transparentBg ? "transparent" : ctx.cut.background;
 }
 
 interface SceneEntry {
@@ -736,36 +752,36 @@ const SCENES: SceneEntry[] = [
   {
     type: "intro_scene",
     guard: (c) => !!c.title,
-    render: ({ cut }) => (
-      <IntroScene title={cut.title!} subtitle={cut.subtitle} background={cut.background} />
+    render: (ctx) => (
+      <IntroScene title={ctx.cut.title!} subtitle={ctx.cut.subtitle} background={sceneBg(ctx)} />
     ),
   },
   {
     type: "outro_scene",
     guard: (c) => !!c.headline,
-    render: ({ cut }) => (
-      <OutroScene headline={cut.headline!} cta={cut.cta} background={cut.background} />
+    render: (ctx) => (
+      <OutroScene headline={ctx.cut.headline!} cta={ctx.cut.cta} background={sceneBg(ctx)} />
     ),
   },
   {
     type: "concept_scene",
     guard: (c) => !!c.title && !!c.items,
-    render: ({ cut }) => (
-      <ConceptScene eyebrow={cut.eyebrow} title={cut.title!} items={cut.items!} background={cut.background} />
+    render: (ctx) => (
+      <ConceptScene eyebrow={ctx.cut.eyebrow} title={ctx.cut.title!} items={ctx.cut.items!} background={sceneBg(ctx)} />
     ),
   },
   {
     type: "timeline_scene",
     guard: (c) => !!c.title && !!c.events,
-    render: ({ cut }) => (
-      <TimelineScene eyebrow={cut.eyebrow} title={cut.title!} events={cut.events!} background={cut.background} />
+    render: (ctx) => (
+      <TimelineScene eyebrow={ctx.cut.eyebrow} title={ctx.cut.title!} events={ctx.cut.events!} background={sceneBg(ctx)} />
     ),
   },
   {
     type: "table_scene",
     guard: (c) => !!c.title && !!c.headers && !!c.rows,
-    render: ({ cut }) => (
-      <TableScene eyebrow={cut.eyebrow} title={cut.title!} headers={cut.headers!} rows={cut.rows!} background={cut.background} />
+    render: (ctx) => (
+      <TableScene eyebrow={ctx.cut.eyebrow} title={ctx.cut.title!} headers={ctx.cut.headers!} rows={ctx.cut.rows!} background={sceneBg(ctx)} />
     ),
   },
   {
@@ -790,7 +806,11 @@ const SCENES: SceneEntry[] = [
   },
 ];
 
-const SceneRenderer: React.FC<{ cut: Cut; theme: ThemeConfig }> = ({ cut, theme }) => {
+const SceneRenderer: React.FC<{
+  cut: Cut;
+  theme: ThemeConfig;
+  transparentBg?: boolean;
+}> = ({ cut, theme, transparentBg = false }) => {
   // Wrap component with background video or image if specified
   const maybeWrapWithBg = (element: React.ReactElement) => {
     if (cut.backgroundVideo) {
@@ -821,13 +841,15 @@ const SceneRenderer: React.FC<{ cut: Cut; theme: ThemeConfig }> = ({ cut, theme 
   // Use transparent bg so the animated gradient background shows through
   // When no explicit backgroundColor on the cut, inherit from theme
   const rawBg = (cut.backgroundImage || cut.backgroundVideo) ? "transparent" : (cut.backgroundColor || theme.surfaceColor);
-  const bgColor = (rawBg === theme.backgroundColor || rawBg === "#0F172A" || rawBg === "#0f172a") ? "transparent" : rawBg;
+  const bgColor = transparentBg
+    ? "transparent"
+    : (rawBg === theme.backgroundColor || rawBg === "#0F172A" || rawBg === "#0f172a") ? "transparent" : rawBg;
   const textColor = cut.color || theme.textColor;
   const accent = cut.accentColor || theme.accentColor;
 
   // Dispatch through the ordered scene registry (see SCENES above). The first
   // entry whose `type` matches and whose `guard` passes renders the scene.
-  const sceneCtx: SceneContext = { cut, theme, bgColor, textColor, accent };
+  const sceneCtx: SceneContext = { cut, theme, bgColor, textColor, accent, transparentBg };
   const sceneEntry = SCENES.find(
     (s) => s.type === cut.type && (!s.guard || s.guard(cut))
   );
@@ -909,10 +931,19 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
   // Resolve theme from props — playbook name, theme name, or custom themeConfig
   const theme = resolveTheme(props as Record<string, unknown>);
 
+  // Full-frame digital host as the bottom layer, with the UI floating on top.
+  const bgAvatar = !!avatar?.enabled && avatar?.layer === "background";
+
   return (
     <AbsoluteFill style={{ background: theme.backgroundColor, fontFamily: theme.headingFont || fontFamily }}>
       {/* Layer 0: Animated gradient background — driven by theme */}
       <AnimatedBackground theme={theme} />
+
+      {/* Layer 0.5: Full-frame digital host (background mode) — sits above the
+          gradient, below the UI, which renders with transparent scene bgs. */}
+      {bgAvatar && (
+        <VRMAvatar background clipUrl={avatar?.clip} captions={captions} />
+      )}
 
       {/* Layer 1: Visual scenes */}
       {cuts.map((cut) => {
@@ -921,7 +952,7 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
 
         return (
           <Sequence key={cut.id} from={from} durationInFrames={duration}>
-            <SceneRenderer cut={cut} theme={theme} />
+            <SceneRenderer cut={cut} theme={theme} transparentBg={bgAvatar} />
           </Sequence>
         );
       })}
@@ -940,8 +971,8 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
         );
       })}
 
-      {/* Layer 2.5: Digital host — scene-aware framing via per-cut presets */}
-      {avatar?.enabled && (
+      {/* Layer 2.5: Digital host (overlay mode) — scene-aware framing via per-cut presets */}
+      {avatar?.enabled && !bgAvatar && (
         <VRMAvatar
           captions={captions}
           timeline={cuts.map<AvatarTimelineEntry>((cut) => ({

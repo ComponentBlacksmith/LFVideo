@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame, interpolate} from 'remotion';
 import {COLORS} from '../theme/tokens';
 
-export type BackgroundVariant = 'gradient' | 'grid' | 'particles';
+export type BackgroundVariant = 'gradient' | 'grid' | 'particles' | 'transparent';
 
 interface Props {
 	variant?: BackgroundVariant;
@@ -166,6 +166,8 @@ export const AnimatedBackground: React.FC<Props> = ({
 }) => {
 	return (
 		<AbsoluteFill>
+			{/* 'transparent' draws no backdrop so a layer below (e.g. a full-frame
+			   digital host) shows through; only the children render. */}
 			{variant === 'gradient' && <MeshGradientBg />}
 			{variant === 'grid' && <GridBg />}
 			{variant === 'particles' && <ParticlesBg />}

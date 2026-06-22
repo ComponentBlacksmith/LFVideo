@@ -19,6 +19,7 @@ import {
   VRMHumanBoneName,
 } from "@pixiv/three-vrm";
 import { pinyin } from "pinyin-pro";
+import { loadMixamoAnimation } from "./loadMixamoAnimation";
 import type { WordCaption } from "./CaptionOverlay";
 import {
   AvatarPreset,
@@ -156,12 +157,19 @@ interface VRMModelProps {
   modelY?: number;
   /** horizontal offset; positive shifts the host toward the right edge */
   modelX?: number;
+  /**
+   * Optional Mixamo FBX clip (public/ relative path). When set, the body is
+   * driven by this retargeted clip instead of the hand-authored procedural
+   * idle; lip-sync / blink / expressions still run on top.
+   */
+  clipUrl?: string;
 }
 
 const VRMModel: React.FC<VRMModelProps> = ({
   captions,
   modelY = -0.95,
   modelX = 0,
+  clipUrl,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -173,6 +181,9 @@ const VRMModel: React.FC<VRMModelProps> = ({
   const [vrm, setVrm] = useState<VRM | null>(null);
   const [handle] = useState(() => delayRender("Loading host-avatar.vrm"));
   const continued = useRef(false);
+  // Mixamo clip playback (deterministic: driven by mixer.setTime per frame).
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
+  const clipDurationRef = useRef(0);
 
   useEffect(() => {
     const loader = new GLTFLoader();
@@ -180,7 +191,7 @@ const VRMModel: React.FC<VRMModelProps> = ({
     let disposed = false;
     loader.load(
       staticFile("avatars/host-avatar.vrm"),
-      (gltf) => {
+      async (gltf) => {
         if (disposed) return;
         const loaded = gltf.userData.vrm as VRM;
         // Make VRM0 models face +Z (toward the camera).
@@ -190,6 +201,21 @@ const VRMModel: React.FC<VRMModelProps> = ({
           obj.frustumCulled = false;
         });
         loaded.scene.updateMatrixWorld(true);
+
+        if (clipUrl) {
+          try {
+            const clip = await loadMixamoAnimation(staticFile(clipUrl), loaded);
+            if (disposed) return;
+            const mixer = new THREE.AnimationMixer(loaded.scene);
+            const action = mixer.clipAction(clip);
+            action.play();
+            mixerRef.current = mixer;
+            clipDurationRef.current = clip.duration;
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error("Failed to load Mixamo clip:", err);
+          }
+        }
         setVrm(loaded);
       },
       undefined,
@@ -203,7 +229,7 @@ const VRMModel: React.FC<VRMModelProps> = ({
     return () => {
       disposed = true;
     };
-  }, [handle]);
+  }, [handle, clipUrl]);
 
 
   // Drive the avatar purely from the current frame (no useFrame / wall clock).
@@ -246,10 +272,20 @@ const VRMModel: React.FC<VRMModelProps> = ({
       );
     }
 
+    const mixer = mixerRef.current;
+    if (mixer) {
+      // Body driven by the retargeted Mixamo clip. setTime keeps playback
+      // frame-deterministic; wrap into the clip duration so it loops.
+      const dur = clipDurationRef.current || 1;
+      mixer.setTime(((timeSec % dur) + dur) % dur);
+    }
+
     const h = vrm.humanoid;
 
-    // Weight shift through the hips with a soft counter-rotation in the spine
-    // (contrapposto) so the idle never looks rigid.
+    // Procedural idle — only when no Mixamo clip drives the body. Weight shift
+    // through the hips with a soft counter-rotation in the spine (contrapposto)
+    // so the idle never looks rigid.
+    if (!mixer) {
     const hipYaw = sway * 0.05 + sway2 * 0.03;
     const hipRoll = sway * 0.02;
     const hips = h.getNormalizedBoneNode(VRMHumanBoneName.Hips);
@@ -328,6 +364,7 @@ const VRMModel: React.FC<VRMModelProps> = ({
         Math.sin((2 * Math.PI * timeSec) / 5.5) * 0.02 +
         Math.sin((2 * Math.PI * timeSec) / 3.2) * talk * 0.03;
     }
+    }
 
     // Apply expression morphs + skeleton update for this frame. Keep spring
     // bones at rest so hair does not introduce non-deterministic jitter.
@@ -375,7 +412,23 @@ export interface VRMAvatarProps {
   timeline?: AvatarTimelineEntry[];
   /** Crossfade/move duration at each cut boundary, in frames. */
   transitionFrames?: number;
+  /** Optional Mixamo FBX clip (public/ relative path) to drive the body. */
+  clipUrl?: string;
+  /**
+   * Render the host as a full-frame background layer (the whole canvas) instead
+   * of a cropped corner/bust overlay. Used when the Remotion UI floats on top
+   * of the digital host.
+   */
+  background?: boolean;
+  /** Camera distance for background mode (smaller = closer). */
+  bgCameraZ?: number;
+  /** Model vertical offset for background mode. */
+  bgModelY?: number;
 }
+
+// Background-mode framing for a seated host centred in the landscape canvas.
+const BG_CAMERA_Z = 2.4;
+const BG_MODEL_Y = -1.35;
 
 function easeInOut(t: number): number {
   return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -385,9 +438,39 @@ export const VRMAvatar: React.FC<VRMAvatarProps> = ({
   captions,
   timeline,
   transitionFrames = 9,
+  clipUrl,
+  background = false,
+  bgCameraZ = BG_CAMERA_Z,
+  bgModelY = BG_MODEL_Y,
 }) => {
   const { width, height } = useVideoConfig();
   const frame = useCurrentFrame();
+
+  // Full-frame background layer: the host fills the canvas and the Remotion UI
+  // floats above it (zIndex 0 so it sits at the very bottom).
+  if (background) {
+    return (
+      <AbsoluteFill style={{ pointerEvents: "none", zIndex: 0 }}>
+        <ThreeCanvas
+          width={width}
+          height={height}
+          style={{ background: "transparent" }}
+          gl={{ alpha: true, preserveDrawingBuffer: true }}
+          camera={{
+            fov: 30,
+            near: 0.1,
+            far: 20,
+            position: [0, 0, bgCameraZ],
+          }}
+        >
+          <ambientLight intensity={1.1} />
+          <directionalLight position={[1, 2, 2]} intensity={1.4} />
+          <directionalLight position={[-1.5, 1, 1.5]} intensity={0.6} />
+          <VRMModel captions={captions} modelX={0} modelY={bgModelY} clipUrl={clipUrl} />
+        </ThreeCanvas>
+      </AbsoluteFill>
+    );
+  }
 
   const canonH = height;
   const canonW = Math.round(height * CANON_ASPECT);
@@ -460,7 +543,7 @@ export const VRMAvatar: React.FC<VRMAvatarProps> = ({
             <ambientLight intensity={1.1} />
             <directionalLight position={[1, 2, 2]} intensity={1.4} />
             <directionalLight position={[-1.5, 1, 1.5]} intensity={0.6} />
-            <VRMModel captions={captions} modelX={0} modelY={CANON_MODEL_Y} />
+            <VRMModel captions={captions} modelX={0} modelY={CANON_MODEL_Y} clipUrl={clipUrl} />
           </ThreeCanvas>
         </div>
       </div>

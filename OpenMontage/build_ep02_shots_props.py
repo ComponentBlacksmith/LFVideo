@@ -39,6 +39,14 @@ OUTPUT_JSON = COMPOSER_DIR / "public" / "demo-props" / "ep02-shots.json"
 FPS = 30
 THEME = "flat-motion-graphics"
 
+# Digital host as a full-frame background layer (Mixamo clip drives the body);
+# the Remotion UI floats on top with transparent scene backgrounds.
+AVATAR = {
+    "enabled": True,
+    "layer": "background",
+    "clip": "avatars/Sitting.fbx",
+}
+
 TEMPLATE_TO_TYPE = {
     "@IntroScene": "intro_scene",
     "@ConceptScene": "concept_scene",
@@ -218,6 +226,7 @@ def main() -> int:
         "cuts": cuts,
         "overlays": [],
         "captions": [],
+        "avatar": AVATAR,
     }
     OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
