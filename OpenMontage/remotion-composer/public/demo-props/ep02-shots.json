@@ -1,0 +1,723 @@
+{
+  "theme": "flat-motion-graphics",
+  "cuts": [
+    {
+      "id": "shot-1.1",
+      "type": "intro_scene",
+      "source": "",
+      "in_seconds": 0.0,
+      "out_seconds": 10.0,
+      "title": "用 Vibe Coding 搭一套自动出片的渲染引擎",
+      "subtitle": "把视频写成代码，让 AI 按配置自动出片",
+      "background": "particles"
+    },
+    {
+      "id": "shot-1.2",
+      "type": "intro_scene",
+      "source": "",
+      "in_seconds": 10.0,
+      "out_seconds": 22.0,
+      "title": "AI 强在啃文本和代码 → 渲染就该数据驱动",
+      "subtitle": "没前后端基础，全程用大白话指挥 AI",
+      "background": "grid"
+    },
+    {
+      "id": "shot-1.3",
+      "type": "intro_scene",
+      "source": "",
+      "in_seconds": 22.0,
+      "out_seconds": 30.0,
+      "title": "三步：找路径 · 选型 · 落地",
+      "subtitle": "让 AI 找路 → 对约束选型 → 落地出片",
+      "background": "gradient"
+    },
+    {
+      "id": "shot-2.1",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 30.0,
+      "out_seconds": 43.0,
+      "eyebrow": "找技术路径",
+      "title": "把选择题丢给 AI：有哪些现成路子？",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "NOT",
+          "title": "不埋头啃文档",
+          "desc": "不自己从零调研，直接把选择题交给 AI",
+          "icon": "🙅"
+        },
+        {
+          "label": "ASK",
+          "title": "一句话需求",
+          "desc": "想把视频写成代码自动出片，有哪些现成路子？",
+          "icon": "💬"
+        }
+      ]
+    },
+    {
+      "id": "shot-2.2",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 43.0,
+      "out_seconds": 57.0,
+      "eyebrow": "六条路线",
+      "title": "AI 一口气摆了六条",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "WEB",
+          "title": "Remotion",
+          "desc": "网页那套：React + CSS 渲染",
+          "icon": "🌐"
+        },
+        {
+          "label": "MATH",
+          "title": "Manim",
+          "desc": "画数学公式 / 几何",
+          "icon": "📐"
+        },
+        {
+          "label": "MORE",
+          "title": "MoviePy · FFmpeg · Motion Canvas · PixiJS",
+          "desc": "拼接转码 + 时序/粒子动画，补全六条",
+          "icon": "➕"
+        }
+      ]
+    },
+    {
+      "id": "shot-2.3",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 57.0,
+      "out_seconds": 72.0,
+      "eyebrow": "同一个内核",
+      "title": "代码描述画面 → 编译成帧 → 合成视频",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "DESC",
+          "title": "代码描述画面",
+          "desc": "拿代码/数据把画面声明出来",
+          "icon": "📄"
+        },
+        {
+          "label": "COMPILE",
+          "title": "编译成一帧帧",
+          "desc": "渲染器算出每个时刻的画面",
+          "icon": "⚙️"
+        },
+        {
+          "label": "COMPOSE",
+          "title": "合成视频",
+          "desc": "帧序列合成成片",
+          "icon": "🎬"
+        }
+      ]
+    },
+    {
+      "id": "shot-2.4",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 72.0,
+      "out_seconds": 80.0,
+      "eyebrow": "本步小结",
+      "title": "这一步只摆路，先不评好坏",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "LIST",
+          "title": "只罗列",
+          "desc": "先把候选方案摆全",
+          "icon": "📋"
+        },
+        {
+          "label": "LATER",
+          "title": "不评判",
+          "desc": "好坏留到下一步选型再说",
+          "icon": "⏭️"
+        }
+      ]
+    },
+    {
+      "id": "shot-3.1",
+      "type": "table_scene",
+      "source": "",
+      "in_seconds": 80.0,
+      "out_seconds": 95.0,
+      "eyebrow": "判断层 = 边界，非中立百科",
+      "title": "选型最容易翻车：看清每条路何时不好使",
+      "background": "grid",
+      "headers": [
+        "方案",
+        "适用场景",
+        "已知坑"
+      ],
+      "rows": [
+        {
+          "feature": "Remotion",
+          "cursor": "前端栈、复杂排版、跨期复用",
+          "windsurf": "顶层读 window 崩；BUSL 授权",
+          "win": "neutral"
+        },
+        {
+          "feature": "Motion Canvas",
+          "cursor": "代码演示、精确时序",
+          "windsurf": "生态小、模板自建",
+          "win": "neutral"
+        },
+        {
+          "feature": "Manim",
+          "cursor": "数学/公式可视化",
+          "windsurf": "排版弱、渲染慢",
+          "win": "neutral"
+        },
+        {
+          "feature": "MoviePy",
+          "cursor": "简单拼接、音轨闪避",
+          "windsurf": "自适应排版繁琐、吃内存",
+          "win": "neutral"
+        },
+        {
+          "feature": "FFmpeg",
+          "cursor": "批量转码、字幕烧录",
+          "windsurf": "命令晦涩难调试",
+          "win": "neutral"
+        }
+      ]
+    },
+    {
+      "id": "shot-3.2",
+      "type": "table_scene",
+      "source": "",
+      "in_seconds": 95.0,
+      "out_seconds": 113.0,
+      "eyebrow": "适用场景 + 会咬人的坑",
+      "title": "六条路全列出来（先看 Remotion）",
+      "background": "grid",
+      "headers": [
+        "方案",
+        "适用场景",
+        "已知坑"
+      ],
+      "rows": [
+        {
+          "feature": "Remotion",
+          "cursor": "前端栈、复杂排版、跨期复用",
+          "windsurf": "顶层读 window 崩；BUSL 授权",
+          "win": "neutral"
+        },
+        {
+          "feature": "Motion Canvas",
+          "cursor": "代码演示、精确时序",
+          "windsurf": "生态小、模板自建",
+          "win": "neutral"
+        },
+        {
+          "feature": "Manim",
+          "cursor": "数学/公式可视化",
+          "windsurf": "排版弱、渲染慢",
+          "win": "neutral"
+        },
+        {
+          "feature": "MoviePy",
+          "cursor": "简单拼接、音轨闪避",
+          "windsurf": "自适应排版繁琐、吃内存",
+          "win": "neutral"
+        },
+        {
+          "feature": "FFmpeg",
+          "cursor": "批量转码、字幕烧录",
+          "windsurf": "命令晦涩难调试",
+          "win": "neutral"
+        }
+      ],
+      "highlightCell": "1-3"
+    },
+    {
+      "id": "shot-3.3",
+      "type": "table_scene",
+      "source": "",
+      "in_seconds": 113.0,
+      "out_seconds": 128.0,
+      "eyebrow": "其余几条的硬伤",
+      "title": "Manim 慢 / MoviePy 繁琐 / FFmpeg 晦涩",
+      "background": "grid",
+      "headers": [
+        "方案",
+        "适用场景",
+        "已知坑"
+      ],
+      "rows": [
+        {
+          "feature": "Remotion",
+          "cursor": "前端栈、复杂排版、跨期复用",
+          "windsurf": "顶层读 window 崩；BUSL 授权",
+          "win": "neutral"
+        },
+        {
+          "feature": "Motion Canvas",
+          "cursor": "代码演示、精确时序",
+          "windsurf": "生态小、模板自建",
+          "win": "neutral"
+        },
+        {
+          "feature": "Manim",
+          "cursor": "数学/公式可视化",
+          "windsurf": "排版弱、渲染慢",
+          "win": "neutral"
+        },
+        {
+          "feature": "MoviePy",
+          "cursor": "简单拼接、音轨闪避",
+          "windsurf": "自适应排版繁琐、吃内存",
+          "win": "neutral"
+        },
+        {
+          "feature": "FFmpeg",
+          "cursor": "批量转码、字幕烧录",
+          "windsurf": "命令晦涩难调试",
+          "win": "neutral"
+        }
+      ],
+      "highlightCell": "3-3"
+    },
+    {
+      "id": "shot-3.4",
+      "type": "comparison",
+      "source": "",
+      "in_seconds": 128.0,
+      "out_seconds": 146.0,
+      "title": "对着需求做减法",
+      "leftLabel": "我的三条需求",
+      "leftValue": "批量换数据 · AI 改不易错 · 跨期好维护",
+      "rightLabel": "✅ Remotion 命中",
+      "rightValue": "三条全中，Remotion 赢"
+    },
+    {
+      "id": "shot-3.5",
+      "type": "comparison",
+      "source": "",
+      "in_seconds": 146.0,
+      "out_seconds": 162.0,
+      "title": "Remotion ✅ vs 复制粘贴 HTML ❌",
+      "leftLabel": "Remotion",
+      "leftValue": "改一处全系列生效 · 只填数据 · 代价：React + BUSL 付费",
+      "rightLabel": "复制粘贴 HTML",
+      "rightValue": "每期复制越改越乱 · 结构易跑偏"
+    },
+    {
+      "id": "shot-3.6",
+      "type": "comparison",
+      "source": "",
+      "in_seconds": 162.0,
+      "out_seconds": 170.0,
+      "title": "一句话",
+      "leftLabel": "AI",
+      "leftValue": "铺信息：把方案和坑摆全",
+      "rightLabel": "你",
+      "rightValue": "拍板：做减法、定取舍"
+    },
+    {
+      "id": "shot-4.1",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 170.0,
+      "out_seconds": 184.0,
+      "eyebrow": "引擎怎么干活",
+      "title": "一份配置 → Explainer 按 type 分发 → 现成组件",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "WRITE",
+          "title": "你写配置",
+          "desc": "说清这段画面长啥样",
+          "icon": "📝"
+        },
+        {
+          "label": "DISPATCH",
+          "title": "Explainer 分发",
+          "desc": "看 type 字段自动找组件",
+          "icon": "🔀"
+        },
+        {
+          "label": "RENDER",
+          "title": "现成组件渲染",
+          "desc": "comparison/terminal/charts… 照填就渲",
+          "icon": "🧩"
+        }
+      ]
+    },
+    {
+      "id": "shot-4.2",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 184.0,
+      "out_seconds": 200.0,
+      "eyebrow": "remotion-composer",
+      "title": "做内容 = 挑组件 + 填字段",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "comparison",
+          "title": "对比卡",
+          "desc": "type=comparison 出对比卡",
+          "icon": "🆚"
+        },
+        {
+          "label": "terminal",
+          "title": "合成终端",
+          "desc": "不用真录屏",
+          "icon": "🖥️"
+        },
+        {
+          "label": "charts",
+          "title": "图表 / 分屏",
+          "desc": "按需挑用",
+          "icon": "📊"
+        }
+      ]
+    },
+    {
+      "id": "shot-4.3",
+      "type": "terminal_scene",
+      "source": "",
+      "in_seconds": 200.0,
+      "out_seconds": 215.0,
+      "terminalTitle": "comparison 配置：照现成组件填数据",
+      "prompt": "$",
+      "steps": [
+        {
+          "kind": "out",
+          "text": "{"
+        },
+        {
+          "kind": "out",
+          "text": "  \"type\": \"comparison\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"title\": \"传统剪辑 vs 代码即视频\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"leftLabel\": \"传统剪辑\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"leftValue\": \"拖时间轴，改一处全手工重排\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"rightLabel\": \"代码即视频\","
+        },
+        {
+          "kind": "out",
+          "text": "  \"rightValue\": \"改一行配置，重新编译出片\""
+        },
+        {
+          "kind": "out",
+          "text": "}"
+        }
+      ]
+    },
+    {
+      "id": "shot-4.4",
+      "type": "terminal_scene",
+      "source": "",
+      "in_seconds": 215.0,
+      "out_seconds": 230.0,
+      "terminalTitle": "TS 把字段格式焊死，填错即编译报红",
+      "prompt": "$",
+      "steps": [
+        {
+          "kind": "out",
+          "text": "type Comparison = {"
+        },
+        {
+          "kind": "out",
+          "text": "  type: 'comparison';"
+        },
+        {
+          "kind": "out",
+          "text": "  leftLabel: string; leftValue: string;"
+        },
+        {
+          "kind": "out",
+          "text": "  rightLabel: string; rightValue: string;"
+        },
+        {
+          "kind": "out",
+          "text": "};"
+        },
+        {
+          "kind": "out",
+          "text": "// 漏填 / 写错字段 → tsc 当场报错，AI 跑不偏"
+        }
+      ]
+    },
+    {
+      "id": "shot-4.5",
+      "type": "comparison",
+      "source": "",
+      "in_seconds": 230.0,
+      "out_seconds": 248.0,
+      "title": "让 AI 填空，别让它造轮子",
+      "leftLabel": "❌ 从零手写",
+      "leftValue": "让 AI 手写 ComparisonScene.tsx，易错难维护",
+      "rightLabel": "✅ 只填数据",
+      "rightValue": "复用现成 @ComparisonCard，TS 兜底"
+    },
+    {
+      "id": "shot-4.6",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 248.0,
+      "out_seconds": 260.0,
+      "eyebrow": "延伸",
+      "title": "还能扩一套自有风格组件库",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "BRAND",
+          "title": "自有风格组件",
+          "desc": "在现成组件上扩一套，辨识度更强",
+          "icon": "🎨"
+        },
+        {
+          "label": "LATER",
+          "title": "以后单开一期",
+          "desc": "那是更大的话题",
+          "icon": "📅"
+        }
+      ]
+    },
+    {
+      "id": "shot-5.1",
+      "type": "terminal_scene",
+      "source": "",
+      "in_seconds": 260.0,
+      "out_seconds": 274.0,
+      "terminalTitle": "💥 SSR 坑：组件顶层读 window，渲染红屏（A 轨兜底）",
+      "prompt": "$",
+      "steps": [
+        {
+          "kind": "out",
+          "text": "// ❌ 组件顶层直接读 window"
+        },
+        {
+          "kind": "out",
+          "text": "const w = window.innerWidth;"
+        },
+        {
+          "kind": "out",
+          "text": "// 打包跑在 Node 里、还没进浏览器："
+        },
+        {
+          "kind": "out",
+          "text": "// 💥 ReferenceError: window is not defined"
+        }
+      ]
+    },
+    {
+      "id": "shot-5.2",
+      "type": "terminal_scene",
+      "source": "",
+      "in_seconds": 274.0,
+      "out_seconds": 286.0,
+      "terminalTitle": "✅ typeof window 守卫 + MDC 规则（A 轨兜底）",
+      "prompt": "$",
+      "steps": [
+        {
+          "kind": "out",
+          "text": "// ✅ SSR 时用默认值兜底"
+        },
+        {
+          "kind": "out",
+          "text": "const w = typeof window !== 'undefined'"
+        },
+        {
+          "kind": "out",
+          "text": "  ? window.innerWidth"
+        },
+        {
+          "kind": "out",
+          "text": "  : 1920;"
+        },
+        {
+          "kind": "out",
+          "text": "// .cursor/rules/remotion-ssr.mdc:"
+        },
+        {
+          "kind": "out",
+          "text": "// 组件顶层禁止直接读 window/document"
+        }
+      ]
+    },
+    {
+      "id": "shot-5.3",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 286.0,
+      "out_seconds": 295.0,
+      "eyebrow": "Vibe Coding 精髓",
+      "title": "重复的规矩，固化成规则交给 AI",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "RULE",
+          "title": ".cursor/rules/remotion-ssr.mdc",
+          "desc": "组件顶层禁止直接读 window/document",
+          "icon": "🛡️"
+        },
+        {
+          "label": "AUTO",
+          "title": "AI 自动带上",
+          "desc": "往后生成组件自动遵守，不用每次盯着",
+          "icon": "🤖"
+        }
+      ]
+    },
+    {
+      "id": "shot-6.1",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 295.0,
+      "out_seconds": 310.0,
+      "eyebrow": "数字人选型",
+      "title": "出镜形象只是陪衬串场，不是主角",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "METHOD",
+          "title": "套选引擎的方法论",
+          "desc": "先把定位说死，再摆选项和坑",
+          "icon": "🧭"
+        },
+        {
+          "label": "ROLE",
+          "title": "陪衬定位",
+          "desc": "串场，不抢内容主角",
+          "icon": "🎭"
+        }
+      ]
+    },
+    {
+      "id": "shot-6.2",
+      "type": "table_scene",
+      "source": "",
+      "in_seconds": 310.0,
+      "out_seconds": 327.0,
+      "eyebrow": "三种形象方案",
+      "title": "可选形象 + 各自的坑",
+      "background": "grid",
+      "headers": [
+        "形象方案",
+        "适用场景",
+        "坑 / 代价"
+      ],
+      "rows": [
+        {
+          "feature": "真人出镜",
+          "cursor": "最可信、有温度",
+          "windsurf": "要露脸、不可编程复用、隐私成本",
+          "win": "neutral"
+        },
+        {
+          "feature": "写实/对口型数字人",
+          "cursor": "像真主播",
+          "windsurf": "易掉恐怖谷、可信度反崩；口型重活",
+          "win": "neutral"
+        },
+        {
+          "feature": "3D 风格化 VRM",
+          "cursor": "风格统一、可编程、渲一次到处用",
+          "windsurf": "要建模与动作绑定，可交给 AI",
+          "win": "cursor"
+        }
+      ]
+    },
+    {
+      "id": "shot-6.3",
+      "type": "table_scene",
+      "source": "",
+      "in_seconds": 327.0,
+      "out_seconds": 342.0,
+      "eyebrow": "回到约束",
+      "title": "选定 3D 风格化 VRMAvatar",
+      "background": "grid",
+      "headers": [
+        "形象方案",
+        "适用场景",
+        "坑 / 代价"
+      ],
+      "rows": [
+        {
+          "feature": "真人出镜",
+          "cursor": "最可信、有温度",
+          "windsurf": "要露脸、不可编程复用、隐私成本",
+          "win": "neutral"
+        },
+        {
+          "feature": "写实/对口型数字人",
+          "cursor": "像真主播",
+          "windsurf": "易掉恐怖谷、可信度反崩；口型重活",
+          "win": "neutral"
+        },
+        {
+          "feature": "3D 风格化 VRM",
+          "cursor": "风格统一、可编程、渲一次到处用",
+          "windsurf": "要建模与动作绑定，可交给 AI",
+          "win": "cursor"
+        }
+      ],
+      "highlightCell": "3-1"
+    },
+    {
+      "id": "shot-6.4",
+      "type": "concept_scene",
+      "source": "",
+      "in_seconds": 342.0,
+      "out_seconds": 355.0,
+      "eyebrow": "落地交给 AI",
+      "title": "整体渲一次按场景裁，脚踩稳",
+      "background": "gradient",
+      "items": [
+        {
+          "label": "CROP",
+          "title": "按场景裁切",
+          "desc": "整体渲一次，再裁半身/全身",
+          "icon": "✂️"
+        },
+        {
+          "label": "FIX",
+          "title": "脚踩稳",
+          "desc": "大腿反向抵消髋部摆动，修掉钟摆甩腿",
+          "icon": "🦵"
+        }
+      ]
+    },
+    {
+      "id": "shot-7.1",
+      "type": "outro_scene",
+      "source": "",
+      "in_seconds": 355.0,
+      "out_seconds": 367.0,
+      "headline": "三步搭好你的自动出片引擎，没基础也能复制",
+      "cta": "找路径 · 选型 · 落地",
+      "background": "gradient"
+    },
+    {
+      "id": "shot-7.2",
+      "type": "outro_scene",
+      "source": "",
+      "in_seconds": 367.0,
+      "out_seconds": 375.0,
+      "headline": "下期 EP03：用 Whisper 让字幕踩着话音跳",
+      "cta": "关注 · 别错过",
+      "background": "gradient"
+    }
+  ],
+  "overlays": [],
+  "captions": []
+}

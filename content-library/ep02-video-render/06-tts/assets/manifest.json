@@ -1,0 +1,236 @@
+{
+  "episode": "ep02-video-render",
+  "stage": "06-tts-synthesis",
+  "fps": 30,
+  "language": "zh-CN",
+  "provider": null,
+  "provider_status": "pending: no TTS API key / local Piper voice available in this env",
+  "duration_source": "04-script shots[].duration_seconds (storyboard timing); replace with measured TTS segment durations once audio is synthesized",
+  "total_duration_seconds": 375.0,
+  "segments": [
+    {
+      "segment_id": "S1",
+      "section_id": "1",
+      "track": "A",
+      "duration_seconds": 30.0,
+      "shot_count": 3,
+      "shots": [
+        {
+          "id": "1.1",
+          "duration_seconds": 10.0,
+          "voice_slice": "这期就一件事：用 Vibe Coding 搭一套渲染引擎，把视频写成代码、让 AI 按配置自动出片，改数据就改片。"
+        },
+        {
+          "id": "1.2",
+          "duration_seconds": 12.0,
+          "voice_slice": "先记住一个关键认知：AI 最强的本事是啃文本和代码，所以想让渲染自动化，就得把视频变成代码和数据来驱动。我没有前后端基础，全程用大白话指挥 AI：我说要什么、判断对不对。"
+        },
+        {
+          "id": "1.3",
+          "duration_seconds": 8.0,
+          "voice_slice": "这件事三步：让 AI 帮我找技术路径、对着约束选型、最后落地出片。"
+        }
+      ],
+      "voice": "这期就一件事：用 Vibe Coding 搭一套渲染引擎，把视频写成代码、让 AI 按配置自动出片，改数据就改片。先记住一个关键认知：AI 最强的本事是啃文本和代码，所以想让渲染自动化，就得把视频变成代码和数据来驱动。我没有前后端基础，全程用大白话指挥 AI：我说要什么、判断对不对。这件事三步：让 AI 帮我找技术路径、对着约束选型、最后落地出片。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    },
+    {
+      "segment_id": "S2",
+      "section_id": "2",
+      "track": "A",
+      "duration_seconds": 50.0,
+      "shot_count": 4,
+      "shots": [
+        {
+          "id": "2.1",
+          "duration_seconds": 13.0,
+          "voice_slice": "第一步找路，我没自己埋头啃文档，直接把选择题丢给 AI：想把视频写成代码自动出片，现在都有哪些现成路子？"
+        },
+        {
+          "id": "2.2",
+          "duration_seconds": 14.0,
+          "voice_slice": "它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做简单拼接，还有 Motion Canvas、PixiJS 这些。"
+        },
+        {
+          "id": "2.3",
+          "duration_seconds": 15.0,
+          "voice_slice": "名字听着五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。"
+        },
+        {
+          "id": "2.4",
+          "duration_seconds": 8.0,
+          "voice_slice": "这一步只摆路，先不评好坏。"
+        }
+      ],
+      "voice": "第一步找路，我没自己埋头啃文档，直接把选择题丢给 AI：想把视频写成代码自动出片，现在都有哪些现成路子？它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做简单拼接，还有 Motion Canvas、PixiJS 这些。名字听着五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。这一步只摆路，先不评好坏。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    },
+    {
+      "segment_id": "S3",
+      "section_id": "3",
+      "track": "A",
+      "duration_seconds": 90.0,
+      "shot_count": 6,
+      "shots": [
+        {
+          "id": "3.1",
+          "duration_seconds": 15.0,
+          "voice_slice": "第二步选型，这步最容易翻车——你要是直接问 AI 哪个好，它会跟个老好人似的每个都夸一遍，你还是不会选。值钱的是看清每条路什么时候不好使。"
+        },
+        {
+          "id": "3.2",
+          "duration_seconds": 18.0,
+          "voice_slice": "所以我反过来逼它：把每条路的适用场景和会咬人的坑全列出来。看这张表：Remotion 适合前端栈和复杂排版，但你在组件顶层直接读 window，打包阶段就当场崩，而且是 BUSL 商业授权；"
+        },
+        {
+          "id": "3.3",
+          "duration_seconds": 15.0,
+          "voice_slice": "Manim 排版弱、渲染慢；MoviePy 写自适应排版能把人写吐；FFmpeg 命令跟天书一样。"
+        },
+        {
+          "id": "3.4",
+          "duration_seconds": 18.0,
+          "voice_slice": "看清坑，我再对着自己的需求做减法：我要一期一个模板换数据批量出几十期、要 AI 改内容不容易错、要跨期好维护——这三条一卡，Remotion 赢了。"
+        },
+        {
+          "id": "3.5",
+          "duration_seconds": 16.0,
+          "voice_slice": "跟复制粘贴 HTML 比，它改一处全系列生效，AI 也只能乖乖填数据、不乱跑结构。代价就一条：React 栈加 BUSL 授权，规模化商用要付费——但前端反正是 AI 写、我把方向，不算门槛。"
+        },
+        {
+          "id": "3.6",
+          "duration_seconds": 8.0,
+          "voice_slice": "一句话：让 AI 铺信息，拍板的事留给你自己。"
+        }
+      ],
+      "voice": "第二步选型，这步最容易翻车——你要是直接问 AI 哪个好，它会跟个老好人似的每个都夸一遍，你还是不会选。值钱的是看清每条路什么时候不好使。所以我反过来逼它：把每条路的适用场景和会咬人的坑全列出来。看这张表：Remotion 适合前端栈和复杂排版，但你在组件顶层直接读 window，打包阶段就当场崩，而且是 BUSL 商业授权；Manim 排版弱、渲染慢；MoviePy 写自适应排版能把人写吐；FFmpeg 命令跟天书一样。看清坑，我再对着自己的需求做减法：我要一期一个模板换数据批量出几十期、要 AI 改内容不容易错、要跨期好维护——这三条一卡，Remotion 赢了。跟复制粘贴 HTML 比，它改一处全系列生效，AI 也只能乖乖填数据、不乱跑结构。代价就一条：React 栈加 BUSL 授权，规模化商用要付费——但前端反正是 AI 写、我把方向，不算门槛。一句话：让 AI 铺信息，拍板的事留给你自己。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    },
+    {
+      "segment_id": "S4",
+      "section_id": "4",
+      "track": "A",
+      "duration_seconds": 90.0,
+      "shot_count": 6,
+      "shots": [
+        {
+          "id": "4.1",
+          "duration_seconds": 14.0,
+          "voice_slice": "选型定了，进第三步落地。好消息是搭引擎也不用你手写，就是跟 AI 把配置和现成组件对上号。"
+        },
+        {
+          "id": "4.2",
+          "duration_seconds": 16.0,
+          "voice_slice": "仓库这台引擎叫 remotion-composer，干活特别直白：你写一份配置说清这段画面长啥样，主程序 Explainer 就看配置里的 type 字段，自动去找对应组件来渲。type 写 comparison 就出对比卡，terminal 是合成终端、不用真录屏，还有图表、分屏。"
+        },
+        {
+          "id": "4.3",
+          "duration_seconds": 15.0,
+          "voice_slice": "所以做内容这事，本质就是挑组件、填字段。最省心的一招是：我从不让 AI 去发明新组件，只让它照现成的填数据。"
+        },
+        {
+          "id": "4.4",
+          "duration_seconds": 15.0,
+          "voice_slice": "比如要张对比卡，我说左边传统剪辑、右边代码即视频，它吐出来就是这么一段配置，齐活。"
+        },
+        {
+          "id": "4.5",
+          "duration_seconds": 18.0,
+          "voice_slice": "为啥稳？因为每个字段都用 TypeScript 把格式焊死了，AI 填错漏填，编译当场报红。记住：让 AI 填空，别让它造轮子。"
+        },
+        {
+          "id": "4.6",
+          "duration_seconds": 12.0,
+          "voice_slice": "想要更强辨识度，还能在现成组件上扩一套自有风格组件库——那是更大的话题，以后单开一期讲。"
+        }
+      ],
+      "voice": "选型定了，进第三步落地。好消息是搭引擎也不用你手写，就是跟 AI 把配置和现成组件对上号。仓库这台引擎叫 remotion-composer，干活特别直白：你写一份配置说清这段画面长啥样，主程序 Explainer 就看配置里的 type 字段，自动去找对应组件来渲。type 写 comparison 就出对比卡，terminal 是合成终端、不用真录屏，还有图表、分屏。所以做内容这事，本质就是挑组件、填字段。最省心的一招是：我从不让 AI 去发明新组件，只让它照现成的填数据。比如要张对比卡，我说左边传统剪辑、右边代码即视频，它吐出来就是这么一段配置，齐活。为啥稳？因为每个字段都用 TypeScript 把格式焊死了，AI 填错漏填，编译当场报红。记住：让 AI 填空，别让它造轮子。想要更强辨识度，还能在现成组件上扩一套自有风格组件库——那是更大的话题，以后单开一期讲。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    },
+    {
+      "segment_id": "S5",
+      "section_id": "5",
+      "track": "A/B",
+      "duration_seconds": 35.0,
+      "shot_count": 3,
+      "shots": [
+        {
+          "id": "5.1",
+          "duration_seconds": 14.0,
+          "voice_slice": "落地过程里唯一反复栽我的，就是 SSR 这个坑。看左边：组件顶层直接读了 window，可 Remotion 打包那会儿跑在 Node 里、还没进浏览器，当场就报 ReferenceError、渲染红屏。好比人还没进门就伸手拉灯，灯都没装上，当然摸空。"
+        },
+        {
+          "id": "5.2",
+          "duration_seconds": 12.0,
+          "voice_slice": "右边怎么修：加一句 typeof window 判断。"
+        },
+        {
+          "id": "5.3",
+          "duration_seconds": 9.0,
+          "voice_slice": "但更聪明的是别每次盯着 AI，而是把这条规则一次写死——塞进 .cursor/rules 一个 mdc 文件，指到引擎源码目录，往后 AI 生成组件自动带上。这就是 Vibe Coding 的精髓：重复的规矩，固化成规则交给 AI。"
+        }
+      ],
+      "voice": "落地过程里唯一反复栽我的，就是 SSR 这个坑。看左边：组件顶层直接读了 window，可 Remotion 打包那会儿跑在 Node 里、还没进浏览器，当场就报 ReferenceError、渲染红屏。好比人还没进门就伸手拉灯，灯都没装上，当然摸空。右边怎么修：加一句 typeof window 判断。但更聪明的是别每次盯着 AI，而是把这条规则一次写死——塞进 .cursor/rules 一个 mdc 文件，指到引擎源码目录，往后 AI 生成组件自动带上。这就是 Vibe Coding 的精髓：重复的规矩，固化成规则交给 AI。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    },
+    {
+      "segment_id": "S6",
+      "section_id": "6",
+      "track": "A",
+      "duration_seconds": 60.0,
+      "shot_count": 4,
+      "shots": [
+        {
+          "id": "6.1",
+          "duration_seconds": 15.0,
+          "voice_slice": "要不要个出镜形象做陪衬？这事也没拍脑袋，套的是跟选引擎一样的方法论：先把定位说死——它只是陪衬串场，不是主角。"
+        },
+        {
+          "id": "6.2",
+          "duration_seconds": 17.0,
+          "voice_slice": "然后让 AI 把可选形象和各自的坑摆出来：真人最可信但要露脸、不能编程复用；写实对口型像真主播，可一不小心就掉进恐怖谷、可信度反而崩。"
+        },
+        {
+          "id": "6.3",
+          "duration_seconds": 15.0,
+          "voice_slice": "对着我的约束——不想露脸、要可编程批量复用、还要避开恐怖谷——我选了 3D 风格化角色 VRMAvatar，并钉死一条死规矩：坚决不做对口型数字人、不做 AI 假界面，可信度只靠真实录屏换。"
+        },
+        {
+          "id": "6.4",
+          "duration_seconds": 13.0,
+          "voice_slice": "落地也交给 AI：整体渲一次再按场景裁半身全身；之前它待机整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，脚就踩稳了。"
+        }
+      ],
+      "voice": "要不要个出镜形象做陪衬？这事也没拍脑袋，套的是跟选引擎一样的方法论：先把定位说死——它只是陪衬串场，不是主角。然后让 AI 把可选形象和各自的坑摆出来：真人最可信但要露脸、不能编程复用；写实对口型像真主播，可一不小心就掉进恐怖谷、可信度反而崩。对着我的约束——不想露脸、要可编程批量复用、还要避开恐怖谷——我选了 3D 风格化角色 VRMAvatar，并钉死一条死规矩：坚决不做对口型数字人、不做 AI 假界面，可信度只靠真实录屏换。落地也交给 AI：整体渲一次再按场景裁半身全身；之前它待机整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，脚就踩稳了。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    },
+    {
+      "segment_id": "S7",
+      "section_id": "7",
+      "track": "A",
+      "duration_seconds": 20.0,
+      "shot_count": 2,
+      "shots": [
+        {
+          "id": "7.1",
+          "duration_seconds": 12.0,
+          "voice_slice": "回头看就三步：找路径让 AI 把现成方案全摆出来、选型让 AI 列坑人对约束拍板、落地填配置套组件规则兜底让 AI 跑渲染。你要会的不是写代码，是讲清需求、看住坑、把规则固化给 AI——没基础也能复制。"
+        },
+        {
+          "id": "7.2",
+          "duration_seconds": 8.0,
+          "voice_slice": "下期 EP03，用 Whisper 拿字级时间戳，让字幕踩着话音跳。关注别错过。"
+        }
+      ],
+      "voice": "回头看就三步：找路径让 AI 把现成方案全摆出来、选型让 AI 列坑人对约束拍板、落地填配置套组件规则兜底让 AI 跑渲染。你要会的不是写代码，是讲清需求、看住坑、把规则固化给 AI——没基础也能复制。下期 EP03，用 Whisper 拿字级时间戳，让字幕踩着话音跳。关注别错过。",
+      "audio_file": null,
+      "audio_status": "pending_tts"
+    }
+  ]
+}
