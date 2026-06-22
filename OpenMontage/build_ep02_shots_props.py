@@ -17,8 +17,8 @@ Scene-template -> Explainer ``cut.type`` mapping (the engine has no
     @OutroScene    -> outro_scene     @SplitLayout   -> comparison
 
 Cut timing is driven by each shot's ``duration_seconds`` (06-tts narration is
-not yet produced for this cut; once it is, swap in real segment durations the
-same way ``build_ep02_props.py`` reads ``06-tts/assets/manifest.json``).
+not yet produced for this cut; once it is, swap in real segment durations from
+``06-tts/assets/manifest.json``).
 
 Usage:
     python build_ep02_shots_props.py        # writes public/demo-props/ep02-shots.json

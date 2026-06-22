@@ -26,9 +26,7 @@ PROPS_DIR = COMPOSER_DIR / "public" / "demo-props"
 OUTPUT_DIR = ROOT_DIR / "projects" / "demos" / "renders"
 
 DEMO_DESCRIPTIONS = {
-    "world-in-numbers": "Global scale story with titles, stats, and charts",
-    "code-to-screen": "Developer workflow explainer with comparison and KPI cards",
-    "focusflow-pitch": "Startup-style pitch built only from Remotion components",
+    "ep02-shots": "ep02 shot-level SSOT render (one shot -> one Explainer cut)",
 }
 
 
