@@ -281,9 +281,12 @@ def main() -> int:
         "captions": captions,
         "avatar": AVATAR,
     }
-    unity_present = (PUBLIC_DIR / UNITY_BG_IMAGE).exists()
+    # Warp room is ep02's authored look. Keep it enabled regardless of whether
+    # the (uncommitted) artist asset happens to be on disk at generation time,
+    # so regenerating props never silently turns the warp off. Drop the room
+    # shot into public/UnityBG.png before rendering.
     payload["unityBackground"] = {
-        "enabled": unity_present,
+        "enabled": True,
         "image": UNITY_BG_IMAGE,
         "screenQuad": UNITY_BG_QUAD,
         # Translucent + blue-tinted UI backdrop (holographic look).

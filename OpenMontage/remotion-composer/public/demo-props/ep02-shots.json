@@ -1513,7 +1513,7 @@
     "bgOffsetYpx": 50
   },
   "unityBackground": {
-    "enabled": false,
+    "enabled": true,
     "image": "UnityBG.png",
     "screenQuad": {
       "tl": [
