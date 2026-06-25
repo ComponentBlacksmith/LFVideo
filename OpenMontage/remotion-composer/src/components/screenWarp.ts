@@ -31,6 +31,14 @@ export interface UnityBackgroundConfig {
    * frames — so the perspective transform is visible. 0 / unset = static warp.
    */
   warpRevealFrames?: number;
+  /**
+   * Flat-hold duration (frames) before the warp-reveal starts. The UI plane
+   * stays flat & full-frame (progress 0) for this many frames so viewers can
+   * read the content head-on, then flies into the screen quad over
+   * warpRevealFrames. Only applies when warpRevealFrames > 0. 0 / unset = no
+   * hold (fly-in begins immediately).
+   */
+  warpHoldFrames?: number;
 }
 
 function adj(m: number[]): number[] {
