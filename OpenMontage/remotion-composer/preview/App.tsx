@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Player} from '@remotion/player';
 import {PALETTES} from '../src/custom-templates/theme/palettes';
 import {type BackgroundVariant} from '../src/custom-templates/background';
@@ -20,6 +20,13 @@ const BACKGROUND_VARIANTS: BackgroundVariant[] = [
 
 const pretty = (v: unknown) => JSON.stringify(v, null, 2);
 
+type EditorState = {
+	file: string;
+	text: string;
+	parsed: Record<string, unknown>;
+	error: string | null;
+};
+
 export const App: React.FC = () => {
 	const [selectedFile, setSelectedFile] = useState<string>(
 		SCENE_FILES.find((f) => SCENE_BY_FILE[f.file])?.file ?? SCENE_FILES[0]?.file,
@@ -29,30 +36,36 @@ export const App: React.FC = () => {
 
 	const meta: SceneMeta | undefined = SCENE_BY_FILE[selectedFile];
 
-	const [propsText, setPropsText] = useState<string>(
-		meta ? pretty(meta.sampleProps) : '{}',
-	);
-	const [parsedProps, setParsedProps] = useState<Record<string, unknown>>(
-		meta?.sampleProps ?? {},
-	);
-	const [jsonError, setJsonError] = useState<string | null>(null);
+	const makeEditorState = (file: string): EditorState => {
+		const m = SCENE_BY_FILE[file];
+		return {
+			file,
+			text: m ? pretty(m.sampleProps) : '{}',
+			parsed: m?.sampleProps ?? {},
+			error: null,
+		};
+	};
 
-	// 切换场景时，重置 props 编辑器为该场景的示例数据。
-	useEffect(() => {
-		if (!meta) return;
-		setPropsText(pretty(meta.sampleProps));
-		setParsedProps(meta.sampleProps);
-		setJsonError(null);
-	}, [selectedFile]);
+	const [editor, setEditor] = useState<EditorState>(() =>
+		makeEditorState(selectedFile),
+	);
+
+	// 切换场景时在渲染期同步重置 props 编辑器，确保场景组件与其 props 始终一致，
+	// 避免新场景用上一个场景的 props 渲染一帧而崩溃（如 CodeScene 缺少 steps）。
+	if (editor.file !== selectedFile) {
+		setEditor(makeEditorState(selectedFile));
+	}
+
+	const propsText = editor.text;
+	const parsedProps = editor.parsed;
+	const jsonError = editor.error;
 
 	const onPropsChange = (text: string) => {
-		setPropsText(text);
 		try {
 			const next = JSON.parse(text) as Record<string, unknown>;
-			setParsedProps(next);
-			setJsonError(null);
+			setEditor((prev) => ({...prev, text, parsed: next, error: null}));
 		} catch (e) {
-			setJsonError((e as Error).message);
+			setEditor((prev) => ({...prev, text, error: (e as Error).message}));
 		}
 	};
 
