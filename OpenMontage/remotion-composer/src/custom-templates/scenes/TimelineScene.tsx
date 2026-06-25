@@ -7,7 +7,6 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
-import {TitleFrame} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -143,7 +142,7 @@ const TimelineCard: React.FC<{
 
 export const TimelineScene: React.FC<
 	TimelineProps & {startFrame?: number; stagger?: number}
-> = ({eyebrow, title, events, startFrame = 20, stagger = 20, enter = 'rise-pop'}) => {
+> = ({events, startFrame = 20, stagger = 20, enter = 'rise-pop'}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const {colors, fonts, SPACING} = useTheme();
@@ -171,8 +170,6 @@ export const TimelineScene: React.FC<
 				position: 'relative',
 			}}
 		>
-			<TitleFrame eyebrow={eyebrow} title={title} />
-
 			<div
 				style={{
 					position: 'relative',

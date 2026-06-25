@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {z} from 'zod';
-import {SplitLayout, TitleFrame} from '../primitives';
+import {SplitLayout} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -98,14 +98,13 @@ const Card: React.FC<{
 };
 
 export const ComparisonScene: React.FC<ComparisonProps> = ({
-	title,
 	leftLabel,
 	leftValue,
 	rightLabel,
 	rightValue,
 	enter = 'rise-pop',
 }) => {
-	const {colors, fonts, SPACING} = useTheme();
+	const {colors, fonts} = useTheme();
 
 	return (
 		<AbsoluteFill
@@ -114,15 +113,9 @@ export const ComparisonScene: React.FC<ComparisonProps> = ({
 				display: 'flex',
 				flexDirection: 'column',
 				justifyContent: 'center',
-				paddingTop: title ? SPACING.xl : 0,
 			}}
 		>
-			{title && (
-				<div style={{padding: `0 ${SPACING.gutter}px`}}>
-					<TitleFrame title={title} />
-				</div>
-			)}
-			<div style={{flex: title ? 0.7 : 1, position: 'relative'}}>
+			<div style={{flex: 1, position: 'relative'}}>
 				<SplitLayout
 					left={<Card label={leftLabel} value={leftValue} color={colors.accent[0]} delay={15} enter={enter} />}
 					right={<Card label={rightLabel} value={rightValue} color={colors.accent[2] ?? colors.accent[1]} delay={25} enter={enter} />}

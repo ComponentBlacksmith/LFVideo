@@ -7,7 +7,6 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
-import {TitleFrame} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -100,7 +99,7 @@ function parseHighlight(spec?: string): {row: number; col: number} | null {
 
 export const TableScene: React.FC<
 	TableProps & {startFrame?: number; rowStagger?: number}
-> = ({eyebrow, title, headers, rows, highlightCell, startFrame = 25, rowStagger = 15, enter = 'rise'}) => {
+> = ({headers, rows, highlightCell, startFrame = 25, rowStagger = 15, enter = 'rise'}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const {colors, fonts, SPACING, RADIUS, SPRING} = useTheme();
@@ -126,8 +125,6 @@ export const TableScene: React.FC<
 				justifyContent: 'center',
 			}}
 		>
-			<TitleFrame eyebrow={eyebrow} title={title} />
-
 			<div
 				style={{
 					display: 'flex',

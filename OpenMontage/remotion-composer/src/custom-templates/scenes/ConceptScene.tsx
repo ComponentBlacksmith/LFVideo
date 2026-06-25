@@ -1,7 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
-import {TitleFrame} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -135,7 +134,7 @@ const ItemCard: React.FC<{
 
 export const ConceptScene: React.FC<
 	ConceptProps & {cardStart?: number; cardStagger?: number}
-> = ({eyebrow, title, items, cardStart = 20, cardStagger = 25, enter = 'rise-pop'}) => {
+> = ({items, cardStart = 20, cardStagger = 25, enter = 'rise-pop'}) => {
 	const {colors, fonts, SPACING} = useTheme();
 	return (
 		<AbsoluteFill
@@ -147,7 +146,6 @@ export const ConceptScene: React.FC<
 				justifyContent: 'center',
 			}}
 		>
-			<TitleFrame eyebrow={eyebrow} title={title} />
 			{items.map((item, i) => (
 				<ItemCard
 					key={item.title}

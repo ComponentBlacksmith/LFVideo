@@ -60,6 +60,7 @@ import {
   TableScene,
   ComparisonScene,
   CodeScene,
+  SceneTitle,
   Background,
   TemplateThemeProvider,
   buildTemplateTheme,
@@ -877,6 +878,33 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
       : animatedQuadMatrix3d(width, height, screen!.screenQuad!, warpProgress)
     : "";
 
+  // Chapter titles are split out of the scene content and rendered as a flat
+  // top-right overlay (NOT warped into the screen), so they stay readable and
+  // fixed while the scene below is perspective-mapped / transformed.
+  const TITLE_OVERLAY_TYPES = new Set([
+    "concept_scene",
+    "timeline_scene",
+    "table_scene",
+    "comparison",
+    "comparison_scene",
+  ]);
+  const titleOverlay = (
+    <AbsoluteFill style={{ pointerEvents: "none", zIndex: 60 }}>
+      {cuts.map((cut) => {
+        if (!cut.title || !cut.type || !TITLE_OVERLAY_TYPES.has(cut.type)) {
+          return null;
+        }
+        const from = Math.round(cut.in_seconds * fps);
+        const duration = Math.round((cut.out_seconds - cut.in_seconds) * fps);
+        return (
+          <Sequence key={`title-${cut.id}`} from={from} durationInFrames={duration}>
+            <SceneTitle title={cut.title} eyebrow={cut.eyebrow} />
+          </Sequence>
+        );
+      })}
+    </AbsoluteFill>
+  );
+
   // The background variant is derived from the current cut, or falls back to props.background
   const currentCut = cuts.find(c => (c.out_seconds || 0) * fps >= frame) || cuts[0];
   const bgVariant = (currentCut?.background || props.background as BackgroundVariant) || "gradient";
@@ -1066,6 +1094,7 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
             </AbsoluteFill>
           </div>
           {hostEl}
+          {titleOverlay}
           {captionsEl}
           {audioEls}
         </AbsoluteFill>
@@ -1079,6 +1108,7 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
       {bgGradient}
       {hostEl}
       {screenContent}
+      {titleOverlay}
       {captionsEl}
       {audioEls}
     </AbsoluteFill>

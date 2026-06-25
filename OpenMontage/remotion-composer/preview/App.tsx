@@ -77,6 +77,7 @@ export const App: React.FC = () => {
 			meta
 				? {
 						SceneComponent: meta.component,
+						sceneType: meta.type,
 						sceneProps: parsedProps,
 						themeName,
 						background,
