@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-	AbsoluteFill,
 	interpolate,
 	spring,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
+import {AutoFit} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -116,17 +116,10 @@ export const TableScene: React.FC<
 	const headerRowBg = withAlpha(colors.bg.to, 0.8);
 
 	return (
-		<AbsoluteFill
-			style={{
-				fontFamily: fonts.family,
-				padding: `${SPACING.xl}px ${SPACING.gutter}px 180px`,
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-			}}
-		>
+		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl}>
 			<div
 				style={{
+					fontFamily: fonts.family,
 					display: 'flex',
 					flexDirection: 'column',
 					background: wrapperBg,
@@ -204,6 +197,6 @@ export const TableScene: React.FC<
 					);
 				})}
 			</div>
-		</AbsoluteFill>
+		</AutoFit>
 	);
 };

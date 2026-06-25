@@ -1,7 +1,7 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {useVideoConfig} from 'remotion';
 import {z} from 'zod';
-import {SplitLayout} from '../primitives';
+import {AutoFit, SplitLayout} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -105,22 +105,23 @@ export const ComparisonScene: React.FC<ComparisonProps> = ({
 	enter = 'rise-pop',
 }) => {
 	const {colors, fonts} = useTheme();
+	const {width, height} = useVideoConfig();
 
 	return (
-		<AbsoluteFill
-			style={{
-				fontFamily: fonts.family,
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-			}}
-		>
-			<div style={{flex: 1, position: 'relative'}}>
+		<AutoFit>
+			<div
+				style={{
+					fontFamily: fonts.family,
+					position: 'relative',
+					width,
+					height,
+				}}
+			>
 				<SplitLayout
 					left={<Card label={leftLabel} value={leftValue} color={colors.accent[0]} delay={15} enter={enter} />}
 					right={<Card label={rightLabel} value={rightValue} color={colors.accent[2] ?? colors.accent[1]} delay={25} enter={enter} />}
 				/>
 			</div>
-		</AbsoluteFill>
+		</AutoFit>
 	);
 };

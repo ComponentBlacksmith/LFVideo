@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-	AbsoluteFill,
 	interpolate,
 	spring,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
+import {AutoFit} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -160,18 +160,10 @@ export const TimelineScene: React.FC<
 	const lineWidth = interpolate(lineProgress, [0, 1], [0, 100]);
 
 	return (
-		<AbsoluteFill
-			style={{
-				fontFamily: fonts.family,
-				padding: `${SPACING.xl}px ${SPACING.gutter}px`,
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-				position: 'relative',
-			}}
-		>
+		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl}>
 			<div
 				style={{
+					fontFamily: fonts.family,
 					position: 'relative',
 					display: 'flex',
 					gap: SPACING.lg,
@@ -217,6 +209,6 @@ export const TimelineScene: React.FC<
 					/>
 				))}
 			</div>
-		</AbsoluteFill>
+		</AutoFit>
 	);
 };

@@ -1,6 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
+import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
+import {AutoFit} from '../primitives';
 import {useTheme} from '../theme/ThemeContext';
 import {withAlpha} from '../theme/util';
 import {Animated} from '../animation';
@@ -137,25 +138,25 @@ export const ConceptScene: React.FC<
 > = ({items, cardStart = 20, cardStagger = 25, enter = 'rise-pop'}) => {
 	const {colors, fonts, SPACING} = useTheme();
 	return (
-		<AbsoluteFill
-			style={{
-				fontFamily: fonts.family,
-				padding: `${SPACING.xl}px ${SPACING.gutter}px`,
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-			}}
-		>
-			{items.map((item, i) => (
-				<ItemCard
-					key={item.title}
-					item={item}
-					color={colors.accent[i % colors.accent.length]}
-					delay={cardStart + i * cardStagger}
-					index={i}
-					enter={enter}
-				/>
-			))}
-		</AbsoluteFill>
+		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl}>
+			<div
+				style={{
+					fontFamily: fonts.family,
+					display: 'flex',
+					flexDirection: 'column',
+				}}
+			>
+				{items.map((item, i) => (
+					<ItemCard
+						key={item.title}
+						item={item}
+						color={colors.accent[i % colors.accent.length]}
+						delay={cardStart + i * cardStagger}
+						index={i}
+						enter={enter}
+					/>
+				))}
+			</div>
+		</AutoFit>
 	);
 };
