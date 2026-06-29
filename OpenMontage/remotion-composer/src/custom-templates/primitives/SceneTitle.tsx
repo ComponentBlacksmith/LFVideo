@@ -1,6 +1,13 @@
 import React from 'react';
-import {interpolate, random, useCurrentFrame, useVideoConfig} from 'remotion';
+import {interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {useTheme} from '../theme/ThemeContext';
+import {
+	clamp01,
+	lerp,
+	easeOutCubic,
+	easeInCubic,
+	Scramble,
+} from './textfx-utils';
 
 interface Props {
 	title: string;
@@ -10,15 +17,9 @@ interface Props {
 	maxWidth?: number;
 }
 
-// ---- 动画时长与强度常量 ----
-const ENTER_FRAMES = 18; // 入场收敛时长
-const EXIT_FRAMES = 14; // 出场坍缩时长
-const ENTER_JITTER = 16; // 入场最大抖动幅度(px)
-const EXIT_JITTER = 22; // 出场最大抖动幅度(px)
-
-const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-const easeInCubic = (t: number) => t * t * t;
-const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
+// ---- 动画时长常量（来自 theme-glitch timing: inF=20, outF=16）----
+const ENTER_FRAMES = 20;
+const EXIT_FRAMES = 16;
 
 // 用 canvas 精确测量文字宽度，做「两行宽度尽量接近、上行稍宽」的平衡换行。
 function computeBalancedLines(
@@ -75,31 +76,25 @@ export const SceneTitle: React.FC<Props> = ({
 		[title, cssFont, maxWidth],
 	);
 
-	// ---- 入场 H01：噪声抖动收敛 ----
+	// ---- 入场 #72：乱码解码 (Scramble / Decode) ----
 	const tIn = clamp01((frame - startFrame) / ENTER_FRAMES);
-	const p = easeOutCubic(tIn);
-	const enterOpacity = Math.min(1, p * 1.5);
-	const enterBrightness = 1 + (1 - p) * 0.5;
-	const enterAmp = (1 - p) * ENTER_JITTER;
+	const decodeProgress = easeOutCubic(tIn);
+	const enterOpacity = Math.min(1, tIn * 2);
+	const isEntering = tIn > 0 && tIn < 1;
 
-	// ---- 出场 H10：量子坍缩 ----
+	// ---- 出场 #92：投影成形 (Long-Shadow Cast) ----
 	const tOut = clamp01((frame - (durationInFrames - EXIT_FRAMES)) / EXIT_FRAMES);
-	const c = easeInCubic(tOut);
-	const exitOpacity = 1 - c;
-	const collapseScaleY = 1 - c * 0.98; // 坍缩成一条细线
-	const exitBrightness = 1 + c * 1.6; // 坍缩瞬间亮度闪烁
-	const exitAmp = c * EXIT_JITTER;
+	const exitPresence = 1 - easeOutCubic(tOut); // 1→0
+	const exitOpacity = clamp01((1 - tOut) * 2);
+	const shadowLen = Math.round(lerp(4, 28, tOut)); // shadow grows on exit
+	const exitShadow = Array.from(
+		{length: shadowLen},
+		(_, k) => `${k + 1}px ${k + 1}px 0 rgba(0,0,0,0.35)`,
+	).join(', ');
 
 	// ---- 合成 ----
 	const opacity = enterOpacity * exitOpacity;
-	const brightness = enterBrightness * exitBrightness;
-	const amp = Math.max(enterAmp, exitAmp);
-	// 每帧确定性随机抖动（噪声感，导出可复现）。
-	const jitterX = (random(`title-jx-${frame}`) * 2 - 1) * amp;
-	const jitterY = (random(`title-jy-${frame}`) * 2 - 1) * amp;
-
-	// 下划线随入场收敛展开；出场坍缩时一并收回。
-	const lineWidth = interpolate(p, [0, 1], [0, 120]) * (1 - c);
+	const lineWidth = interpolate(decodeProgress, [0, 1], [0, 120]) * exitPresence;
 
 	return (
 		<div
@@ -113,9 +108,8 @@ export const SceneTitle: React.FC<Props> = ({
 				alignItems: 'flex-end',
 				textAlign: 'right',
 				opacity,
-				transform: `translate(${jitterX}px, ${jitterY}px) scaleY(${collapseScaleY})`,
-				transformOrigin: 'right top',
-				filter: `brightness(${brightness})`,
+				transform: 'none',
+				textShadow: tOut > 0 ? exitShadow : '0 2px 12px rgba(0,0,0,0.45)',
 				pointerEvents: 'none',
 			}}
 		>
@@ -140,12 +134,20 @@ export const SceneTitle: React.FC<Props> = ({
 					color: colors.text.primary,
 					lineHeight: 1.15,
 					marginBottom: SPACING.sm,
-					textShadow: '0 2px 12px rgba(0,0,0,0.45)',
 				}}
 			>
 				{lines.map((ln, i) => (
 					<div key={i} style={{whiteSpace: 'nowrap'}}>
-						{ln}
+						{isEntering ? (
+							<Scramble
+								text={ln}
+								progress={decodeProgress}
+								frame={frame}
+								seed={i * 100 + 42}
+							/>
+						) : (
+							ln
+						)}
 					</div>
 				))}
 			</div>

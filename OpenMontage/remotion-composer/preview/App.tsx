@@ -1,5 +1,5 @@
-import React, {useMemo, useState} from 'react';
-import {Player} from '@remotion/player';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {Player, type PlayerRef} from '@remotion/player';
 import {PALETTES} from '../src/custom-templates/theme/palettes';
 import {type BackgroundVariant} from '../src/custom-templates/background';
 import {SceneComposition} from './SceneComposition';
@@ -16,6 +16,7 @@ const BACKGROUND_VARIANTS: BackgroundVariant[] = [
 	'gradient',
 	'grid',
 	'particles',
+	'video',
 	'transparent',
 ];
 
@@ -36,6 +37,16 @@ export const App: React.FC = () => {
 	const [background, setBackground] = useState<BackgroundVariant>('gradient');
 	// 勾选后从「裸场景」切换到 ep02-shots 的「最终效果」（矩阵变换 + 叠加层）。
 	const [finalEffect, setFinalEffect] = useState<boolean>(false);
+
+	const playerRef = useRef<PlayerRef>(null);
+
+	// 切换场景 / 主题 / 背景 / 最终效果时自动从头重播。
+	useEffect(() => {
+		const p = playerRef.current;
+		if (!p) return;
+		p.seekTo(0);
+		p.play();
+	}, [selectedFile, themeName, background, finalEffect]);
 
 	const meta: SceneMeta | undefined = SCENE_BY_FILE[selectedFile];
 
@@ -190,7 +201,8 @@ export const App: React.FC = () => {
 					{meta && finalEffect && finalInputProps ? (
 						<div className="player-wrap">
 							<Player
-								key={`final-${selectedFile}-${meta.durationInFrames}`}
+								ref={playerRef}
+								key={`final-${selectedFile}-${meta.durationInFrames}-${themeName}-${background}`}
 								component={FinalComposition}
 								inputProps={finalInputProps}
 								durationInFrames={meta.durationInFrames}
@@ -207,7 +219,8 @@ export const App: React.FC = () => {
 					) : meta && bareInputProps ? (
 						<div className="player-wrap">
 							<Player
-								key={`${selectedFile}-${meta.durationInFrames}`}
+								ref={playerRef}
+								key={`${selectedFile}-${meta.durationInFrames}-${themeName}-${background}`}
 								component={SceneComposition}
 								inputProps={bareInputProps}
 								durationInFrames={meta.durationInFrames}

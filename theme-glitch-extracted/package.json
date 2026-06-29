@@ -1,0 +1,22 @@
+{
+  "name": "remotion-theme-render",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.ts SceneTheme out.mp4 --props=@theme.json",
+    "dev": "remotion studio src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.240",
+    "@remotion/zod-types": "4.0.240",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.240",
+    "zod": "^3.22.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/web": "^0.0.139",
+    "typescript": "^5.5.4"
+  }
+}
