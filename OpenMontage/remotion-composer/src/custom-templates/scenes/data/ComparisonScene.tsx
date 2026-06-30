@@ -1,10 +1,11 @@
 import React from 'react';
 import {z} from 'zod';
-import {AutoFit} from '../primitives';
-import {useTheme} from '../theme/ThemeContext';
-import {withAlpha} from '../theme/util';
-import {Animated} from '../animation';
-import {TRANSITION_IDS, type TransitionId} from '../animation/types';
+import {AutoFit} from '../../primitives';
+import {useTheme} from '../../theme/ThemeContext';
+import {TechPanel, techPill} from '../../theme/surfaces';
+import {textStyles} from '../../theme/textStyles';
+import {Animated} from '../../animation';
+import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 // 模板库版对比场景：基于 SplitLayout，主题驱动配色，左右两张玻璃卡。
 // 与旧 components/ComparisonCard 不同，value 走正文字号并自适应长句，
@@ -27,7 +28,9 @@ const Card: React.FC<{
 	enter: TransitionId;
 	tier: 0 | 1;
 }> = ({label, value, color, delay, enter, tier}) => {
-	const {colors, FONT_SIZE, SPACING, RADIUS} = useTheme();
+	const theme = useTheme();
+	const {FONT_SIZE, SPACING} = theme;
+	const t = textStyles(theme);
 
 	// 长句用正文字号、短句用副标题字号，避免长句溢出。
 	// 方案 B：两栏都是长文（tier 1）时整体再降一档字号并收紧内边距/间距，
@@ -43,11 +46,14 @@ const Card: React.FC<{
 				: FONT_SIZE.bodyLg;
 	const PAD_Y = tier === 0 ? SPACING.xl : SPACING.lg;
 	const GAP = tier === 0 ? SPACING.lg : SPACING.md;
-	const cardBg = withAlpha(colors.bg.to, 0.5);
 
 	return (
 		<Animated enter={enter} delay={delay} distance={50} style={{flex: 1, display: 'flex'}}>
-		<div
+		<TechPanel
+			accent={color}
+			borderAlpha={0.27}
+			fill={0.5}
+			blur={16}
 			style={{
 				flex: 1,
 				minHeight: 440,
@@ -55,14 +61,7 @@ const Card: React.FC<{
 				flexDirection: 'column',
 				justifyContent: 'center',
 				gap: GAP,
-				background: cardBg,
-				border: `1.5px solid ${color}44`,
-				borderRadius: RADIUS.lg,
 				padding: `${PAD_Y}px ${SPACING.lg}px`,
-				backdropFilter: 'blur(16px)',
-				boxShadow: `0 20px 50px -15px rgba(0,0,0,0.6), 0 0 30px -10px ${color}22`,
-				position: 'relative',
-				overflow: 'hidden',
 			}}
 		>
 			<div
@@ -77,35 +76,21 @@ const Card: React.FC<{
 					pointerEvents: 'none',
 				}}
 			/>
-			<div
-				style={{
-					display: 'inline-flex',
-					alignSelf: 'flex-start',
-					fontSize: FONT_SIZE.caption,
-					fontWeight: 800,
-					letterSpacing: 2,
-					color,
-					background: `${color}1A`,
-					border: `1.5px solid ${color}55`,
-					borderRadius: RADIUS.pill,
-					padding: `6px ${SPACING.md}px`,
-					zIndex: 1,
-				}}
-			>
+			<div style={{...techPill(theme, color), alignSelf: 'flex-start', zIndex: 1}}>
 				{label}
 			</div>
 			<div
 				style={{
+					...t.body,
 					fontSize: valueFontSize,
 					fontWeight: 700,
-					color: colors.text.primary,
 					lineHeight: 1.5,
 					zIndex: 1,
 				}}
 			>
 				{value}
 			</div>
-		</div>
+		</TechPanel>
 		</Animated>
 	);
 };

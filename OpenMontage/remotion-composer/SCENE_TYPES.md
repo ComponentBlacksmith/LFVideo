@@ -43,6 +43,13 @@ Auto-generated from `src/custom-templates/scene-types.json` by `scripts/gen_scen
 | `table_scene` | `@TableScene` | `title`, `headers`, `rows` | `eyebrow`, `highlightCell`, `enter` | 通用表格：列由 headers 决定，每行是与之对齐的 cells[]。highlightCell 用 "行-列" 标注高亮。enter 为可选的行入场过渡。 |
 | `comparison_scene` | `@SplitLayout` | `leftLabel`, `leftValue`, `rightLabel`, `rightValue` | `title`, `enter` | 左右对比双卡（基于 SplitLayout），value 走正文字号、自适应长句。enter 为可选的卡片入场过渡。 |
 | `code_scene` | `@TerminalScene` | `steps` | `terminalTitle`, `prompt` | 合成终端 / 代码场景：主题驱动配色、等宽字体，step 协议 cmd/out/pause/pill。 |
+| `section_scene` | `@SectionScene` | `title` | `index`, `eyebrow` | 章节分隔过渡卡：大号序号 + 章节标题，把长片切成清晰段落。 |
+| `bullet_scene` | `@BulletScene` | `items` | `eyebrow`, `title`, `ordered`, `enter` | 轻量要点 / 步骤清单：逐行错峰入场，items 可为字符串或 {text, icon}；ordered=true 用序号。enter 为可选的行入场过渡。 |
+| `flow_scene` | `@FlowScene` | `steps` | `eyebrow`, `title`, `orientation`, `enter` | 流程图 A→B→C：步骤卡（序号 + 图标 + 标题 + 描述）以箭头连接，支持横向/纵向。enter 为可选的卡片入场过渡。 |
+| `chart_scene` | `@ChartScene` | `kind`, `data` | `title`, `donut`, `showValues` | 主题驱动图表：kind ∈ bar/line/pie/kpi，data 为对应图表的数据数组，复用 components/charts 并注入主题配色。 |
+| `stat_scene` | `@StatScene` | `stat` | `subtitle`, `label` | 单个核心数字 / 硬指标：渐变大字弹入 + 可选小标签与副标题。 |
+| `callout_scene` | `@CalloutScene` | `text` | `callout_type`, `title`, `items`, `enter` | 提示 / 避坑框：callout_type ∈ info/warning/tip/quote，左侧强调条 + 图标 + 可选标题与要点列表。enter 为可选的入场过渡。 |
+| `quote_scene` | `@QuoteScene` | `text` | `attribution` | 全屏金句 / 大字报：引号装饰 + 大字陈述 + 可选署名，用于中段强调一句观点。 |
 
 <!-- END AUTO-GENERATED: template-scenes -->
 

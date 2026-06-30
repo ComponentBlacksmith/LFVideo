@@ -21,45 +21,59 @@ export interface Fonts {
 const CJK = '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif';
 const MONO = '"SF Mono", "JetBrains Mono", "Cascadia Code", Consolas, monospace';
 
+// 统一文字色：全部主题白字（科技风），三档层级仅靠不透明度区分，
+// 与背景的深浅无关。改这里即可全片调整正文配色。
+const TECH_TEXT = {
+	primary: '#FFFFFF',
+	secondary: '#C8D2E0',
+	muted: '#8A93A3',
+} as const;
+// 深色科技底上统一的网格/表面色（白色低透明度）。
+const TECH_LINE = 'rgba(255,255,255,0.08)';
+const TECH_SURFACE = 'rgba(255,255,255,0.04)';
+
+// 全部 5 套主题统一为「深色科技底 + 白字」，仅 accent / 字体保留各自调性。
 export const PALETTES: Record<string, Palette> = {
 	'warm-glass': {
 		bg: {from: '#1A1320', to: '#2E2233'},
-		text: {primary: '#F3E9DA', secondary: '#C9B5A0', muted: '#9C8A78'},
+		text: {...TECH_TEXT},
 		accent: ['#FFB347', '#FF7EB6', '#7FD8C0', '#C9A6E8'],
-		line: 'rgba(255,232,205,0.10)',
-		surface: 'rgba(255,232,205,0.05)',
+		line: TECH_LINE,
+		surface: TECH_SURFACE,
 		codeBg: '#160E1C',
 	},
 	'flat-motion-graphics': {
 		bg: {from: '#0F172A', to: '#1E293B'},
-		text: {primary: '#F8FAFC', secondary: '#CBD5E1', muted: '#94A3B8'},
+		text: {...TECH_TEXT},
 		accent: ['#7C3AED', '#EC4899', '#06B6D4', '#F59E0B'],
-		line: 'rgba(255,255,255,0.08)',
-		surface: 'rgba(255,255,255,0.04)',
+		line: TECH_LINE,
+		surface: TECH_SURFACE,
 		codeBg: '#0B1120',
 	},
 	'clean-professional': {
-		bg: {from: '#FFFFFF', to: '#F1F5F9'},
-		text: {primary: '#1F2937', secondary: '#4B5563', muted: '#6B7280'},
-		accent: ['#2563EB', '#F59E0B', '#10B981', '#8B5CF6'],
-		line: 'rgba(0,0,0,0.08)',
-		surface: 'rgba(0,0,0,0.03)',
-		codeBg: '#0F172A',
+		// 由浅底改为深色专业蓝底，accent 提亮以在深底上保持对比。
+		bg: {from: '#0C1322', to: '#172338'},
+		text: {...TECH_TEXT},
+		accent: ['#3B82F6', '#F59E0B', '#10B981', '#A78BFA'],
+		line: TECH_LINE,
+		surface: TECH_SURFACE,
+		codeBg: '#0B1120',
 	},
 	'minimalist-diagram': {
-		bg: {from: '#FAFAFA', to: '#FFFFFF'},
-		text: {primary: '#1A1A2E', secondary: '#3F3F5A', muted: '#6B7280'},
-		accent: ['#E94560', '#0F3460', '#1A1A2E', '#9CA3AF'],
-		line: 'rgba(0,0,0,0.07)',
-		surface: 'rgba(0,0,0,0.025)',
-		codeBg: '#1A1A2E',
+		// 由浅底改为深色极简底，原本过暗的 navy/near-black accent 换成亮色。
+		bg: {from: '#0E1118', to: '#1A1F2E'},
+		text: {...TECH_TEXT},
+		accent: ['#E94560', '#4F9DF7', '#E2E8F0', '#9CA3AF'],
+		line: TECH_LINE,
+		surface: TECH_SURFACE,
+		codeBg: '#11141C',
 	},
 	'anime-ghibli': {
 		bg: {from: '#0A0A1A', to: '#1A2332'},
-		text: {primary: '#F0E6D3', secondary: '#C9BBA0', muted: '#A8957E'},
+		text: {...TECH_TEXT},
 		accent: ['#FFB347', '#FF6B9D', '#A8E6CF', '#6B4C8A'],
-		line: 'rgba(240,230,211,0.10)',
-		surface: 'rgba(240,230,211,0.05)',
+		line: TECH_LINE,
+		surface: TECH_SURFACE,
 		codeBg: '#0A0F1A',
 	},
 };

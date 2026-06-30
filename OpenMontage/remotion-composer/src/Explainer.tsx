@@ -65,6 +65,7 @@ import {
   TemplateThemeProvider,
   buildTemplateTheme,
   PALETTES,
+  TEMPLATE_SCENES,
 } from "./custom-templates";
 import type { BackgroundVariant, CodeStep, TransitionId } from "./custom-templates";
 
@@ -766,6 +767,19 @@ const SceneRenderer: React.FC<{
   if (sceneEntry) {
     const element = sceneEntry.render(sceneCtx);
     return sceneEntry.wrapBackground === false ? element : maybeWrapWithBg(element);
+  }
+
+  // Generic template-scene dispatch: any registered template type without an
+  // explicit SCENES entry above is rendered straight from the SSOT registry by
+  // validating the cut against its co-located zod schema. Adding a new template
+  // scene therefore needs no per-type wiring here — only registry.ts + the JSON.
+  if (cut.type && TEMPLATE_SCENES[cut.type]) {
+    const def = TEMPLATE_SCENES[cut.type];
+    const parsed = def.schema.safeParse(cut);
+    if (parsed.success) {
+      const TemplateComponent = def.component;
+      return maybeWrapWithBg(<TemplateComponent {...parsed.data} />);
+    }
   }
 
   // --- Media types (image / video fallback) ---

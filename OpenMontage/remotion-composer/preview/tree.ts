@@ -1,6 +1,6 @@
 // 用 import.meta.glob 自动发现 scenes/ 下的全部场景文件，保证左侧树与
 // 组件库文件「一一对应」：新增 / 删除 .tsx 文件后，树会随之自动同步。
-const sceneModules = import.meta.glob('../src/custom-templates/scenes/*.tsx');
+const sceneModules = import.meta.glob('../src/custom-templates/scenes/**/*.tsx');
 
 export interface SceneFileNode {
 	// 文件名去扩展名，如 IntroScene。

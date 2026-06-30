@@ -6,12 +6,13 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
-import {AutoFit} from '../primitives';
-import {useTheme} from '../theme/ThemeContext';
-import {withAlpha} from '../theme/util';
-import {Animated} from '../animation';
-import {osc01} from '../animation/presence';
-import {TRANSITION_IDS} from '../animation/types';
+import {AutoFit} from '../../primitives';
+import {useTheme} from '../../theme/ThemeContext';
+import {withAlpha} from '../../theme/util';
+import {TechPanel} from '../../theme/surfaces';
+import {Animated} from '../../animation';
+import {osc01} from '../../animation/presence';
+import {TRANSITION_IDS} from '../../animation/types';
 
 // 通用表格：列由 headers 决定，每行是与 headers 对齐的 cells[]（纯字符串）。
 // 不再绑定任何业务字段名。highlightCell 用 "行-列"（均 1 起，行只数数据行）
@@ -106,7 +107,8 @@ export const TableScene: React.FC<
 > = ({headers, rows, highlightCell, startFrame = 25, rowStagger = 15, enter = 'rise'}) => {
 	const frame = useCurrentFrame();
 	const {fps, height} = useVideoConfig();
-	const {colors, fonts, SPACING, RADIUS, SPRING} = useTheme();
+	const theme = useTheme();
+	const {colors, fonts, SPACING, SPRING} = theme;
 
 	// 密度分档（方案 B）：≤4 行为 tier 0（8行以内 tier 1，更多 tier 2，
 	// 逐档收紧字号/内边距，而不是交给 AutoFit 把整表等比缩到很小。
@@ -126,22 +128,19 @@ export const TableScene: React.FC<
 	const headerOpacity = interpolate(headerProgress, [0, 1], [0, 1]);
 	const headerScaleY = interpolate(headerProgress, [0, 1], [0.8, 1]);
 
-	const wrapperBg = withAlpha(colors.bg.to, 0.3);
 	const headerRowBg = withAlpha(colors.bg.to, 0.8);
 
 	return (
 		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl}>
-			<div
+			<TechPanel
+				accent={colors.accent[0]}
+				borderAlpha={0.28}
+				fill={0.3}
+				blur={16}
 				style={{
 					fontFamily: fonts.family,
 					display: 'flex',
 					flexDirection: 'column',
-					background: wrapperBg,
-					borderRadius: RADIUS.lg,
-					border: `1.5px solid ${colors.line}`,
-					backdropFilter: 'blur(16px)',
-					boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.7)',
-					overflow: 'hidden',
 				}}
 			>
 				<div
@@ -211,7 +210,7 @@ export const TableScene: React.FC<
 						</Animated>
 					);
 				})}
-			</div>
+			</TechPanel>
 		</AutoFit>
 	);
 };

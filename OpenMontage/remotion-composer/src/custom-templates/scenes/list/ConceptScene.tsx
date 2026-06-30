@@ -1,12 +1,13 @@
 import React from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
-import {AutoFit} from '../primitives';
-import {useTheme} from '../theme/ThemeContext';
-import {withAlpha} from '../theme/util';
-import {Animated} from '../animation';
-import {osc01} from '../animation/presence';
-import {TRANSITION_IDS, type TransitionId} from '../animation/types';
+import {AutoFit} from '../../primitives';
+import {useTheme} from '../../theme/ThemeContext';
+import {TechPanel, techIconChip} from '../../theme/surfaces';
+import {textStyles} from '../../theme/textStyles';
+import {Animated} from '../../animation';
+import {osc01} from '../../animation/presence';
+import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 export const conceptItemSchema = z.object({
 	label: z.string(),
@@ -34,7 +35,9 @@ const ItemCard: React.FC<{
 }> = ({item, color, delay, index, enter, tier}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const {colors, FONT_SIZE, SPACING, RADIUS} = useTheme();
+	const theme = useTheme();
+	const {FONT_SIZE, SPACING} = theme;
+	const t = textStyles(theme);
 
 	// 方案 B：密度分档动态收紧字号/图标/间距（仍不低于 FONT_SIZE.min=24），
 	// 让密集内容主动变紧凑、保持可读，而不是交给 AutoFit 把整块等比缩到很小。
@@ -49,26 +52,20 @@ const ItemCard: React.FC<{
 	// frame 驱动的常驻辉光 / 图标浮动（取代 CSS `card-glow`/`icon-float ... infinite`）。
 	const glow = osc01(frame, fps, 6, index * 0.5);
 	const floatW = (1 - Math.cos(((frame / fps + index * 0.3) / 5) * Math.PI * 2)) / 2;
-	const cardBg = withAlpha(colors.bg.to, 0.45);
-	const cardBorder = withAlpha(color, 0.13 + glow * (0.47 - 0.13));
-	const cardShadow = `0 10px 40px -10px rgba(0,0,0,${0.5 + 0.2 * glow}), inset 0 1px 1px rgba(255,255,255,0.05), 0 0 ${18 * glow}px ${withAlpha(color, 0.13 * glow)}`;
 	const iconTransform = `translateY(${-6 * floatW}px) rotate(${4 * floatW}deg)`;
 
 	return (
 		<Animated enter={enter} delay={delay} distance={60}>
-		<div
+		<TechPanel
+			accent={color}
+			glow={glow}
+			borderAlpha={0.13}
+			blur={16}
 			style={{
 				display: 'flex',
 				alignItems: 'flex-start',
 				gap: GAP,
-				background: cardBg,
-				border: `1.5px solid ${cardBorder}`,
-				borderRadius: RADIUS.lg,
 				padding: `${PAD_Y}px ${PAD_X}px`,
-				backdropFilter: 'blur(16px)',
-				boxShadow: cardShadow,
-				position: 'relative',
-				overflow: 'hidden',
 			}}
 		>
 			<div
@@ -86,17 +83,8 @@ const ItemCard: React.FC<{
 
 			<div
 				style={{
-					width: ICON,
-					height: ICON,
-					borderRadius: RADIUS.md,
-					background: `${color}18`,
-					border: `1.5px solid ${color}44`,
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
+					...techIconChip(theme, color, {size: ICON}),
 					fontSize: ICON_FONT,
-					flexShrink: 0,
-					boxShadow: `0 4px 20px -2px ${color}18`,
 					transform: iconTransform,
 				}}
 			>
@@ -106,12 +94,9 @@ const ItemCard: React.FC<{
 			<div style={{flex: 1, zIndex: 1}}>
 				<div
 					style={{
-						fontSize: FONT_SIZE.caption,
-						letterSpacing: 4,
+						...t.eyebrow,
 						color,
-						fontWeight: 800,
 						marginBottom: SPACING.xs - 2,
-						textTransform: 'uppercase',
 						opacity: 0.9,
 					}}
 				>
@@ -119,27 +104,19 @@ const ItemCard: React.FC<{
 				</div>
 				<div
 					style={{
+						...t.cardTitle,
 						fontSize: TITLE,
-						fontWeight: 800,
-						color: colors.text.primary,
 						marginBottom: SPACING.xs,
 						lineHeight: 1.2,
-						letterSpacing: -0.5,
 					}}
 				>
 					{item.title}
 				</div>
-				<div
-					style={{
-						fontSize: DESC,
-						color: colors.text.secondary,
-						lineHeight: 1.65,
-					}}
-				>
+				<div style={{...t.bodyMuted, fontSize: DESC, lineHeight: 1.65}}>
 					{item.desc}
 				</div>
 			</div>
-		</div>
+		</TechPanel>
 		</Animated>
 	);
 };

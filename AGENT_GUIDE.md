@@ -49,6 +49,10 @@
 3. **目标态对齐与 paper_spec 标记**：
    - 凡是调用了 `shared/docs/remotion-spec.md` 目标态规范中声明、但在当前工程中尚未完全实现的组件或未验证的 CLI 参数，必须一律打上 **`paper_spec`** 标记。
 
+4. **不主动渲染视频（预览即可）**：
+   - Remotion 自带可视化预览（`npx remotion studio` / `<Player>`）。**没有用户明确下达的渲染命令时，禁止主动跑 `npx remotion render` 等出片渲染**——所有效果验证一律在 Remotion 预览中完成。
+   - 全片渲染耗时且占机器，只在用户明确要求出片时执行。
+
 ---
 
 ## 🛠️ 铁律三：严谨的代码风格与不留死角

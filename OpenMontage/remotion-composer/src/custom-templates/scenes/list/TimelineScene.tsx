@@ -6,12 +6,13 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
-import {AutoFit} from '../primitives';
-import {useTheme} from '../theme/ThemeContext';
-import {withAlpha} from '../theme/util';
-import {Animated} from '../animation';
-import {osc01} from '../animation/presence';
-import {TRANSITION_IDS, type TransitionId} from '../animation/types';
+import {AutoFit} from '../../primitives';
+import {useTheme} from '../../theme/ThemeContext';
+import {TechPanel, techIconChip, techPill} from '../../theme/surfaces';
+import {textStyles} from '../../theme/textStyles';
+import {Animated} from '../../animation';
+import {osc01} from '../../animation/presence';
+import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 export const timelineEventSchema = z.object({
 	year: z.string(),
@@ -39,7 +40,9 @@ const TimelineCard: React.FC<{
 }> = ({event, color, delay, index, enter, tier}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const {colors, FONT_SIZE, SPACING, RADIUS} = useTheme();
+	const theme = useTheme();
+	const {FONT_SIZE, SPACING} = theme;
+	const t = textStyles(theme);
 
 	// fit-to-fill + 方案 B：事件少时卡片更高更大字填满竖向；事件多时逐档
 	// 收紧字号/图标/内边距（仍不低于 FONT_SIZE.min=24），而不是被 AutoFit 一味缩小。
@@ -53,29 +56,23 @@ const TimelineCard: React.FC<{
 
 	// frame 驱动的常驻辉光（取代 CSS `timeline-glow ... infinite`）。
 	const glow = osc01(frame, fps, 5, index * 0.4);
-	const cardBg = withAlpha(colors.bg.to, 0.4);
-	const iconBg = withAlpha(colors.bg.to, 0.6);
-	const cardBorder = withAlpha(color, 0.2 + glow * (0.53 - 0.2));
-	const cardShadow = `0 10px 30px -15px rgba(0,0,0,0.6), 0 10px ${35 * glow}px -5px ${withAlpha(color, 0.08 * glow)}`;
 
 	return (
 		<Animated enter={enter} delay={delay} distance={40} style={{flex: 1, display: 'flex'}}>
-		<div
+		<TechPanel
+			accent={color}
+			glow={glow}
+			borderAlpha={0.2}
+			fill={0.4}
+			blur={12}
 			style={{
 				flex: 1,
-				background: cardBg,
-				border: `1.5px solid ${cardBorder}`,
-				borderRadius: RADIUS.lg,
 				padding: `${PAD_Y}px ${PAD_X}px`,
 				minHeight: MIN_H,
-				backdropFilter: 'blur(12px)',
-				boxShadow: cardShadow,
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
 				textAlign: 'center',
-				position: 'relative',
-				overflow: 'hidden',
 			}}
 		>
 
@@ -93,16 +90,9 @@ const TimelineCard: React.FC<{
 
 			<div
 				style={{
-					background: `${color}18`,
-					border: `1.5px solid ${color}55`,
-					borderRadius: RADIUS.md,
-					padding: '4px 14px',
-					fontSize: FONT_SIZE.caption,
+					...techPill(theme, color),
 					fontWeight: 900,
-					color,
 					marginBottom: SPACING.md,
-					letterSpacing: 2,
-					boxShadow: `0 4px 15px -2px ${color}15`,
 				}}
 			>
 				{event.year}
@@ -110,17 +100,9 @@ const TimelineCard: React.FC<{
 
 			<div
 				style={{
-					width: ICON,
-					height: ICON,
-					borderRadius: '50%',
-					background: iconBg,
-					border: `1.5px solid ${color}44`,
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
+					...techIconChip(theme, color, {size: ICON, shape: 'circle'}),
 					fontSize: ICON_FONT,
 					marginBottom: SPACING.md,
-					boxShadow: `inset 0 0 10px ${color}11`,
 				}}
 			>
 				{event.icon}
@@ -128,26 +110,18 @@ const TimelineCard: React.FC<{
 
 			<div
 				style={{
+					...t.cardTitle,
 					fontSize: TITLE,
-					fontWeight: 800,
-					color: colors.text.primary,
 					marginBottom: SPACING.sm,
-					letterSpacing: -0.5,
 				}}
 			>
 				{event.title}
 			</div>
 
-			<div
-				style={{
-					fontSize: DESC,
-					color: colors.text.secondary,
-					lineHeight: 1.6,
-				}}
-			>
+			<div style={{...t.bodyMuted, fontSize: DESC}}>
 				{event.desc}
 			</div>
-		</div>
+		</TechPanel>
 		</Animated>
 	);
 };

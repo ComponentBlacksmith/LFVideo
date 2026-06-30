@@ -7,8 +7,10 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {z} from 'zod';
-import {useTheme} from '../theme/ThemeContext';
-import {withAlpha} from '../theme/util';
+import {useTheme} from '../../theme/ThemeContext';
+import {withAlpha} from '../../theme/util';
+import {glowBlob} from '../../theme/surfaces';
+import {textStyles} from '../../theme/textStyles';
 
 export const outroSchema = z.object({
 	headline: z.string(),
@@ -22,7 +24,9 @@ export const OutroScene: React.FC<OutroProps> = ({
 }) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const {colors, fonts, FONT_SIZE, SPACING, RADIUS} = useTheme();
+	const theme = useTheme();
+	const {colors, fonts, FONT_SIZE, SPACING, RADIUS} = theme;
+	const t = textStyles(theme);
 	const enter = spring({fps, frame, config: {damping: 20, stiffness: 90}});
 	const opacity = interpolate(enter, [0, 1], [0, 1]);
 	const translateY = interpolate(enter, [0, 1], [30, 0]);
@@ -46,23 +50,18 @@ export const OutroScene: React.FC<OutroProps> = ({
 			}}
 		>
 			<div
-				style={{
-					position: 'absolute',
+				style={glowBlob(colors.accent[3] ?? colors.accent[1], {
 					width: 500,
 					height: 200,
-					borderRadius: '50%',
-					background: `radial-gradient(circle, ${colors.accent[3] ?? colors.accent[1]}14 0%, transparent 70%)`,
-					filter: 'blur(70px)',
-					zIndex: 0,
-					pointerEvents: 'none',
-				}}
+					intensity: 0.08,
+					blur: 70,
+				})}
 			/>
 
 			<div
 				style={{
+					...t.sceneTitle,
 					fontSize: FONT_SIZE.title + 4,
-					fontWeight: 900,
-					color: colors.text.primary,
 					marginBottom: SPACING.xl,
 					maxWidth: 1400,
 					lineHeight: 1.25,

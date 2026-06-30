@@ -25,6 +25,38 @@ export const noise1 = (x: number): number => {
 	return a + (b - a) * u;
 };
 
+// ---- 平衡换行：用 canvas 精确测量，做「两行宽度尽量接近、上行稍宽」的换行 ----
+export function computeBalancedLines(
+	text: string,
+	cssFont: string,
+	maxWidth: number,
+): string[] {
+	if (typeof document === 'undefined') return [text];
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	if (!ctx) return [text];
+	ctx.font = cssFont;
+	const measure = (s: string) => ctx.measureText(s).width;
+
+	if (measure(text) <= maxWidth) return [text];
+
+	let best: {i: number; score: number} | null = null;
+	for (let i = 1; i < text.length; i++) {
+		const wTop = measure(text.slice(0, i));
+		const wBottom = measure(text.slice(i));
+		if (wTop > maxWidth || wBottom > maxWidth) continue;
+		const diff = wTop - wBottom;
+		// 上行稍宽(diff>=0)优先；下行更宽时重罚，避免「头轻脚重」。
+		const score = diff >= 0 ? diff : -diff * 3;
+		if (best === null || score < best.score) best = {i, score};
+	}
+	if (!best) {
+		const mid = Math.ceil(text.length / 2);
+		return [text.slice(0, mid), text.slice(mid)];
+	}
+	return [text.slice(0, best.i), text.slice(best.i)];
+}
+
 // ---- Scramble/Decode component (effect #72) ----
 const GLYPHS = 'アカサタナ01XΞΨ#%&@王金木水火土π∑∆◇▦';
 
