@@ -1,5 +1,5 @@
 import React, {createContext, useContext} from 'react';
-import {FONT_SIZE, SPACING, RADIUS, SPRING} from './tokens';
+import {FONT_SIZE, SPACING, RADIUS, SPRING, GLOW} from './tokens';
 import {
 	resolvePalette,
 	resolveFonts,
@@ -17,6 +17,7 @@ export interface TemplateTheme {
 	SPACING: typeof SPACING;
 	RADIUS: typeof RADIUS;
 	SPRING: typeof SPRING;
+	GLOW: typeof GLOW;
 }
 
 export function buildTemplateTheme(themeName?: string): TemplateTheme {
@@ -28,6 +29,7 @@ export function buildTemplateTheme(themeName?: string): TemplateTheme {
 		SPACING,
 		RADIUS,
 		SPRING,
+		GLOW,
 	};
 }
 

@@ -1,5 +1,6 @@
 import React, {type CSSProperties} from 'react';
 import {withAlpha} from './util';
+import {GLOW} from './tokens';
 import {useTheme, type TemplateTheme} from './ThemeContext';
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -47,6 +48,8 @@ export function techPanel(
 		boxShadow: [
 			`0 18px 48px -16px rgba(0,0,0,${0.5 + 0.15 * glow})`,
 			`inset 0 1px 0 ${withAlpha('#FFFFFF', 0.06)}`,
+			// 常驻全息辉光基线（GLOW.border）+ 呼吸辉光（glow 入参）叠加。
+			`0 0 ${GLOW.border.blur}px ${withAlpha(accent, GLOW.border.alpha)}`,
 			`0 0 ${22 * glow}px ${withAlpha(accent, 0.14 * glow)}`,
 		].join(', '),
 		position: 'relative',
@@ -133,7 +136,11 @@ export function techIconChip(
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		boxShadow: `0 4px 18px -2px ${withAlpha(color, 0.16)}`,
+		// 暗投影 + accent 全息辉光（GLOW.icon），让 Icon 片也有投影发光感。
+		boxShadow: [
+			`0 4px 18px -2px ${withAlpha(color, 0.16)}`,
+			`0 0 ${GLOW.icon.blur}px ${withAlpha(color, GLOW.icon.alpha)}`,
+		].join(', '),
 	};
 }
 
@@ -169,6 +176,36 @@ export function glowBlob(
 		filter: `blur(${blur}px)`,
 		zIndex: 0,
 		pointerEvents: 'none',
+	};
+}
+
+// 全息标题文字辉光：accent 色弥散光晕 + 暗色描边（保证深底/浅底都可读）。
+// 统一供 HoloTitle 与任何需要发光标题的场景使用。
+export function holoTextShadow(
+	accent: string,
+	opts?: {blur?: number; alpha?: number},
+): string {
+	const {blur = GLOW.text.blur, alpha = GLOW.text.alpha} = opts ?? {};
+	return [
+		`0 0 ${blur}px ${withAlpha(accent, alpha)}`,
+		`0 0 ${blur * 2}px ${withAlpha(accent, alpha * 0.5)}`,
+		`0 2px 12px rgba(0,0,0,0.45)`,
+	].join(', ');
+}
+
+// accent 渐变强调光条（标题下划线 / 分隔条），自带全息辉光。
+export function accentUnderline(
+	theme: TemplateTheme,
+	opts?: {width?: number; height?: number; glow?: number},
+): CSSProperties {
+	const {colors} = theme;
+	const {width = 120, height = 4, glow = 1} = opts ?? {};
+	return {
+		width,
+		height,
+		borderRadius: height / 2,
+		background: `linear-gradient(90deg, ${colors.accent[0]}, ${colors.accent[1]})`,
+		boxShadow: `0 0 ${GLOW.bar.blur}px ${withAlpha(colors.accent[0], GLOW.bar.alpha * glow)}`,
 	};
 }
 
