@@ -15,6 +15,8 @@ template-library scene (see remotion-composer/src/custom-templates/registry.ts):
     @IntroScene    -> intro_scene     @ConceptScene  -> concept_scene
     @TableScene    -> table_scene     @TerminalScene -> code_scene
     @OutroScene    -> outro_scene     @SplitLayout   -> comparison_scene
+    @FlowScene     -> flow_scene      @BulletScene   -> bullet_scene
+    @QuoteScene    -> quote_scene     @CalloutScene  -> callout_scene
 
 Cut timing is driven by each shot's ``duration_seconds`` (06-tts narration is
 not yet produced for this cut; once it is, swap in real segment durations from
@@ -78,6 +80,10 @@ TEMPLATE_TO_TYPE = {
     "@TerminalScene": "code_scene",
     "@OutroScene": "outro_scene",
     "@SplitLayout": "comparison_scene",
+    "@FlowScene": "flow_scene",
+    "@BulletScene": "bullet_scene",
+    "@QuoteScene": "quote_scene",
+    "@CalloutScene": "callout_scene",
 }
 
 
@@ -136,17 +142,39 @@ SHOT_CONTENT: dict[str, dict[str, Any]] = {
     "3.5": {"title": "Remotion ✅ vs 复制粘贴 HTML ❌", "leftLabel": "Remotion", "leftValue": "改一处全系列生效 · 只填数据 · 代价：React + BUSL 付费", "rightLabel": "复制粘贴 HTML", "rightValue": "每期复制越改越乱 · 结构易跑偏"},
     "3.6": {"title": "一句话", "leftLabel": "AI", "leftValue": "铺信息：把方案和坑摆全", "rightLabel": "你", "rightValue": "拍板：做减法、定取舍"},
 
-    "4.1": {"eyebrow": "引擎怎么干活", "title": "一份配置 → Explainer 按 type 分发 → 现成组件", "background": "holo", "items": [
+    # S4（新）Remotion 怎么工作 + 为什么 AI 能驱动
+    "4.1": {"eyebrow": "Remotion 怎么工作", "title": "用 React 写每帧 → 逐帧截图 → 合成视频", "orientation": "horizontal", "steps": [
+        {"label": "WRITE", "desc": "用 React 组件描述这一帧画成什么样", "icon": "⚛️"},
+        {"label": "SHOT", "desc": "无头浏览器从头到尾逐帧把组件截成图片", "icon": "📸"},
+        {"label": "COMPOSE", "desc": "FFmpeg 把帧序列 + 音轨合成 MP4", "icon": "🎬"},
+    ]},
+    "4.2": {"terminalTitle": "帧为单位：useCurrentFrame + interpolate", "prompt": "$", "steps": _term(
+        "const frame = useCurrentFrame();   // 现在第几帧\n"
+        "// 按帧号算这帧该画成什么样：位置/透明度/大小\n"
+        "const opacity = interpolate(frame, [0, 30], [0, 1]);\n"
+        "// 30fps：你按秒想，引擎按帧算\n"
+        "// 第 3 秒 = 第 90 帧，不用一帧帧手摆"
+    )},
+    "4.3": {"eyebrow": "为什么 AI 能轻松驱动", "title": "四条对 AI 友好的底层原因", "ordered": True, "items": [
+        {"text": "全是 React + CSS：AI 语料里最厚的一块", "icon": "⚛️"},
+        {"text": "声明式：只描述长什么样，不写怎么一帧帧动", "icon": "📐"},
+        {"text": "改数据就改片：正中 AI 改文本的强项", "icon": "🔤"},
+        {"text": "TypeScript 字段焊死：填错漏填编译当场报红", "icon": "🛡️"},
+    ]},
+    "4.4": {"text": "把视频写成数据，AI 只填空、不乱跑", "attribution": "Remotion × Vibe Coding"},
+
+    # S5 技术落地·配置分发 + 配置即内容（原 S4 内容顺延）
+    "5.1": {"eyebrow": "引擎怎么干活", "title": "一份配置 → Explainer 按 type 分发 → 现成组件", "background": "holo", "items": [
         {"label": "WRITE", "title": "你写配置", "desc": "说清这段画面长啥样", "icon": "📝"},
         {"label": "DISPATCH", "title": "Explainer 分发", "desc": "看 type 字段自动找组件", "icon": "🔀"},
         {"label": "RENDER", "title": "现成组件渲染", "desc": "comparison/terminal/charts… 照填就渲", "icon": "🧩"},
     ]},
-    "4.2": {"eyebrow": "remotion-composer", "title": "做内容 = 挑组件 + 填字段", "background": "holo", "items": [
+    "5.2": {"eyebrow": "remotion-composer", "title": "做内容 = 挑组件 + 填字段", "background": "holo", "items": [
         {"label": "comparison", "title": "对比卡", "desc": "type=comparison 出对比卡", "icon": "🆚"},
         {"label": "terminal", "title": "合成终端", "desc": "不用真录屏", "icon": "🖥️"},
-        {"label": "charts", "title": "图表 / 分屏", "desc": "按需挑用", "icon": "📊"},
+        {"label": "charts", "title": "十四个模板场景", "desc": "统一深色科技底 + 白字，改一处全片生效", "icon": "📊"},
     ]},
-    "4.3": {"terminalTitle": "comparison 配置：照现成组件填数据", "prompt": "$", "steps": _term(
+    "5.3": {"terminalTitle": "comparison 配置：照现成组件填数据", "prompt": "$", "steps": _term(
         "{\n"
         "  \"type\": \"comparison\",\n"
         "  \"title\": \"传统剪辑 vs 代码即视频\",\n"
@@ -156,7 +184,7 @@ SHOT_CONTENT: dict[str, dict[str, Any]] = {
         "  \"rightValue\": \"改一行配置，重新编译出片\"\n"
         "}"
     )},
-    "4.4": {"terminalTitle": "TS 把字段格式焊死，填错即编译报红", "prompt": "$", "steps": _term(
+    "5.4": {"terminalTitle": "TS 把字段格式焊死，填错即编译报红", "prompt": "$", "steps": _term(
         "type Comparison = {\n"
         "  type: 'comparison';\n"
         "  leftLabel: string; leftValue: string;\n"
@@ -164,19 +192,20 @@ SHOT_CONTENT: dict[str, dict[str, Any]] = {
         "};\n"
         "// 漏填 / 写错字段 → tsc 当场报错，AI 跑不偏"
     )},
-    "4.5": {"title": "让 AI 填空，别让它造轮子", "leftLabel": "❌ 从零手写", "leftValue": "让 AI 手写 ComparisonScene.tsx，易错难维护", "rightLabel": "✅ 只填数据", "rightValue": "复用现成 @ComparisonCard，TS 兜底"},
-    "4.6": {"eyebrow": "延伸", "title": "还能扩一套自有风格组件库", "background": "holo", "items": [
+    "5.5": {"title": "让 AI 填空，别让它造轮子", "leftLabel": "❌ 从零手写", "leftValue": "让 AI 手写 ComparisonScene.tsx，易错难维护", "rightLabel": "✅ 只填数据", "rightValue": "复用现成 @ComparisonCard，TS 兜底"},
+    "5.6": {"eyebrow": "延伸", "title": "还能扩一套自有风格组件库", "background": "holo", "items": [
         {"label": "BRAND", "title": "自有风格组件", "desc": "在现成组件上扩一套，辨识度更强", "icon": "🎨"},
         {"label": "LATER", "title": "以后单开一期", "desc": "那是更大的话题", "icon": "📅"},
     ]},
 
-    "5.1": {"terminalTitle": "💥 SSR 坑：组件顶层读 window，渲染红屏（A 轨兜底）", "prompt": "$", "steps": _term(
+    # S6 SSR 避坑（原 S5 内容顺延）
+    "6.1": {"terminalTitle": "💥 SSR 坑：组件顶层读 window，渲染红屏（A 轨兜底）", "prompt": "$", "steps": _term(
         "// ❌ 组件顶层直接读 window\n"
         "const w = window.innerWidth;\n"
         "// 打包跑在 Node 里、还没进浏览器：\n"
         "// 💥 ReferenceError: window is not defined"
     )},
-    "5.2": {"terminalTitle": "✅ typeof window 守卫 + MDC 规则（A 轨兜底）", "prompt": "$", "steps": _term(
+    "6.2": {"terminalTitle": "✅ typeof window 守卫 + MDC 规则（A 轨兜底）", "prompt": "$", "steps": _term(
         "// ✅ SSR 时用默认值兜底\n"
         "const w = typeof window !== 'undefined'\n"
         "  ? window.innerWidth\n"
@@ -184,24 +213,41 @@ SHOT_CONTENT: dict[str, dict[str, Any]] = {
         "// .cursor/rules/remotion-ssr.mdc:\n"
         "// 组件顶层禁止直接读 window/document"
     )},
-    "5.3": {"eyebrow": "Vibe Coding 精髓", "title": "重复的规矩，固化成规则交给 AI", "background": "holo", "items": [
+    "6.3": {"eyebrow": "Vibe Coding 精髓", "title": "重复的规矩，固化成规则交给 AI", "background": "holo", "items": [
         {"label": "RULE", "title": ".cursor/rules/remotion-ssr.mdc", "desc": "组件顶层禁止直接读 window/document", "icon": "🛡️"},
         {"label": "AUTO", "title": "AI 自动带上", "desc": "往后生成组件自动遵守，不用每次盯着", "icon": "🤖"},
     ]},
 
-    "6.1": {"eyebrow": "数字人选型", "title": "出镜形象只是陪衬串场，不是主角", "background": "holo", "items": [
+    # S7 数字人选型（原 S6 内容顺延）
+    "7.1": {"eyebrow": "数字人选型", "title": "出镜形象只是陪衬串场，不是主角", "background": "holo", "items": [
         {"label": "METHOD", "title": "套选引擎的方法论", "desc": "先把定位说死，再摆选项和坑", "icon": "🧭"},
         {"label": "ROLE", "title": "陪衬定位", "desc": "串场，不抢内容主角", "icon": "🎭"},
     ]},
-    "6.2": {"eyebrow": "三种形象方案", "title": "可选形象 + 各自的坑", "background": "grid", "headers": ["形象方案", "适用场景", "坑 / 代价"], "rows": _AVATAR_ROWS},
-    "6.3": {"eyebrow": "回到约束", "title": "选定 3D 风格化 VRMAvatar", "background": "grid", "headers": ["形象方案", "适用场景", "坑 / 代价"], "rows": _AVATAR_ROWS, "highlightCell": "3-1"},
-    "6.4": {"eyebrow": "落地交给 AI", "title": "整体渲一次按场景裁，脚踩稳", "background": "holo", "items": [
+    "7.2": {"eyebrow": "三种形象方案", "title": "可选形象 + 各自的坑", "background": "grid", "headers": ["形象方案", "适用场景", "坑 / 代价"], "rows": _AVATAR_ROWS},
+    "7.3": {"eyebrow": "回到约束", "title": "选定 3D 风格化 VRMAvatar", "background": "grid", "headers": ["形象方案", "适用场景", "坑 / 代价"], "rows": _AVATAR_ROWS, "highlightCell": "3-1"},
+    "7.4": {"eyebrow": "落地交给 AI", "title": "整体渲一次按场景裁，脚踩稳", "background": "holo", "items": [
         {"label": "CROP", "title": "按场景裁切", "desc": "整体渲一次，再裁半身/全身", "icon": "✂️"},
         {"label": "FIX", "title": "脚踩稳", "desc": "大腿反向抵消髋部摆动，修掉钟摆甩腿", "icon": "🦵"},
     ]},
 
-    "7.1": {"headline": "三步搭好你的自动出片引擎，没基础也能复制", "cta": "找路径 · 选型 · 落地", "background": "holo"},
-    "7.2": {"headline": "下期 EP03：用 Whisper 让字幕踩着话音跳", "cta": "关注 · 别错过", "background": "holo"},
+    # S8（新）场景适配：适合 / 搭配 / 不适合
+    "8.1": {"eyebrow": "用在哪 ①", "title": "最适合：纯 A 轨自动出片", "background": "holo", "items": [
+        {"label": "TALK", "title": "概念讲解 / 要点流程", "desc": "模板化讲解，文本就能说清", "icon": "🗣️"},
+        {"label": "DATA", "title": "数据图表 / 对比 / 指标", "desc": "图表、对比卡、核心数字", "icon": "📊"},
+        {"label": "PACK", "title": "片头 / 章节 / 片尾 / 合成终端", "desc": "包装 + 演示命令报错，换数据批量出片", "icon": "🎬"},
+    ]},
+    "8.2": {"title": "Remotion 的两种用法", "leftLabel": "独占整屏（纯 A 轨）", "leftValue": "主体是讲解/数据时，整屏交给 Remotion", "rightLabel": "退居叠层（搭配 B 轨）", "rightValue": "主体是真人/录屏时，渲透明叠层：数据卡/字幕/箭头/Zoom"},
+    "8.3": {"callout_type": "warning", "title": "这些别硬上", "text": "主体不是文本/数据、或要写实物理世界时，Remotion 不是对的工具", "items": [
+        "实拍人物 / 产品 / Vlog：该拍就拍，别拿引擎替代摄像机",
+        "写实对口型数字人：易掉恐怖谷、可信度反崩，本项目排除",
+        "影视级特效 / 逐帧手绘动画：交给专业工具",
+        "纯后台超长批处理：FFmpeg 更划算",
+    ]},
+    "8.4": {"text": "主体真实 → 退居叠层；主体讲解 → 独占整屏", "attribution": "场景适配口诀"},
+
+    # S9 结尾 CTA（原 S7 内容顺延）
+    "9.1": {"headline": "三步搭好你的自动出片引擎，没基础也能复制", "cta": "找路径 · 选型 · 落地", "background": "holo"},
+    "9.2": {"headline": "下期 EP03：用 Whisper 让字幕踩着话音跳", "cta": "关注 · 别错过", "background": "holo"},
 }
 
 
