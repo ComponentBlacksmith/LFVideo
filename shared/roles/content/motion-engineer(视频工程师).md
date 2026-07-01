@@ -83,26 +83,24 @@
 
 ---
 
-## 模板库架构（已落地于 `video/src`）
+## 工程架构（已落地于 `OpenMontage/remotion-composer`）
 
-**核心分界：`template/`（跨期复用的印刷机）vs `episodes/`（每期换的稿件）。** 新增一期 = 复制一个 `epNN-slug/` 文件夹改 `data.ts`，不碰模板库。
+**核心分界：`Explainer.tsx` + `components/`（跨期复用的印刷机，按 `cut.type` 分发场景）vs `public/demo-props/<slug>.json`（每期换的稿件）。** 新增一期 = 生成一份 `<slug>.json` + 在 `Root.tsx` 注册一条 `<Composition>`，不碰渲染器与组件库。
 
 ```
-video/src/
-├── template/        # 模板库（少改动）
-│   ├── theme/       # 设计令牌：tokens.ts(字号/颜色/间距/spring) + fonts.ts
-│   ├── primitives/  # 原子：AnimatedBackground(gradient/grid/particles)、TitleFrame、SplitLayout、VideoSlot(口播)、Subtitle
-│   ├── scenes/      # 场景：IntroScene、ConceptScene、OutroScene
-│   └── index.ts     # 统一出口，episodes 只从这里 import
-├── episodes/        # 每期内容（频繁新增）
-│   └── epNN-slug/
-│       ├── data.ts      # 本期纯文案（与排版分离）
-│       └── Episode.tsx  # 组装 scenes，只管"这期讲什么、按什么顺序、各多久"
-└── Root.tsx         # 注册所有 episode 的 Composition
+OpenMontage/remotion-composer/
+├── src/
+│   ├── Explainer.tsx      # 单一通用渲染器：按 cut.type 分发到各场景组件（跨期复用）
+│   ├── components/        # 场景组件库：IntroScene / ConceptScene / TableScene / OutroScene / …
+│   ├── custom-templates/  # 自定义模板场景
+│   ├── Root.tsx           # 注册所有期的 <Composition>（每期新增一条，复用 Explainer）
+│   └── index.tsx          # Remotion 入口
+├── public/demo-props/     # 每期一个 props JSON：<slug>.json（cut 列表 = 镜头列表）
+└── out/                   # 渲染成片输出目录
 ```
 
-> 新增需求先判断属于哪一层：通用视觉 → `primitives`；可复用片段 → `scenes`；本期内容 → `episodes/epNN/data.ts`。
-> AI 口播视频用 `VideoSlot`（基于 `OffthreadVideo`），支持四角/两侧/全屏定位，配合 `SplitLayout` 实现"动画+口播"分屏。
+> 新增需求先判断属于哪一层：新增可复用场景类型 → `components/` 并接入 `Explainer` 的 `cut.type` 分发；本期内容 → `public/demo-props/<slug>.json` 的 `cuts[]`。
+> `scene_template`（04 里的 `@XxxScene`）→ `cut.type` 映射表见 `shared/docs/remotion-spec.md`。B 轨口播视频用带 `videoSrc` 的 cut，缺失时自动走 A 轨兜底 `cut.type`。
 
 ---
 
@@ -140,7 +138,7 @@ video/src/
 
 【身份】用 Remotion（React 程序化视频）把脚本组装成片的工程师。
 
-【母题】频道定位"AI IDE 真实场景能力验证"。用代码生成视频本身就是母题的演示，
+【母题】频道母题见 `shared/rules/project-context.md`《核心定位》。用代码生成视频本身就是母题的演示，
 但动画服务于把内容讲清楚，绝不为炫技堆砌。
 
 【任务】基于以下脚本，给出 Remotion 制作方案：

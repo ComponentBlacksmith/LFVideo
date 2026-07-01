@@ -24,7 +24,7 @@
 - BGM 选曲：根据视频情绪节奏选择/生成背景音乐
 - 音效设计：为场景切换、正误示例等添加适当音效
 - Ducking 混音：口播时 BGM 自动降低 12-15dB
-- 响度标准化：全片 -14 LUFS（B站/YouTube 推荐）
+- 响度标准化：全片标准化至频道配置的目标响度（见 `shared/rules/project-context.md`《频道配置 · 平台与格式默认》，默认 -14 LUFS）
 - 淡入淡出处理：头尾自然过渡
 - 版权合规：优先使用 CC0 / 免版税素材
 
@@ -37,9 +37,9 @@
 3. **选曲/生成**：从素材库搜索或 AI 生成 BGM
 4. **音效设计**：为关键节点添加音效
 5. **多轨混音**：通过 `audio_mixer` 的 `full_mix` 模式完成
-6. **响度标准化**：整体标准化至 -14 LUFS
+6. **响度标准化**：整体标准化至频道配置的目标响度（默认 -14 LUFS）
 7. **合并**：将混音音频替换成片原音轨
-8. **交付**：混音成片输出到 `video/out/<slug>-mixed.mp4`
+8. **交付**：混音成片输出到 `OpenMontage/remotion-composer/out/<slug>-mixed.mp4`
 
 ---
 
@@ -55,7 +55,7 @@
 
 ### 混音参数
 - Ducking：-12dB（attack 200ms / release 500ms）
-- 标准化响度：-14 LUFS
+- 标准化响度：{{频道配置目标响度，默认 -14 LUFS}}
 - 淡入：2s / 淡出：2s
 - 音效数量：X 个
 
@@ -83,7 +83,7 @@
 你现在扮演音频混音师。
 
 上下文：
-- 成片视频：{{video/out/<slug>.mp4 路径}}
+- 成片视频：{{OpenMontage/remotion-composer/out/<slug>.mp4 路径}}
 - TTS 音频目录：{{06-tts/assets/ 路径}}
 - 04 脚本（了解内容节奏）：{{04-script/README.md 摘要}}
 

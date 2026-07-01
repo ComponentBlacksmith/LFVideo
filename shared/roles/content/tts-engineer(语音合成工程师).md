@@ -47,7 +47,7 @@
 ## TTS 合成记录
 
 ### 配置
-- 引擎：豆包 TTS
+- 引擎：{{按口播语言选择，默认优先级见 `shared/rules/project-context.md`《频道配置 · TTS 默认引擎》}}
 - 音色：{{voice_id}}
 - 采样率：44.1kHz / 16bit WAV
 

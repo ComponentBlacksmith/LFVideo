@@ -53,7 +53,7 @@
           },
           "shots": {
             "type": "array",
-            "description": "Shot-level storyboard decomposition: the renderable units within this section. REQUIRED-IN-SPIRIT whenever duration_hint_seconds > 15 (enforced by scripts/pipeline_lint.py as a hard error once the stage is approved/reviewed): cut the section into shots so the picture changes every <=~12s instead of one static frame. Each shot binds ONE component + props + the voice slice it covers + its own duration. Stage 07 maps each shot one-to-one to a data.ts scene; when shots is absent it falls back to the section-level scene_template/props. This supersedes visual_beats for cross-shot cutting (visual_beats stays for intra-shot micro-animation). See shared/docs/remotion-spec.md §1.5.",
+            "description": "Shot-level storyboard decomposition: the renderable units within this section. REQUIRED-IN-SPIRIT whenever duration_hint_seconds > 15 (enforced by scripts/pipeline_lint.py as a hard error once the stage is approved/reviewed): cut the section into shots so the picture changes every <=~12s instead of one static frame. Each shot binds ONE component + props + the voice slice it covers + its own duration. Stage 07 maps each shot one-to-one to a cut in the props JSON (OpenMontage/remotion-composer/public/demo-props/<slug>.json); when shots is absent it falls back to the section-level scene_template/props. This supersedes visual_beats for cross-shot cutting (visual_beats stays for intra-shot micro-animation). See shared/docs/remotion-spec.md §1.5.",
             "minItems": 1,
             "items": {
               "type": "object",

@@ -126,7 +126,7 @@ source_workflow: /04-script-draft
 
 - 创建目录：`content-library/<epNN-slug>/04-script/`，将脚本写入 `04-script/README.md`。
 - **MANDATORY**：脚本末尾必须追加符合 `shared/schemas/04-script.schema.json` 规范的 ` ```json ` 结构化块。
-- **该 JSON 块是下游全部阶段（B轨录屏/TTS/组装/字幕/分发）的唯一真源（SSOT），一旦 approve 即冻结**：其中 `title`、`sections[].id`/`voice`/`duration_hint_seconds`、以及 `anti_hype_forbidden`（噱头黑名单）是下游**不得改写**的硬契约；`video_spec`、`sections[].shots[]`（含每个 shot 的 `scene_template`/`props`/`voice_slice`/`duration_seconds`）/`scene_template`/`props`/`visual_beats`、`zoom_crop_directives` 由本阶段一并产出，供 05/07 直接读取——**07 组装按「一个 shot ↔ 一个 data.ts 场景」逐条映射**（section 无 shots 时退化为整段一个场景）。下游只能逐条映射，不能增删段落/镜头、重写标题/口播或重新引入噱头。示例：
+- **该 JSON 块是下游全部阶段（B轨录屏/TTS/组装/字幕/分发）的唯一真源（SSOT），一旦 approve 即冻结**：其中 `title`、`sections[].id`/`voice`/`duration_hint_seconds`、以及 `anti_hype_forbidden`（噱头黑名单）是下游**不得改写**的硬契约；`video_spec`、`sections[].shots[]`（含每个 shot 的 `scene_template`/`props`/`voice_slice`/`duration_seconds`）/`scene_template`/`props`/`visual_beats`、`zoom_crop_directives` 由本阶段一并产出，供 05/07 直接读取——**07 组装按「一个 shot ↔ props JSON 里一个 cut」逐条映射**（section 无 shots 时退化为整段一个 cut）。下游只能逐条映射，不能增删段落/镜头、重写标题/口播或重新引入噱头。示例：
   ```json
   {
     "title": "定稿视频标题",

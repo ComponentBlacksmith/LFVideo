@@ -91,7 +91,7 @@
 
 上下文：
 - 04 脚本标题与钩子：{{标题信息}}
-- 成片路径：{{video/out/<slug>-mixed.mp4}}
+- 成片路径：{{OpenMontage/remotion-composer/out/<slug>-mixed.mp4}}
 
 任务：
 1. 确定封面文案元素（主标题、副标题、关键数字）

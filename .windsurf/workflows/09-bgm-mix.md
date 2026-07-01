@@ -150,7 +150,7 @@ source_workflow: /09-bgm-mix
 
 ## 混音参数
 - Ducking：-12dB（attack 200ms / release 500ms）
-- 标准化响度：-14 LUFS
+- 标准化响度：{{频道配置目标响度，默认 -14 LUFS}}
 - 音效数量：X 个
 
 ## 成片路径
