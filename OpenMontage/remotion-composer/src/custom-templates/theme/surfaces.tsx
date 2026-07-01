@@ -35,8 +35,8 @@ export function techPanel(
 		accent,
 		glow = 0,
 		radius = RADIUS.lg,
-		fill = 0.45,
-		borderAlpha = 0.32,
+		fill = 0.55,
+		borderAlpha = 0.4,
 		blur = 14,
 	} = opts;
 	// 描边核心提亮趋近白色（lighten 0.62）+ 加粗到 2.5px，呈现「霓虹发光」亮芯；
@@ -136,8 +136,8 @@ export function techIconChip(
 		...(size ? {width: size, height: size} : {}),
 		flexShrink: 0,
 		borderRadius: shape === 'circle' ? '50%' : RADIUS.md,
-		background: withAlpha(color, 0.12),
-		border: `1.5px solid ${withAlpha(color, 0.34)}`,
+		background: withAlpha(color, 0.18),
+		border: `1.5px solid ${withAlpha(color, 0.45)}`,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -159,8 +159,8 @@ export function techPill(theme: TemplateTheme, color: string): CSSProperties {
 		fontWeight: 800,
 		letterSpacing: 2,
 		color,
-		background: withAlpha(color, 0.1),
-		border: `1.5px solid ${withAlpha(color, 0.34)}`,
+		background: withAlpha(color, 0.15),
+		border: `1.5px solid ${withAlpha(color, 0.45)}`,
 		borderRadius: RADIUS.pill,
 		padding: `6px ${SPACING.md}px`,
 	};

@@ -6,7 +6,7 @@ import {useTheme} from '../../theme/ThemeContext';
 import {TechPanel, techIconChip} from '../../theme/surfaces';
 import {textStyles} from '../../theme/textStyles';
 import {Animated} from '../../animation';
-import {osc01} from '../../animation/presence';
+import {osc01, proportionalTiming} from '../../animation/presence';
 import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 export const conceptItemSchema = z.object({
@@ -125,8 +125,12 @@ const ItemCard: React.FC<{
 
 export const ConceptScene: React.FC<
 	ConceptProps & {cardStart?: number; cardStagger?: number}
-> = ({items, cardStart = 20, cardStagger = 25, enter = 'rise-pop'}) => {
-	const {fps} = useVideoConfig();
+> = ({items, cardStart, cardStagger, enter = 'rise-pop'}) => {
+	const {fps, durationInFrames} = useVideoConfig();
+	// 比例化：首卡 5% 处开始，全部卡片在 40% 处完成入场。
+	const auto = proportionalTiming(durationInFrames, items.length);
+	const _cardStart = cardStart ?? auto.start;
+	const _cardStagger = cardStagger ?? auto.stagger;
 	const {colors, fonts, SPACING} = useTheme();
 
 	// 密度分档（fit-to-fill + 方案 B）：条目多时换多列排布并配合字号/间距收紧，
@@ -152,7 +156,7 @@ export const ConceptScene: React.FC<
 					const delay =
 						item.atSec != null
 							? Math.max(0, Math.round(item.atSec * fps))
-							: cardStart + i * cardStagger;
+							: _cardStart + i * _cardStagger;
 					return (
 						<ItemCard
 							key={item.title}

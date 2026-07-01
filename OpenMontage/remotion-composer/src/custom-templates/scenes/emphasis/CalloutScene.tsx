@@ -7,7 +7,7 @@ import {withAlpha} from '../../theme/util';
 import {TechPanel} from '../../theme/surfaces';
 import {textStyles} from '../../theme/textStyles';
 import {Animated} from '../../animation';
-import {osc01} from '../../animation/presence';
+import {osc01, proportionalTiming} from '../../animation/presence';
 import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 export const CALLOUT_TYPES = ['info', 'warning', 'tip', 'quote'] as const;
@@ -38,7 +38,7 @@ export const CalloutScene: React.FC<CalloutProps> = ({
 	enter = 'slide-right',
 }) => {
 	const frame = useCurrentFrame();
-	const {fps} = useVideoConfig();
+	const {fps, durationInFrames} = useVideoConfig();
 	const theme = useTheme();
 	const {colors, fonts, FONT_SIZE, SPACING} = theme;
 	const t = textStyles(theme);
@@ -50,9 +50,13 @@ export const CalloutScene: React.FC<CalloutProps> = ({
 	// frame 驱动的常驻辉光（替代 CSS infinite 动画）。
 	const glow = osc01(frame, fps, 6);
 
+	// 比例化：主块 5% 处开始，子项在 30% 处完成入场。
+	const itemCount = items?.length ?? 0;
+	const auto = proportionalTiming(durationInFrames, itemCount + 1, 0.05, 0.3);
+
 	return (
 		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl} maxScale={1.3}>
-			<Animated enter={enter} delay={6} distance={70}>
+			<Animated enter={enter} delay={auto.start} distance={70}>
 				<TechPanel
 					accent={color}
 					glow={glow}
@@ -108,7 +112,7 @@ export const CalloutScene: React.FC<CalloutProps> = ({
 						{items && items.length > 0 && (
 							<div style={{display: 'flex', flexDirection: 'column', gap: SPACING.xs, marginTop: SPACING.xs}}>
 								{items.map((it, i) => (
-									<Animated key={it} enter="rise" delay={16 + i * 6} distance={24}>
+									<Animated key={it} enter="rise" delay={auto.start + auto.stagger * (i + 1)} distance={24}>
 										<div
 											style={{
 												display: 'flex',

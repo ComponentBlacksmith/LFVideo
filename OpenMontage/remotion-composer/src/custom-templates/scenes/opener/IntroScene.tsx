@@ -37,8 +37,10 @@ export const IntroScene: React.FC<IntroProps> = ({title, subtitle}) => {
 		{extrapolateLeft: 'clamp'}
 	);
 
-	// frame 驱动的副标题揭示（取代 CSS `subtitle-reveal`，延迟 0.4s、时长 1.2s）。
-	const subT = interpolate(frame, [fps * 0.4, fps * 1.6], [0, 1], {
+	// frame 驱动的副标题揭示（取代 CSS `subtitle-reveal`，延迟 8%、时长 30%）。
+	const subStart = Math.round(durationInFrames * 0.08);
+	const subEnd = Math.round(durationInFrames * 0.38);
+	const subT = interpolate(frame, [subStart, subEnd], [0, 1], {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});

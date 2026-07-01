@@ -1,4 +1,5 @@
 import React from 'react';
+import {useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {AutoFit} from '../../primitives';
 import {useTheme} from '../../theme/ThemeContext';
@@ -6,6 +7,7 @@ import {TechPanel, techPill} from '../../theme/surfaces';
 import {textStyles} from '../../theme/textStyles';
 import {Animated} from '../../animation';
 import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
+import {proportionalTiming} from '../../animation/presence';
 
 // 模板库版对比场景：基于 SplitLayout，主题驱动配色，左右两张玻璃卡。
 // 与旧 components/ComparisonCard 不同，value 走正文字号并自适应长句，
@@ -103,6 +105,9 @@ export const ComparisonScene: React.FC<ComparisonProps> = ({
 	enter = 'rise-pop',
 }) => {
 	const {colors, fonts, SPACING} = useTheme();
+	const {durationInFrames} = useVideoConfig();
+	// 比例化：左卡 5% 处开始，右卡在 35% 处入场。
+	const auto = proportionalTiming(durationInFrames, 2, 0.05, 0.35);
 
 	// 密度分档（方案 B）：两栏都是长文时切到 tier 1，整体降一档字号、收紧内边距，
 	// 让两段长文并排仍读得清，而不是被 AutoFit 一味等比缩小。
@@ -124,8 +129,8 @@ export const ComparisonScene: React.FC<ComparisonProps> = ({
 					width: 1180,
 				}}
 			>
-				<Card label={leftLabel} value={leftValue} color={colors.accent[0]} delay={15} enter={enter} tier={tier} />
-				<Card label={rightLabel} value={rightValue} color={colors.accent[2] ?? colors.accent[1]} delay={25} enter={enter} tier={tier} />
+				<Card label={leftLabel} value={leftValue} color={colors.accent[0]} delay={auto.start} enter={enter} tier={tier} />
+				<Card label={rightLabel} value={rightValue} color={colors.accent[2] ?? colors.accent[1]} delay={auto.start + auto.stagger} enter={enter} tier={tier} />
 			</div>
 		</AutoFit>
 	);

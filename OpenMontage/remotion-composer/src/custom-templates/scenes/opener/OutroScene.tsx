@@ -82,6 +82,7 @@ export const OutroScene: React.FC<OutroProps> = ({
 					transform: `scale(${btnScale})`,
 					boxShadow: btnShadow,
 					letterSpacing: 1.5,
+					textShadow: `0 1px 4px rgba(0,0,0,0.4)`,
 					zIndex: 1,
 					border: '1px solid rgba(255,255,255,0.1)',
 				}}

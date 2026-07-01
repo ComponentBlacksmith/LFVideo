@@ -29,7 +29,8 @@ export const StatScene: React.FC<StatProps> = ({stat, subtitle, label}) => {
 	const color = colors.accent[0];
 
 	const scale = spring({frame, fps, config: {damping: 12, stiffness: 120}, from: 0.8, to: 1});
-	const subProgress = spring({frame: frame - 8, fps, config: {damping: 20}});
+	const subStart = Math.round(durationInFrames * 0.06);
+	const subProgress = spring({frame: frame - subStart, fps, config: {damping: 20}});
 	const fadeOut = interpolate(
 		frame,
 		[durationInFrames - 15, durationInFrames],
@@ -58,6 +59,7 @@ export const StatScene: React.FC<StatProps> = ({stat, subtitle, label}) => {
 						color: colors.text.secondary,
 						marginBottom: SPACING.md,
 						opacity: subProgress,
+						textShadow: `0 0 12px ${color}60, 0 1px 4px rgba(0,0,0,0.5)`,
 						zIndex: 1,
 					}}
 				>
@@ -72,6 +74,7 @@ export const StatScene: React.FC<StatProps> = ({stat, subtitle, label}) => {
 					lineHeight: 1,
 					letterSpacing: -4,
 					...accentGradientText(theme),
+					filter: `drop-shadow(0 0 24px ${color}50) drop-shadow(0 4px 12px rgba(0,0,0,0.5))`,
 					zIndex: 1,
 				}}
 			>

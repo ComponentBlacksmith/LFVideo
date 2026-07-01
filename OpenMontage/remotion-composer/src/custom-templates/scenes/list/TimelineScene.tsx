@@ -11,7 +11,7 @@ import {useTheme} from '../../theme/ThemeContext';
 import {TechPanel, techIconChip, techPill} from '../../theme/surfaces';
 import {textStyles} from '../../theme/textStyles';
 import {Animated} from '../../animation';
-import {osc01} from '../../animation/presence';
+import {osc01, proportionalTiming} from '../../animation/presence';
 import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 export const timelineEventSchema = z.object({
@@ -130,9 +130,13 @@ const TimelineCard: React.FC<{
 
 export const TimelineScene: React.FC<
 	TimelineProps & {startFrame?: number; stagger?: number}
-> = ({events, startFrame = 20, stagger = 20, enter = 'rise-pop'}) => {
+> = ({events, startFrame, stagger, enter = 'rise-pop'}) => {
 	const frame = useCurrentFrame();
-	const {fps} = useVideoConfig();
+	const {fps, durationInFrames} = useVideoConfig();
+	// 比例化：首事件 5% 处开始，全部事件在 40% 处完成入场。
+	const auto = proportionalTiming(durationInFrames, events.length);
+	const _startFrame = startFrame ?? auto.start;
+	const _stagger = stagger ?? auto.stagger;
 	const {colors, fonts, SPACING} = useTheme();
 
 	// 密度分档（fit-to-fill + 方案 B）：tier 0 (≤4)：大卡片大字；tier 1 (5–6)；
@@ -142,7 +146,7 @@ export const TimelineScene: React.FC<
 
 	const lineProgress = spring({
 		fps,
-		frame: frame - startFrame,
+		frame: frame - _startFrame,
 		config: {
 			damping: 14,
 			mass: 0.8,
@@ -196,7 +200,7 @@ export const TimelineScene: React.FC<
 					const delay =
 						event.atSec != null
 							? Math.max(0, Math.round(event.atSec * fps))
-							: startFrame + i * stagger;
+							: _startFrame + i * _stagger;
 					return (
 						<TimelineCard
 							key={event.title}

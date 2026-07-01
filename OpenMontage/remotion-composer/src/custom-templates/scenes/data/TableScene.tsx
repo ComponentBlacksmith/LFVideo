@@ -11,7 +11,7 @@ import {useTheme} from '../../theme/ThemeContext';
 import {withAlpha} from '../../theme/util';
 import {TechPanel} from '../../theme/surfaces';
 import {Animated} from '../../animation';
-import {osc01} from '../../animation/presence';
+import {osc01, proportionalTiming} from '../../animation/presence';
 import {TRANSITION_IDS} from '../../animation/types';
 
 // 通用表格：列由 headers 决定，每行是与 headers 对齐的 cells[]（纯字符串）。
@@ -104,9 +104,13 @@ function parseHighlight(spec?: string): {row: number; col: number} | null {
 
 export const TableScene: React.FC<
 	TableProps & {startFrame?: number; rowStagger?: number}
-> = ({headers, rows, highlightCell, startFrame = 25, rowStagger = 15, enter = 'rise'}) => {
+> = ({headers, rows, highlightCell, startFrame, rowStagger, enter = 'rise'}) => {
 	const frame = useCurrentFrame();
-	const {fps, height} = useVideoConfig();
+	const {fps, height, durationInFrames} = useVideoConfig();
+	// 比例化：首行 5% 处开始，全部行在 40% 处完成入场。
+	const auto = proportionalTiming(durationInFrames, rows.length + 1);
+	const _startFrame = startFrame ?? auto.start;
+	const _rowStagger = rowStagger ?? auto.stagger;
 	const theme = useTheme();
 	const {colors, fonts, SPACING, SPRING} = theme;
 
@@ -122,9 +126,9 @@ export const TableScene: React.FC<
 		Math.min(190, (availH * 0.9) / (rows.length + 1)),
 	);
 	const hl = parseHighlight(highlightCell);
-	const highlightActive = frame > 110;
+	const highlightActive = frame > Math.round(durationInFrames * 0.45);
 
-	const headerProgress = spring({fps, frame: frame - startFrame, config: SPRING.snappy});
+	const headerProgress = spring({fps, frame: frame - _startFrame, config: SPRING.snappy});
 	const headerOpacity = interpolate(headerProgress, [0, 1], [0, 1]);
 	const headerScaleY = interpolate(headerProgress, [0, 1], [0.8, 1]);
 
@@ -169,7 +173,7 @@ export const TableScene: React.FC<
 				</div>
 
 				{rows.map((row, rowIndex) => {
-					const rowStart = startFrame + (rowIndex + 1) * rowStagger;
+					const rowStart = _startFrame + (rowIndex + 1) * _rowStagger;
 
 					return (
 						<Animated

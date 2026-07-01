@@ -43,14 +43,12 @@ export const FinalComposition: React.FC<FinalCompositionProps> = ({
 		overlays: [],
 		// 预览不播放旁白/字幕，只呈现视觉「最终效果」。
 		captions: [],
-		// 直接复用 ep02-shots 的成片图层配置；额外打开「先平面停留、再飞入屏幕」
-		// 的 warp-reveal 时序，方便在预览里看清这个动效（不改 ep02-shots.json）：
-		// 前 ~1.2s 整块场景平面正对镜头让人看清内容，再用 ~1s 飞入屏幕梯形。
+		// warpHoldFrames / warpRevealFrames 不再显式设置：
+		// Explainer 现在按每个 cut 的时长自动比例化（hold=50%, reveal=15%），
+		// 预览和 ep02-shots 行为完全一致。
 		avatar: ep02.avatar,
 		unityBackground: {
 			...ep02.unityBackground,
-			warpHoldFrames: Math.round(fps * 1.2),
-			warpRevealFrames: Math.round(fps * 1.0),
 		},
 	};
 

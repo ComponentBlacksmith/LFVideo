@@ -31,7 +31,8 @@ export const QuoteScene: React.FC<QuoteProps> = ({text, attribution}) => {
 	const opacity = interpolate(enter, [0, 1], [0, 1]);
 	const translateY = interpolate(enter, [0, 1], [28, 0]);
 	const markScale = spring({fps, frame, config: {damping: 11, stiffness: 110}, from: 0.6, to: 1});
-	const attrProgress = spring({frame: frame - 12, fps, config: {damping: 20}});
+	const attrStart = Math.round(durationInFrames * 0.08);
+	const attrProgress = spring({frame: frame - attrStart, fps, config: {damping: 20}});
 	const fadeOut = interpolate(
 		frame,
 		[durationInFrames - 15, durationInFrames],
@@ -63,6 +64,7 @@ export const QuoteScene: React.FC<QuoteProps> = ({text, attribution}) => {
 					color: withAlpha(color, 0.65),
 					marginBottom: SPACING.sm,
 					transform: `scale(${markScale})`,
+					textShadow: `0 0 30px ${withAlpha(color, 0.5)}, 0 0 60px ${withAlpha(color, 0.3)}`,
 					zIndex: 1,
 				}}
 			>
@@ -74,7 +76,9 @@ export const QuoteScene: React.FC<QuoteProps> = ({text, attribution}) => {
 					fontWeight: 800,
 					maxWidth: 1500,
 					lineHeight: 1.3,
+					color: '#ffffff',
 					transform: `translateY(${translateY}px)`,
+					textShadow: `0 0 24px ${withAlpha(color, 0.6)}, 0 0 48px ${withAlpha(color, 0.3)}, 0 0 80px ${withAlpha(color, 0.15)}, 0 4px 16px rgba(0,0,0,0.6)`,
 					zIndex: 1,
 				}}
 			>

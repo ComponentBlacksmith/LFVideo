@@ -30,8 +30,10 @@ export const SectionScene: React.FC<SectionProps> = ({title, index, eyebrow}) =>
 	const enter = spring({fps, frame, config: {damping: 20, stiffness: 90}});
 	const opacity = interpolate(enter, [0, 1], [0, 1]);
 	const indexScale = spring({fps, frame, config: {damping: 13, stiffness: 100}, from: 0.7, to: 1});
-	const lineW = interpolate(spring({frame: frame - 6, fps, config: {damping: 16, stiffness: 80}}), [0, 1], [0, 360]);
-	const titleProgress = spring({frame: frame - 10, fps, config: {damping: 20}});
+	const lineStart = Math.round(durationInFrames * 0.04);
+	const lineW = interpolate(spring({frame: frame - lineStart, fps, config: {damping: 16, stiffness: 80}}), [0, 1], [0, 360]);
+	const titleStart = Math.round(durationInFrames * 0.08);
+	const titleProgress = spring({frame: frame - titleStart, fps, config: {damping: 20}});
 	const fadeOut = interpolate(
 		frame,
 		[durationInFrames - 15, durationInFrames],
@@ -61,6 +63,7 @@ export const SectionScene: React.FC<SectionProps> = ({title, index, eyebrow}) =>
 						fontWeight: 700,
 						marginBottom: SPACING.md,
 						opacity: titleProgress,
+						textShadow: `0 0 12px ${color}60, 0 1px 4px rgba(0,0,0,0.5)`,
 						zIndex: 1,
 					}}
 				>
@@ -76,6 +79,7 @@ export const SectionScene: React.FC<SectionProps> = ({title, index, eyebrow}) =>
 						letterSpacing: -6,
 						transform: `scale(${indexScale})`,
 						...accentGradientText(theme),
+						filter: `drop-shadow(0 0 24px ${color}50) drop-shadow(0 4px 12px rgba(0,0,0,0.5))`,
 						zIndex: 1,
 					}}
 				>

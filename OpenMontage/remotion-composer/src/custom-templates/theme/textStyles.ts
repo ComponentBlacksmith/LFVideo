@@ -27,6 +27,10 @@ export interface TextStyles {
 
 export function textStyles(theme: TemplateTheme): TextStyles {
 	const {colors, FONT_SIZE} = theme;
+	const accent = colors.accent[0];
+	// 统一文字阴影：accent 近距发光 + 黑色投影，让全息深色底上的白字有立体感。
+	const shadow = `0 0 16px ${accent}40, 0 2px 8px rgba(0,0,0,0.5)`;
+	const shadowStrong = `0 0 24px ${accent}55, 0 0 48px ${accent}25, 0 4px 12px rgba(0,0,0,0.6)`;
 	return {
 		displayTitle: {
 			fontSize: FONT_SIZE.display,
@@ -34,6 +38,7 @@ export function textStyles(theme: TemplateTheme): TextStyles {
 			color: colors.text.primary,
 			lineHeight: 1.2,
 			letterSpacing: -1,
+			textShadow: shadowStrong,
 		},
 		sceneTitle: {
 			fontSize: FONT_SIZE.title,
@@ -41,6 +46,7 @@ export function textStyles(theme: TemplateTheme): TextStyles {
 			color: colors.text.primary,
 			lineHeight: 1.2,
 			letterSpacing: -1,
+			textShadow: shadowStrong,
 		},
 		cardTitle: {
 			fontSize: FONT_SIZE.subtitle,
@@ -48,21 +54,25 @@ export function textStyles(theme: TemplateTheme): TextStyles {
 			color: colors.text.primary,
 			lineHeight: 1.3,
 			letterSpacing: -0.5,
+			textShadow: shadow,
 		},
 		body: {
 			fontSize: FONT_SIZE.body,
 			color: colors.text.primary,
 			lineHeight: 1.6,
+			textShadow: shadow,
 		},
 		bodyMuted: {
 			fontSize: FONT_SIZE.body,
 			color: colors.text.secondary,
 			lineHeight: 1.6,
+			textShadow: shadow,
 		},
 		caption: {
 			fontSize: FONT_SIZE.caption,
 			color: colors.text.muted,
 			lineHeight: 1.4,
+			textShadow: `0 1px 4px rgba(0,0,0,0.5)`,
 		},
 		eyebrow: {
 			fontSize: FONT_SIZE.caption,
@@ -70,6 +80,7 @@ export function textStyles(theme: TemplateTheme): TextStyles {
 			letterSpacing: 4,
 			textTransform: 'uppercase',
 			color: colors.accent[0],
+			textShadow: `0 0 12px ${accent}60`,
 		},
 	};
 }

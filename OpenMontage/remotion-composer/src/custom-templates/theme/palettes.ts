@@ -25,12 +25,12 @@ const MONO = '"SF Mono", "JetBrains Mono", "Cascadia Code", Consolas, monospace'
 // 与背景的深浅无关。改这里即可全片调整正文配色。
 const TECH_TEXT = {
 	primary: '#FFFFFF',
-	secondary: '#C8D2E0',
-	muted: '#8A93A3',
+	secondary: '#DDE6F0',
+	muted: '#A8B2C4',
 } as const;
 // 深色科技底上统一的网格/表面色（白色低透明度）。
-const TECH_LINE = 'rgba(255,255,255,0.08)';
-const TECH_SURFACE = 'rgba(255,255,255,0.04)';
+const TECH_LINE = 'rgba(255,255,255,0.12)';
+const TECH_SURFACE = 'rgba(255,255,255,0.06)';
 
 // 全部 5 套主题统一为「深色科技底 + 白字」，仅 accent / 字体保留各自调性。
 export const PALETTES: Record<string, Palette> = {

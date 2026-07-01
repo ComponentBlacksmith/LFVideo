@@ -883,31 +883,16 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
   // the perspective transform is visible. warpHoldFrames keeps the plane flat
   // & full-frame first (so viewers read the content head-on) before the fly-in.
   // Otherwise the warp is static.
-  const warpRevealFrames = screen?.warpRevealFrames ?? 0;
-  const warpHoldFrames = screen?.warpHoldFrames ?? 0;
-  const warpProgress =
-    warp && warpRevealFrames > 0
-      ? 1 -
-        Math.pow(
-          1 -
-            Math.max(
-              0,
-              Math.min(1, (frame - warpHoldFrames) / warpRevealFrames)
-            ),
-          3
-        )
-      : 1;
+  // (Per-cut warp timing is computed below after currentCut is resolved.)
+  const explicitWarpRevealFrames = screen?.warpRevealFrames ?? 0;
+  const explicitWarpHoldFrames = screen?.warpHoldFrames ?? 0;
   // The screen backdrop (room/tint/gradient) and color-grade are ALWAYS pinned
   // to the final quad (static) so the lit-screen look stays constant; only the
   // scene content uses the animated transform and flies in from flat full-frame.
   const staticWarpTransform = warp
     ? quadMatrix3d(width, height, screen!.screenQuad!)
     : "";
-  const contentWarpTransform = warp
-    ? warpProgress >= 1
-      ? staticWarpTransform
-      : animatedQuadMatrix3d(width, height, screen!.screenQuad!, warpProgress)
-    : "";
+  // contentWarpTransform is computed below after warpProgress is resolved.
 
   // Chapter titles are split out of the scene content and rendered as a flat
   // top-right overlay (NOT warped into the screen), so they stay readable and
@@ -940,6 +925,37 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
   const currentCut = cuts.find(c => (c.out_seconds || 0) * fps >= frame) || cuts[0];
   const bgVariant = (currentCut?.background || props.background as BackgroundVariant) || "gradient";
   const bgGradient = <Background variant={bgVariant as BackgroundVariant} />;
+
+  // Per-cut warp: use the current cut's relative frame so each scene gets its
+  // own fly-in animation (matching the preview's FinalComposition behavior).
+  // When warpHoldFrames / warpRevealFrames are not explicitly set, auto-compute
+  // them from the current cut's duration (hold=50%, reveal=15%).
+  const currentCutStartFrame = Math.round((currentCut?.in_seconds ?? 0) * fps);
+  const currentCutDuration = Math.round(
+    ((currentCut?.out_seconds ?? 0) - (currentCut?.in_seconds ?? 0)) * fps
+  );
+  const cutRelativeFrame = frame - currentCutStartFrame;
+  const warpRevealFrames =
+    explicitWarpRevealFrames || Math.round(currentCutDuration * 0.15);
+  const warpHoldFrames =
+    explicitWarpHoldFrames || Math.round(currentCutDuration * 0.5);
+  const warpProgress =
+    warp && warpRevealFrames > 0
+      ? 1 -
+        Math.pow(
+          1 -
+            Math.max(
+              0,
+              Math.min(1, (cutRelativeFrame - warpHoldFrames) / warpRevealFrames)
+            ),
+          3
+        )
+      : 1;
+  const contentWarpTransform = warp
+    ? warpProgress >= 1
+      ? staticWarpTransform
+      : animatedQuadMatrix3d(width, height, screen!.screenQuad!, warpProgress)
+    : "";
 
   // Scene content — the "elements" that fly in during the warp-reveal: visual
   // scenes, overlays and the overlay-mode host. In the warped path these hold

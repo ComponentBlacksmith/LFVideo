@@ -30,7 +30,7 @@ export interface AnimatedProps {
 export const Animated: React.FC<AnimatedProps> = ({
 	enter = 'fade',
 	exit = 'none',
-	enterDurationInFrames = 18,
+	enterDurationInFrames,
 	exitDurationInFrames = 15,
 	delay = 0,
 	distance,
@@ -43,10 +43,16 @@ export const Animated: React.FC<AnimatedProps> = ({
 	const frame = useCurrentFrame();
 	const {durationInFrames} = useVideoConfig();
 
+	// 入场时长比例化：默认取总时长 12%，钳制在 [30, 90] 帧（1-3s），
+	// 让短镜头快进、长镜头从容，而非固定帧数一刀切。
+	const enterDur =
+		enterDurationInFrames ??
+		Math.max(30, Math.min(90, Math.round(durationInFrames * 0.12)));
+
 	const opts: TransitionOpts | undefined =
 		distance === undefined ? undefined : {distance};
 
-	const enterT = clamp01((frame - delay) / Math.max(1, enterDurationInFrames));
+	const enterT = clamp01((frame - delay) / Math.max(1, enterDur));
 	const presenceIn = enterEase(enterT);
 
 	const exitStart = durationInFrames - exitDurationInFrames;

@@ -175,8 +175,8 @@ export const CodeScene: React.FC<CodeProps> = ({
 							const isActive = frame <= line.endFrame + fps * 0.2;
 							return (
 								<div key={`${line.startFrame}-${idx}`} style={{display: 'flex', alignItems: 'baseline'}}>
-									<span style={{color: accent, marginRight: 12, fontWeight: 600}}>{prompt}</span>
-									<span style={{color: colors.text.primary}}>{typed}</span>
+									<span style={{color: accent, marginRight: 12, fontWeight: 600, textShadow: `0 0 8px ${accent}80`}}>{prompt}</span>
+									<span style={{color: colors.text.primary, textShadow: '0 0 8px rgba(0,0,0,0.4)'}}>{typed}</span>
 									{isLatest && isActive && blinkPhase && (
 										<span
 											style={{
@@ -201,7 +201,7 @@ export const CodeScene: React.FC<CodeProps> = ({
 						return (
 							<div
 								key={`${line.startFrame}-${idx}`}
-								style={{color: colors.text.secondary, opacity: alpha, paddingLeft: 4, whiteSpace: 'pre-wrap'}}
+								style={{color: colors.text.secondary, opacity: alpha, paddingLeft: 4, whiteSpace: 'pre-wrap', textShadow: '0 0 8px rgba(0,0,0,0.4)'}}
 							>
 								{line.text}
 							</div>

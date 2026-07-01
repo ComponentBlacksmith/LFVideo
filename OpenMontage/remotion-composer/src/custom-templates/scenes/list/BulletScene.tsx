@@ -6,6 +6,7 @@ import {useTheme} from '../../theme/ThemeContext';
 import {TechPanel, techIconChip} from '../../theme/surfaces';
 import {textStyles} from '../../theme/textStyles';
 import {Animated} from '../../animation';
+import {proportionalTiming} from '../../animation/presence';
 import {TRANSITION_IDS} from '../../animation/types';
 
 export const bulletItemSchema = z.object({
@@ -45,21 +46,24 @@ export const BulletScene: React.FC<BulletProps> = ({
 	const ROW_GAP = [SPACING.md, SPACING.sm][tier];
 	const MARKER = [64, 56][tier];
 
-	const startFrame = 16;
-	const stagger = 10;
+	const {durationInFrames} = useVideoConfig();
+	// 比例化：首条 5% 处开始，全部条目在 40% 处完成入场。
+	const auto = proportionalTiming(durationInFrames, items.length);
+	const startFrame = auto.start;
+	const stagger = auto.stagger;
 
 	return (
 		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl} maxScale={1.3}>
 			<div style={{fontFamily: fonts.family, width: 1300, display: 'flex', flexDirection: 'column'}}>
 				{eyebrow && (
-					<Animated enter="rise" delay={8} distance={24}>
+					<Animated enter="rise" delay={Math.round(durationInFrames * 0.03)} distance={24}>
 						<div style={{...t.eyebrow, marginBottom: SPACING.xs}}>
 							{eyebrow}
 						</div>
 					</Animated>
 				)}
 				{title && (
-					<Animated enter="rise" delay={10} distance={28}>
+					<Animated enter="rise" delay={Math.round(durationInFrames * 0.06)} distance={28}>
 						<div style={{...t.sceneTitle, marginBottom: SPACING.lg}}>
 							{title}
 						</div>

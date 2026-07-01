@@ -7,7 +7,7 @@ import {withAlpha} from '../../theme/util';
 import {TechPanel, techIconChip} from '../../theme/surfaces';
 import {textStyles} from '../../theme/textStyles';
 import {Animated} from '../../animation';
-import {osc01} from '../../animation/presence';
+import {osc01, proportionalTiming} from '../../animation/presence';
 import {TRANSITION_IDS, type TransitionId} from '../../animation/types';
 
 export const flowStepSchema = z.object({
@@ -130,13 +130,15 @@ export const FlowScene: React.FC<FlowProps> = ({
 	orientation = 'horizontal',
 	enter = 'rise-pop',
 }) => {
-	const {fps} = useVideoConfig();
+	const {fps, durationInFrames} = useVideoConfig();
 	const {colors, fonts, SPACING} = useTheme();
 
 	const vertical = orientation === 'vertical';
 	const tier: 0 | 1 | 2 = steps.length <= 3 ? 0 : steps.length <= 4 ? 1 : 2;
-	const startFrame = 18;
-	const stagger = 18;
+	// 比例化：首步 5% 处开始，全部步骤在 40% 处完成入场。
+	const auto = proportionalTiming(durationInFrames, steps.length);
+	const startFrame = auto.start;
+	const stagger = auto.stagger;
 
 	// atSec 优先（踩语音节奏），否则回退到均匀 stagger。
 	const stepDelay = (step: FlowStep, i: number) =>

@@ -34,6 +34,28 @@ export const presence = (
  * @param periodSec 一个完整周期的秒数
  * @param phaseSec  相位偏移（秒），用于让多个元素错峰
  */
+/**
+ * 根据场景总帧数计算比例化错峰参数，让入场节奏随场景时长自适应。
+ * 首元素在 startRatio 处开始，全部元素在 totalRatio 处完成入场。
+ * @param durationInFrames 场景总帧数（Sequence 内即镜头时长）
+ * @param numItems 子元素数量
+ * @param startRatio 首元素延迟占总时长比例（默认 0.05 = 5%）
+ * @param totalRatio 末元素入场完成占总时长比例（默认 0.4 = 40%）
+ * @returns {start, stagger} 首元素延迟帧数 + 相邻元素错峰帧数
+ */
+export function proportionalTiming(
+	durationInFrames: number,
+	numItems: number,
+	startRatio = 0.05,
+	totalRatio = 0.4,
+): {start: number; stagger: number} {
+	const start = Math.round(durationInFrames * startRatio);
+	const total = Math.round(durationInFrames * totalRatio);
+	const stagger =
+		numItems > 1 ? Math.max(1, Math.round((total - start) / (numItems - 1))) : 0;
+	return {start, stagger};
+}
+
 export const osc01 = (
 	frame: number,
 	fps: number,
