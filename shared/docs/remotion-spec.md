@@ -97,6 +97,9 @@
             *   `title`: 卡片小标题（如 `编辑模式`）
             *   `desc`: 卡片具体描述（如 `手拿螺丝刀，你指哪它改哪`）
             *   `icon`: 卡片左侧图标（**必须使用 Emoji 字符**，如 🔧, 🐴, 缰）
+            *   `atSec`（选填）: 该卡片入场时机（数字，单位**秒，相对本镜头/shot 起点**，与 `voice_slice` 同一时间轴），用于让卡片精确踩在某句口播上；**不填则回退到均匀错峰（uniform stagger）**，无需逐条都填。注意不要超过该镜头 `duration_seconds`，否则该条永不出现。
+
+> 🕒 **列表型场景逐条踩点（`atSec`）通用约定**：上面的 `atSec` 字段同样适用于 `@BulletScene`（item）、`@FlowScene`（step）、`@TimelineScene`（event）——任意一条 item/step/event 都可加 `atSec` 让它踩准对应口播；不填即均匀 stagger。这与 `/04-script-draft` 工作流的「列表型组件逐条踩点」约定一致，脚本作者在需要逐条对齐语音节奏时填写。
 
 ### 2.2 基础布局组件 (Primitives)
 

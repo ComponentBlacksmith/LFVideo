@@ -14,6 +14,8 @@ export const conceptItemSchema = z.object({
 	title: z.string(),
 	desc: z.string(),
 	icon: z.string(),
+	// 该卡片入场时机（秒，相对本 cut 起点）。填则踩语音节奏；不填回退到均匀 stagger。
+	atSec: z.number().optional(),
 });
 export type ConceptItem = z.infer<typeof conceptItemSchema>;
 
@@ -124,6 +126,7 @@ const ItemCard: React.FC<{
 export const ConceptScene: React.FC<
 	ConceptProps & {cardStart?: number; cardStagger?: number}
 > = ({items, cardStart = 20, cardStagger = 25, enter = 'rise-pop'}) => {
+	const {fps} = useVideoConfig();
 	const {colors, fonts, SPACING} = useTheme();
 
 	// 密度分档（fit-to-fill + 方案 B）：条目多时换多列排布并配合字号/间距收紧，
@@ -144,17 +147,24 @@ export const ConceptScene: React.FC<
 					gap: gridGap,
 				}}
 			>
-				{items.map((item, i) => (
-					<ItemCard
-						key={item.title}
-						item={item}
-						color={colors.accent[i % colors.accent.length]}
-						delay={cardStart + i * cardStagger}
-						index={i}
-						enter={enter}
-						tier={tier}
-				/>
-				))}
+				{items.map((item, i) => {
+					// atSec 优先（踩语音节奏），否则回退到均匀 stagger。
+					const delay =
+						item.atSec != null
+							? Math.max(0, Math.round(item.atSec * fps))
+							: cardStart + i * cardStagger;
+					return (
+						<ItemCard
+							key={item.title}
+							item={item}
+							color={colors.accent[i % colors.accent.length]}
+							delay={delay}
+							index={i}
+							enter={enter}
+							tier={tier}
+						/>
+					);
+				})}
 			</div>
 		</AutoFit>
 	);

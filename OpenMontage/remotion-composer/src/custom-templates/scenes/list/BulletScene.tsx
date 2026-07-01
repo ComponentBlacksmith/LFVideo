@@ -1,4 +1,5 @@
 import React from 'react';
+import {useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {AutoFit} from '../../primitives';
 import {useTheme} from '../../theme/ThemeContext';
@@ -10,6 +11,8 @@ import {TRANSITION_IDS} from '../../animation/types';
 export const bulletItemSchema = z.object({
 	text: z.string(),
 	icon: z.string().optional(),
+	// 该条入场时机（秒，相对本 cut 起点）。填则踩语音节奏；不填回退到均匀 stagger。
+	atSec: z.number().optional(),
 });
 export type BulletItem = z.infer<typeof bulletItemSchema>;
 
@@ -31,6 +34,7 @@ export const BulletScene: React.FC<BulletProps> = ({
 	ordered = false,
 	enter = 'slide-right',
 }) => {
+	const {fps} = useVideoConfig();
 	const theme = useTheme();
 	const {colors, fonts, FONT_SIZE, SPACING, RADIUS} = theme;
 	const t = textStyles(theme);
@@ -65,8 +69,13 @@ export const BulletScene: React.FC<BulletProps> = ({
 					{items.map((raw, i) => {
 						const item: BulletItem = typeof raw === 'string' ? {text: raw} : raw;
 						const color = colors.accent[i % colors.accent.length];
+						// atSec 优先（踩语音节奏），否则回退到均匀 stagger。
+						const delay =
+							item.atSec != null
+								? Math.max(0, Math.round(item.atSec * fps))
+								: startFrame + i * stagger;
 						return (
-							<Animated key={item.text} enter={enter} delay={startFrame + i * stagger} distance={50}>
+							<Animated key={item.text} enter={enter} delay={delay} distance={50}>
 								<TechPanel
 									accent={color}
 									borderAlpha={0.2}

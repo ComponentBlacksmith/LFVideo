@@ -19,6 +19,8 @@ export const timelineEventSchema = z.object({
 	title: z.string(),
 	desc: z.string(),
 	icon: z.string(),
+	// 该事件入场时机（秒，相对本 cut 起点）。填则踩语音节奏；不填回退到均匀 stagger。
+	atSec: z.number().optional(),
 });
 export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 
@@ -189,17 +191,24 @@ export const TimelineScene: React.FC<
 					}}
 				/>
 
-				{events.map((event, i) => (
-					<TimelineCard
-						key={event.title}
-						event={event}
-						color={colors.accent[i % colors.accent.length]}
-						delay={startFrame + i * stagger}
-						index={i}
-						enter={enter}
-						tier={tier}
-					/>
-				))}
+				{events.map((event, i) => {
+					// atSec 优先（踩语音节奏），否则回退到均匀 stagger。
+					const delay =
+						event.atSec != null
+							? Math.max(0, Math.round(event.atSec * fps))
+							: startFrame + i * stagger;
+					return (
+						<TimelineCard
+							key={event.title}
+							event={event}
+							color={colors.accent[i % colors.accent.length]}
+							delay={delay}
+							index={i}
+							enter={enter}
+							tier={tier}
+						/>
+					);
+				})}
 			</div>
 		</AutoFit>
 	);

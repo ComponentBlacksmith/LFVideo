@@ -1,5 +1,5 @@
 import React, {type CSSProperties} from 'react';
-import {withAlpha} from './util';
+import {withAlpha, lighten} from './util';
 import {GLOW} from './tokens';
 import {useTheme, type TemplateTheme} from './ThemeContext';
 
@@ -39,18 +39,23 @@ export function techPanel(
 		borderAlpha = 0.32,
 		blur = 14,
 	} = opts;
+	// 描边核心提亮趋近白色（lighten 0.62）+ 加粗到 2.5px，呈现「霓虹发光」亮芯；
+	// 外侧叠 accent 彩色辉光，内侧叠白色内辉光，强化「线条本身在发光」的观感。
+	const coreColor = lighten(accent, 0.62);
 	return {
 		background: withAlpha(colors.bg.to, fill),
-		border: `1.5px solid ${withAlpha(accent, borderAlpha + glow * 0.25)}`,
+		border: `2.5px solid ${withAlpha(coreColor, Math.min(1, borderAlpha + 0.42 + glow * 0.25))}`,
 		borderRadius: radius,
 		backdropFilter: `blur(${blur}px)`,
 		WebkitBackdropFilter: `blur(${blur}px)`,
 		boxShadow: [
 			`0 18px 48px -16px rgba(0,0,0,${0.5 + 0.15 * glow})`,
-			`inset 0 1px 0 ${withAlpha('#FFFFFF', 0.06)}`,
-			// 常驻全息辉光基线（GLOW.border）+ 呼吸辉光（glow 入参）叠加。
-			`0 0 ${GLOW.border.blur}px ${withAlpha(accent, GLOW.border.alpha)}`,
-			`0 0 ${22 * glow}px ${withAlpha(accent, 0.14 * glow)}`,
+			`inset 0 1px 0 ${withAlpha('#FFFFFF', 0.1)}`,
+			// 内侧白色辉光：让描边亮芯向内扩散，更像通电发光。
+			`inset 0 0 10px ${withAlpha('#FFFFFF', 0.12 + 0.08 * glow)}`,
+			// 常驻全息辉光基线（GLOW.border，提亮 alpha）+ 呼吸辉光（glow 入参）叠加。
+			`0 0 ${GLOW.border.blur + 6}px ${withAlpha(accent, GLOW.border.alpha + 0.14)}`,
+			`0 0 ${26 * glow}px ${withAlpha(accent, 0.18 * glow)}`,
 		].join(', '),
 		position: 'relative',
 		overflow: 'hidden',
@@ -87,7 +92,7 @@ export const TechCorners: React.FC<{
 // 元素框组件：统一的科技风外框 + 可选四角括号。布局相关样式由 style 传入。
 export const TechPanel: React.FC<
 	TechPanelOpts & {
-		/** 是否渲染四角括号，默认 true。 */
+		/** 是否渲染四角括号（折角装饰线），默认 false（已全局去除）。 */
 		corners?: boolean;
 		cornerInset?: number;
 		style?: CSSProperties;
@@ -100,7 +105,7 @@ export const TechPanel: React.FC<
 	fill,
 	borderAlpha,
 	blur,
-	corners = true,
+	corners = false,
 	cornerInset,
 	style,
 	children,

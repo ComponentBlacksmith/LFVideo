@@ -14,6 +14,8 @@ export const flowStepSchema = z.object({
 	label: z.string(),
 	desc: z.string(),
 	icon: z.string(),
+	// 该步骤入场时机（秒，相对本 cut 起点）。填则踩语音节奏；不填回退到均匀 stagger。
+	atSec: z.number().optional(),
 });
 export type FlowStep = z.infer<typeof flowStepSchema>;
 
@@ -128,12 +130,19 @@ export const FlowScene: React.FC<FlowProps> = ({
 	orientation = 'horizontal',
 	enter = 'rise-pop',
 }) => {
+	const {fps} = useVideoConfig();
 	const {colors, fonts, SPACING} = useTheme();
 
 	const vertical = orientation === 'vertical';
 	const tier: 0 | 1 | 2 = steps.length <= 3 ? 0 : steps.length <= 4 ? 1 : 2;
 	const startFrame = 18;
 	const stagger = 18;
+
+	// atSec 优先（踩语音节奏），否则回退到均匀 stagger。
+	const stepDelay = (step: FlowStep, i: number) =>
+		step.atSec != null
+			? Math.max(0, Math.round(step.atSec * fps))
+			: startFrame + i * stagger;
 
 	return (
 		<AutoFit
@@ -152,26 +161,32 @@ export const FlowScene: React.FC<FlowProps> = ({
 					gap: SPACING.sm,
 				}}
 			>
-				{steps.map((step, i) => (
-					<React.Fragment key={step.label}>
-						<StepCard
-							step={step}
-							index={i}
-							color={colors.accent[i % colors.accent.length]}
-							delay={startFrame + i * stagger}
-							enter={enter}
-							vertical={vertical}
-							tier={tier}
-						/>
-						{i < steps.length - 1 && (
-							<Connector
+				{steps.map((step, i) => {
+					const delay = stepDelay(step, i);
+					// 连接符接在本步与下一步之间：取两者中点，跟随实际节奏。
+					const nextDelay =
+						i < steps.length - 1 ? stepDelay(steps[i + 1], i + 1) : delay;
+					return (
+						<React.Fragment key={step.label}>
+							<StepCard
+								step={step}
+								index={i}
+								color={colors.accent[i % colors.accent.length]}
+								delay={delay}
+								enter={enter}
 								vertical={vertical}
-								color={colors.accent[(i + 1) % colors.accent.length]}
-								delay={startFrame + i * stagger + stagger / 2}
+								tier={tier}
 							/>
-						)}
-					</React.Fragment>
-				))}
+							{i < steps.length - 1 && (
+								<Connector
+									vertical={vertical}
+									color={colors.accent[(i + 1) % colors.accent.length]}
+									delay={Math.round((delay + nextDelay) / 2)}
+								/>
+							)}
+						</React.Fragment>
+					);
+				})}
 			</div>
 		</AutoFit>
 	);

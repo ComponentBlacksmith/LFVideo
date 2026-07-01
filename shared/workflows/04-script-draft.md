@@ -59,6 +59,7 @@ description: 分镜口播稿 - 调用分镜口播导演角色，直接把 02 故
 * **内容深度**：按 `tutorial.final.md` 的两步主线展开——先用大白话讲「用 Vibe Coding 怎么选这条技术路线」，再讲「用 Vibe Coding 怎么把本期能力搭出来」；把声明的模板组件（如 `@TableScene`、`@TimelineScene`）Props 参数填充完整。
 * **镜头切分（防静止的根治手法）**：任何 `duration_hint_seconds > 15` 的 section 必须切成 `≥ ceil(时长/15)` 个 shot；shot 内部组件还需要 stagger/高亮/Zoom 这类微动效时，才用该 shot 的 `visual_beats`（它只描述**单个组件内**的细节动画，不承担切镜职责）。
 * **组件映射决策**：现有组件可表达 → 复用并标注组件名与 Props；无法表达 → 声明 `Template Ticket`（含物理路径建议、Props 接口、动画规范）。
+* **列表型组件逐条踩点（`atSec`）**：`@ConceptScene` / `@BulletScene` / `@FlowScene` / `@TimelineScene` 内含多个 item/step/event，画面默认是均匀错峰（uniform stagger），无法贴合不均匀的口播节奏。当某一条要**精确踩在某句口播上**时，给该条 props 加 `atSec`（数字，单位秒，**相对本镜头/shot 起点**，与 `voice_slice` 同一时间轴）——含义是「该条在镜头开始后第 atSec 秒入场」。不写 `atSec` 的条目自动回退到均匀 stagger，无需逐条都填。注意 `atSec` 不要超过该镜头 `duration_seconds`，否则该条永不出现。
 * **录屏 zoom 指令**：对含 B 轨的场景生成 `zoom_crop_directives`（clip_id / 时间戳 / 缩放倍数 / 焦点坐标）。
 
 #### 3.1 脚本内格式模板
@@ -108,6 +109,7 @@ source_workflow: /04-script-draft
 - ❌ **受众对齐与术语专业化**：是否出现面向传统剪辑师的痛点对比（传统剪辑/拖时间轴/手动对字幕）？选型表述是否使用严谨工程术语（适用场景/局限条件/关键约束）而非「不适用+坑/报菜名/复制粘贴土办法」？（口语化只允许出现在 `[口播]`，视觉/Props 字段用工程术语）
 - ❌ **防静止（硬性·镜头级）**：任一 `duration_hint_seconds > 15` 的 section 是否切成了 `≥ ceil(时长/15)` 个 `shots[]`（每个 shot 一个组件 + Props + `voice_slice` + `duration_seconds`）？只写 section 级 `visual_beats`/`sub_shots` 文字注解而不拆 shot = 不合格（`pipeline_lint.py` 在该期 04 置 `approved`/`reviewed` 时会硬报错）。shot 内的 `visual_beats` 仅用于单组件内部微动效，不算切镜（见 `shared/docs/remotion-spec.md` §1.5）。
 - ❌ **A/B 轨兜底完整性**：含 B 轨录屏的场景，脚本是否同时给出了 `[B 轨]`（含 `zoom_crop_directives`）和 `[A 轨兜底]` 画面指示？缺一即判不合格。
+- ❌ **列表型组件踩点**：`@ConceptScene` / `@BulletScene` / `@FlowScene` / `@TimelineScene` 的某一条若在口播里有明确「念到这条才出现」的对应句，是否给该条 props 标了 `atSec`（相对镜头起点的秒，不超过 `duration_seconds`）？只有「同时一起出现」或节奏无关时才允许省略 `atSec` 走均匀 stagger。
 - ❌ 脚本中是否将声明的新模版组件（如 `@TableScene` 等）Props 参数和数据 Schema 100% 填充完整？
 
 **通用：**
