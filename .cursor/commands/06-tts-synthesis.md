@@ -29,7 +29,7 @@
 
 ### 2. 选择 TTS 引擎
 
-根据项目需求选择引擎（通过 OpenMontage `tts_selector.py`）：
+按口播语言选择引擎（默认优先级见 `shared/rules/project-context.md`《频道配置 · TTS 默认引擎》；通过 OpenMontage `tts_selector.py`）：
 
 | 引擎 | 优势 | 适用场景 | 工具文件 |
 |------|------|---------|---------|
@@ -41,11 +41,11 @@
 
 推荐配置：
 ```python
-# 通过 tts_selector 自动选择
+# 通过 tts_selector 自动选择（preferred_provider 取频道配置里对应语言的默认引擎）
 tts_selector.run({
     "text": "段落口播文本...",
     "language": "zh-CN",
-    "preferred_provider": "doubao",  # 中文首选豆包
+    "preferred_provider": "<频道配置默认引擎>",  # 如中文默认豆包，见 project-context
     "voice_id": "<voice_id>",        # 特定音色 ID
     "output_path": "voice-s01.wav"
 })
@@ -102,7 +102,7 @@ source_workflow: /06-tts-synthesis
 # epNN TTS 语音合成记录
 
 ## 配置
-- TTS 引擎：豆包 TTS
+- TTS 引擎：<本期实际使用的引擎>
 - 音色 ID：xxx
 - 采样率：44.1kHz / 16bit WAV
 

@@ -10,7 +10,7 @@
 
 本工作流假设已完成 `/07-video-assembly`，已具备：
 - 处于 `approved` 状态的 `content-library/<epNN-slug>/07-assembly/README.md`
-- 渲染就绪的 MP4 成片（`video/out/<slug>.mp4`）
+- 渲染就绪的 MP4 成片（`OpenMontage/remotion-composer/out/<slug>.mp4`）
 
 如果缺少上述输入，先提示用户回到 `/07-video-assembly`。
 
@@ -23,10 +23,10 @@
 从成片 MP4 中提取音频（可使用 OpenMontage `audio_mixer.py` 的 `extract` 操作）：
 ```bash
 # 使用 FFmpeg 提取
-ffmpeg -i video/out/<slug>.mp4 -vn -acodec pcm_s16le -ar 16000 audio_for_whisper.wav
+ffmpeg -i OpenMontage/remotion-composer/out/<slug>.mp4 -vn -acodec pcm_s16le -ar 16000 audio_for_whisper.wav
 
 # 或使用 OpenMontage
-audio_mixer.run({"operation": "extract", "video_path": "video/out/<slug>.mp4"})
+audio_mixer.run({"operation": "extract", "video_path": "OpenMontage/remotion-composer/out/<slug>.mp4"})
 ```
 
 ### 2. Whisper 转录
@@ -87,7 +87,7 @@ remotion_caption_burn.run({
 })
 ```
 
-生成的 Remotion 组件代码放入 `video/src/episodes/epNN-slug/` 中。
+生成的字幕数据（`captions[]`）并入该期 props JSON `OpenMontage/remotion-composer/public/demo-props/<slug>.json`（`Explainer` 按 `captions` 渲染字幕轨）。
 
 ### 6. 落盘归档
 

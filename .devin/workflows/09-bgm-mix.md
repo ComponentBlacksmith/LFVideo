@@ -6,7 +6,7 @@ description: BGM与混音 - 为成片选配背景音乐、音效，执行口播/
 
 # BGM与混音 Workflow (09-bgm-mix)
 
-为 07 组装成片选配背景音乐（BGM）和音效（SFX），使用 OpenMontage `audio_mixer` 完成多轨混音：口播人声为主、BGM 自动闪避（ducking）、整体响度标准化至 -14 LUFS（B站推荐）。
+为 07 组装成片选配背景音乐（BGM）和音效（SFX），使用 OpenMontage `audio_mixer` 完成多轨混音：口播人声为主、BGM 自动闪避（ducking）、整体响度标准化至频道配置的目标响度（默认 -14 LUFS，见 `shared/rules/project-context.md`《频道配置 · 平台与格式默认》）。
 
 ---
 
@@ -93,24 +93,24 @@ audio_mixer.run({
         "attack_ms": 200,
         "release_ms": 500
     },
-    "normalize_lufs": -14,         # B站推荐响度
+    "normalize_lufs": -14,         # 频道配置目标响度（默认值，见 project-context）
     "output_path": "final_audio.wav"
 })
 ```
 
 关键参数：
 - **Ducking**：口播时 BGM 自动降低 12-15dB，口播间隙恢复
-- **响度标准化**：-14 LUFS（B站/YouTube 推荐）
+- **响度标准化**：频道配置目标响度（默认 -14 LUFS）
 - **淡入淡出**：BGM 头尾各 2s fade
 
 ### 5. 合并音视频
 
 将混音后的音频替换成片原音轨：
 ```bash
-ffmpeg -i video/out/<slug>.mp4 -i final_audio.wav \
+ffmpeg -i OpenMontage/remotion-composer/out/<slug>.mp4 -i final_audio.wav \
   -c:v copy -c:a aac -b:a 192k \
   -map 0:v:0 -map 1:a:0 \
-  video/out/<slug>-mixed.mp4
+  OpenMontage/remotion-composer/out/<slug>-mixed.mp4
 ```
 
 ### 6. 试听检查
@@ -154,7 +154,7 @@ source_workflow: /09-bgm-mix
 - 音效数量：X 个
 
 ## 成片路径
-- `video/out/<slug>-mixed.mp4`
+- `OpenMontage/remotion-composer/out/<slug>-mixed.mp4`
 ```
 
 - 更新 `PIPELINE.md`：该期 09 列置 `draft`
@@ -163,7 +163,7 @@ source_workflow: /09-bgm-mix
 
 - ❌ BGM 版权是否清晰（免版税/CC0/自生成）？
 - ❌ 口播是否始终清晰可辨，未被 BGM 压制？
-- ❌ 全片响度是否在 -14 ± 1 LUFS 范围内？
+- ❌ 全片响度是否在频道配置目标响度 ± 1 LUFS 范围内（默认 -14 LUFS）？
 - ❌ 音效是否精准对齐画面？
 - ❌ 首尾淡入淡出是否自然？
 

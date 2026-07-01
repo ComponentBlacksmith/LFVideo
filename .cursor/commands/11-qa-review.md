@@ -26,7 +26,7 @@
 
 ```python
 visual_qa.run({
-    "video_path": "video/out/<slug>-mixed.mp4",
+    "video_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
     "checks": [
         "resolution",        # 分辨率 ≥ 1080p
         "black_frames",      # 检测黑帧/空白帧
@@ -49,7 +49,7 @@ visual_qa.run({
 
 ```python
 video_understand.run({
-    "video_path": "video/out/<slug>-mixed.mp4",
+    "video_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
     "analysis_type": "motion_detection",
     "static_threshold_seconds": 15   # 静止超过 15s 即告警
 })
@@ -66,7 +66,7 @@ video_understand.run({
 
 ```python
 audio_energy.run({
-    "audio_path": "video/out/<slug>-mixed.mp4",
+    "audio_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
     "checks": ["loudness", "clipping", "silence", "balance"]
 })
 ```
