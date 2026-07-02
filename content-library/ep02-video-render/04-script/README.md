@@ -89,11 +89,11 @@ upstream_inputs:
 
 ---
 
-## 第八段：【@OutroScene】结尾 CTA（16s → 2 镜头）
+## 第八段：【@OutroScene】结尾 CTA（19s → 2 镜头）
 
-- **[口播]** 回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。觉得有用就点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。
+- **[口播]** 回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。这个频道就一条原则：不吹AI，真落地，真开源。觉得有用点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。
 - **[镜头 8.1]** `@OutroScene`（8s）三步法回顾 + 会讲需求、会判断就能复制
-- **[镜头 8.2]** `@OutroScene`（8s）品牌收束卡：headline=频道定位语「不吹AI，真落地，真开源」，cta=关注 + EP03 预告
+- **[镜头 8.2]** `@OutroScene`（11s）品牌收束卡：headline=频道定位语「不吹AI，真落地，真开源」（口播同帧念出），cta=关注 + EP03 预告
 
 ---
 
@@ -106,7 +106,7 @@ upstream_inputs:
 - ✅ 技术落地·配置分发：一份配置 → Explainer 按 type 分发 / 现成模板场景统一主题 / 配置即内容 / TS 类型兜底 / SSR 坑 / 自有风格组件库一句带过 → 段五
 - ✅ 技术落地·数字人：定位陪衬 → 三种形象选型与坑 → 选定 VRM、定死不做对口型 → AI 落地（取景、脚站稳）→ 段六
 - ✅ 场景适配：适合纯 A 轨 / 可搭配透明叠层 / 不适合四类 / 口诀 → 段七
-- ✅ 总结 + 结尾 CTA：三步法回顾 + 「不吃编程基础，会讲需求、会判断就能复制」（价值前置表达）/ 关注 + EP03 预告 → 段八
+- ✅ 总结 + 结尾 CTA：三步法回顾 + 「不吃编程基础，会讲需求、会判断就能复制」（价值前置表达）/ 频道定位语口播念一次（与品牌卡同帧）/ 关注 + EP03 预告 → 段八
 
 ---
 
@@ -116,8 +116,8 @@ upstream_inputs:
 {
   "title": "用 Vibe Coding 搭一套能自动出片的视频渲染引擎",
   "platform": "bilibili",
-  "estimated_duration_seconds": 403,
-  "total_word_count": 2187,
+  "estimated_duration_seconds": 406,
+  "total_word_count": 2207,
   "anti_hype_forbidden": [
     "100 行",
     "百倍",
@@ -878,9 +878,9 @@ upstream_inputs:
     {
       "id": "8",
       "track": "A",
-      "voice": "回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。觉得有用就点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
+      "voice": "回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。这个频道就一条原则：不吹AI，真落地，真开源。觉得有用点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
       "visual_instructions": "@OutroScene ×2：三步法回顾 + 没基础也能复制；关注引导 + EP03 预告。",
-      "duration_hint_seconds": 16,
+      "duration_hint_seconds": 19,
       "shots": [
         {
           "id": "8.1",
@@ -899,8 +899,8 @@ upstream_inputs:
             "headline": "不吹AI，真落地，真开源",
             "cta": "关注 · 下期 EP03：Whisper 字级时间戳驱动字幕"
           },
-          "voice_slice": "觉得有用就点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
-          "duration_seconds": 8
+          "voice_slice": "这个频道就一条原则：不吹AI，真落地，真开源。觉得有用点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
+          "duration_seconds": 11
         }
       ]
     }
