@@ -19,7 +19,7 @@ upstream_inputs:
 ## 第一段：【@IntroScene】开场（选题式钩子 + 关键认知 + 三步路线图，34s → 4 镜头）
 
 - **[口播]** 如何用 Vibe Coding 快速完成自动化视频渲染？先记一个关键认知：AI 最强的本事，是啃文本和代码。所以想让渲染自动化，就得把视频变成代码和数据来驱动。让 AI 按配置输出视频，改一行配置，整条片子自动重渲——这就是低成本、高效率的自动化生产。怎么落地？三步：让 AI 找技术路径，对着实际需求做选型，最后落地出片。
-- **[镜头 1.1]** `@IntroScene`（6s）选题问句点题：title="如何用 Vibe Coding 快速完成自动化视频渲染？" subtitle="把视频写成代码，让 AI 按配置自动出片"
+- **[镜头 1.1]** `@IntroScene`（6s）选题问句点题：title="如何用 Vibe Coding 快速完成自动化视频渲染？" subtitle="把视频写成代码，让 AI 按配置自动出片｜不吹AI，真落地，真开源"（频道定位语固定挂首镜 subtitle 尾缀）
 - **[镜头 1.2]** `@IntroScene`（10s）关键认知卡：AI 最强的是啃文本和代码 → 渲染就该用代码/数据驱动
 - **[镜头 1.3]** `@IntroScene`（10s）价值卡：AI 按配置输出视频 = 低成本、高效率的自动化生产流程
 - **[镜头 1.4]** `@IntroScene`（8s）三步路线图：找技术路径 → 技术选型 → 落地出片
@@ -93,7 +93,7 @@ upstream_inputs:
 
 - **[口播]** 回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。觉得有用就点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。
 - **[镜头 8.1]** `@OutroScene`（8s）三步法回顾 + 会讲需求、会判断就能复制
-- **[镜头 8.2]** `@OutroScene`（8s）关注引导 + EP03 预告
+- **[镜头 8.2]** `@OutroScene`（8s）品牌收束卡：headline=频道定位语「不吹AI，真落地，真开源」，cta=关注 + EP03 预告
 
 ---
 
@@ -147,7 +147,7 @@ upstream_inputs:
           "scene_template": "@IntroScene",
           "props": {
             "title": "如何用 Vibe Coding 快速完成自动化视频渲染？",
-            "subtitle": "把视频写成代码，让 AI 按配置自动出片"
+            "subtitle": "把视频写成代码，让 AI 按配置自动出片｜不吹AI，真落地，真开源"
           },
           "voice_slice": "如何用 Vibe Coding 快速完成自动化视频渲染？",
           "duration_seconds": 6
@@ -896,8 +896,8 @@ upstream_inputs:
           "id": "8.2",
           "scene_template": "@OutroScene",
           "props": {
-            "headline": "关注，一起验证 AI 的真实能力",
-            "cta": "下期 EP03：Whisper 字级时间戳驱动字幕"
+            "headline": "不吹AI，真落地，真开源",
+            "cta": "关注 · 下期 EP03：Whisper 字级时间戳驱动字幕"
           },
           "voice_slice": "觉得有用就点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
           "duration_seconds": 8
