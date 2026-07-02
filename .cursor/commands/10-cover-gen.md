@@ -41,7 +41,7 @@
 1. 使用 `frame_sampler.py` 从成片中抽取高信息量帧：
    ```python
    frame_sampler.run({
-       "video_path": "video/out/<slug>-mixed.mp4",
+       "video_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
        "strategy": "high_entropy",   # 选信息量最大的帧
        "count": 10
    })

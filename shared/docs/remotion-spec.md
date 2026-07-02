@@ -39,7 +39,7 @@
 
 **落地约定**：
 - 在 **04 分镜口播稿**（已合并原 03 视听策划）：任何 `duration_hint_seconds > 15` 的 section，必须在 JSON 契约块该 section 填 `shots[]`，且镜头数 `≥ ceil(时长/15)`；每个 shot 含 `scene_template` + `props` + `voice_slice` + `duration_seconds`，shot 内可选填 `visual_beats` 作为组件内微动效。
-- **硬校验**：`scripts/pipeline_lint.py` 在该期 04 被置 `approved`/`reviewed` 后，对 `> 15s` 却未切足 `shots[]` 的 section **硬报错**；仅用旧的 `visual_beats`/`sub_shots` 文字注解会被警告「请迁移到 shots[]」。下游 07 按「一个 shot ↔ 一个 data.ts 场景」逐条映射（section 无 shots 时退化为整段一个场景）。
+- **硬校验**：`scripts/pipeline_lint.py` 在该期 04 被置 `approved`/`reviewed` 后，对 `> 15s` 却未切足 `shots[]` 的 section **硬报错**；仅用旧的 `visual_beats`/`sub_shots` 文字注解会被警告「请迁移到 shots[]」。下游 07 按「一个 shot ↔ props JSON 里一个 cut」逐条映射（section 无 shots 时退化为整段一个 cut）。
 - 经验值：中文口播约每秒 4–5 字，15 秒 ≈ 60–75 字。**口播超过 ~75 字仍只配一个静止画面 = 不合格**，必须切成多个镜头。
 
 ---
@@ -130,7 +130,7 @@
 1. **画面描述必须使用组件代号**：
    在编写脚本 `@/content-library/<epNN-slug>/04-script/video.md` 中的 `[画面]` 时，必须以以下格式指明调用的组件和具体参数：
    ```markdown
-   - **[画面]** 引入 `@ConceptScene`。参数 eyebrow="人 ↔ AI 分工", title="用 Vibe Coding 两步出片", items=[1. "选路线/🧭 AI 摆多条路线、人看坑拍板", 2. "搭引擎/🛠️ AI 填配置、复用现成组件", 3. "兜底/🚧 把坑写成规则固化给 AI"]
+   - **[画面]** 引入 `@ConceptScene`。参数 eyebrow="人 ↔ AI 分工", title="两步出片", items=[1. "选路线/🧭 AI 摆多条路线、人看坑拍板", 2. "搭引擎/🛠️ AI 填配置、复用现成组件", 3. "兜底/🚧 把坑写成规则固化给 AI"]
    ```
 2. **无法自动渲染的画面必须标注替换提醒**：
    ```markdown

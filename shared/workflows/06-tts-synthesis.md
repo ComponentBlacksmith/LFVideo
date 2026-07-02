@@ -32,9 +32,19 @@ description: TTS语音合成 - 将 04 脚本的口播文本转为语音音频，
 - 每段生成独立文本片段
 - 记录预估时长（中文约 4-5 字/秒）
 
-### 2. 选择 TTS 引擎
+### 2. 发音预检（中文口播必做，合成前逐句扫描）
 
-根据项目需求选择引擎（通过 OpenMontage `tts_selector.py`）：
+对提取出的口播文本逐句做三遍扫描，把发音风险在合成前消掉（而不是合成后靠试听返工）：
+
+1. **多音字消歧**：需要句子级语境判断（如「一行代码」念 háng、「运行」念 xíng）；对有风险的词用拼音标注或 SSML `<phoneme>` 固化，汇总进本期 `06-tts/phonemes.json`（字幕文本不变，只改读音）。
+2. **英文术语读法**：连字符名（`remotion-composer`）、首字母缩写（API/MCP 是逐字母还是拼读）、带版本号名称（GPT-4）逐个确认；有歧义的在口播文本内联标注读法或改写成中文（如「tldraw 命令行工具」）。有公认中文读法的品牌（Qwen→千问）加 phoneme 条目；习惯英文读法的（Claude/GitHub/Docker）不动，不过度翻译。
+3. **数字/日期写法**：优先保留阿拉伯数字（`2025年`、`18个月`、`90%`、`128GB` 主流引擎都能正确朗读）；只对真歧义形式改写：短横线日期 `2025-01-15`→`2025年1月15日`，多点版本号 `v1.2.3`→`v一点二点三`，无单位长数字改用「万/亿」表达。
+
+预检产出：更新后的口播文本片段 + `phonemes.json`（如有新增条目）；在 `06-tts/README.md` 记一行汇总（新增多音字 N 条 / 英文术语标注 M 处，零问题写「无」）。
+
+### 3. 选择 TTS 引擎
+
+按口播语言选择引擎（默认优先级见 `shared/rules/project-context.md`《频道配置 · TTS 默认引擎》；通过 OpenMontage `tts_selector.py`）：
 
 | 引擎 | 优势 | 适用场景 | 工具文件 |
 |------|------|---------|---------|
@@ -46,24 +56,24 @@ description: TTS语音合成 - 将 04 脚本的口播文本转为语音音频，
 
 推荐配置：
 ```python
-# 通过 tts_selector 自动选择
+# 通过 tts_selector 自动选择（preferred_provider 取频道配置里对应语言的默认引擎）
 tts_selector.run({
     "text": "段落口播文本...",
     "language": "zh-CN",
-    "preferred_provider": "doubao",  # 中文首选豆包
+    "preferred_provider": "<频道配置默认引擎>",  # 如中文默认豆包，见 project-context
     "voice_id": "<voice_id>",        # 特定音色 ID
     "output_path": "voice-s01.wav"
 })
 ```
 
-### 3. 逐段合成
+### 4. 逐段合成
 
 对每段口播文本：
 1. 调用选定 TTS 引擎生成音频
 2. 输出格式：WAV（44.1kHz / 16bit）或 MP3（192kbps）
 3. 命名规范：`voice-<scene_id>.wav`（如 `voice-s01.wav`、`voice-s02a.wav`）
 
-### 4. 质量检查
+### 5. 质量检查
 
 逐段试听检查：
 - **发音准确性**：技术术语（Remotion、Cursor、SSR 等）发音是否正确
@@ -76,14 +86,14 @@ tts_selector.run({
 - 节奏太快/太慢 → 调整 `speed` 参数或插入 SSML `<break>` 标签
 - 情感不足 → 切换 voice_id 或引擎
 
-### 5. 可选：人工录音替代
+### 6. 可选：人工录音替代
 
 如果用户选择人工录音而非 TTS：
 - 录音规格：44.1kHz / 16bit WAV，单声道
 - 降噪处理：使用 `audio_mixer.py` 的 normalize 功能
 - 命名规范同上
 
-### 6. 落盘归档
+### 7. 落盘归档
 
 音频存放路径：
 ```
@@ -107,7 +117,7 @@ source_workflow: /06-tts-synthesis
 # epNN TTS 语音合成记录
 
 ## 配置
-- TTS 引擎：豆包 TTS
+- TTS 引擎：<本期实际使用的引擎>
 - 音色 ID：xxx
 - 采样率：44.1kHz / 16bit WAV
 
@@ -124,15 +134,16 @@ source_workflow: /06-tts-synthesis
 
 - 更新 `PIPELINE.md`：该期 06 列置 `draft`
 
-### 7. 自我检查
+### 8. 自我检查
 
+- ❌ 发音预检是否完成（多音字 / 英文术语 / 数字写法三遍扫描，结果记入 README）？
 - ❌ 所有 `[口播]` 段是否都有对应音频文件？
 - ❌ 音频格式/采样率是否统一？
 - ❌ 技术术语发音是否准确？
 - ❌ 总时长是否在 5-10 分钟目标范围内？
 - ❌ 是否有爆音、底噪、截断等瑕疵？
 
-### 8. 交付与下一步
+### 9. 交付与下一步
 
 提示用户：
 > TTS 语音就绪后（看板标 `approved`），结合 B 轨录屏素材（05），可进入 `/07-video-assembly` 组装成片。

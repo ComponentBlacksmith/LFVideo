@@ -55,7 +55,12 @@ export const CalloutScene: React.FC<CalloutProps> = ({
 	const auto = proportionalTiming(durationInFrames, itemCount + 1, 0.05, 0.3);
 
 	return (
-		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl} maxScale={1.3}>
+		<AutoFit
+			paddingX={SPACING.gutter}
+			paddingY={SPACING.xl}
+			widthMode="content"
+			maxScale={1.45}
+		>
 			<Animated enter={enter} delay={auto.start} distance={70}>
 				<TechPanel
 					accent={color}
@@ -68,7 +73,9 @@ export const CalloutScene: React.FC<CalloutProps> = ({
 						display: 'flex',
 						alignItems: 'flex-start',
 						gap: SPACING.lg,
-						width: 1320,
+						width: 'fit-content',
+						minWidth: 720,
+						maxWidth: 1320,
 						padding: `${SPACING.xl}px ${SPACING.xl}px`,
 					}}
 				>

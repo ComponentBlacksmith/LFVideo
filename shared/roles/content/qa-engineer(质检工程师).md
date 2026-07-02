@@ -119,7 +119,7 @@
 你现在扮演质检工程师。
 
 上下文：
-- 成片视频：{{video/out/<slug>-mixed.mp4}}
+- 成片视频：{{OpenMontage/remotion-composer/out/<slug>-mixed.mp4}}
 - 字幕文件：{{08-subtitle/assets/<slug>.srt}}
 - 封面目录：{{10-cover/assets/}}
 - 04 脚本：{{04-script/README.md 内容}}
