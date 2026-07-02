@@ -81,7 +81,7 @@
 你现在扮演字幕编辑。
 
 上下文：
-- 成片视频：{{video/out/<slug>.mp4 路径}}
+- 成片视频：{{OpenMontage/remotion-composer/out/<slug>.mp4 路径}}
 - 04 脚本（术语参照）：{{04-script/README.md 内容}}
 
 任务：

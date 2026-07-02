@@ -3,6 +3,8 @@
 欢迎！你是本内容创作项目的 AI 协作伙伴（适用于 Cursor / Windsurf / Cascade 等各种 AI IDE 智能体）。
 在开始任何实质性工作前，你必须将本文件作为**核心契约与首要真相源**进行对齐。
 
+> **指令层级（L1-L5）与冲突裁决规则见根目录 `AGENTS.md`**；最高优先级的 Forbidden Actions 禁止清单见 `shared/rules/forbidden-actions.md`——本文件（含下方三条铁律）属 L2 项目级约束，与 L1 冲突时以 L1 为准。
+
 ---
 
 ## 📌 零号法则：前置对齐 (Rule Zero)

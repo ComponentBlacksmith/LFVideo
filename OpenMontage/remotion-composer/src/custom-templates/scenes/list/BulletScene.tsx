@@ -53,8 +53,22 @@ export const BulletScene: React.FC<BulletProps> = ({
 	const stagger = auto.stagger;
 
 	return (
-		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl} maxScale={1.3}>
-			<div style={{fontFamily: fonts.family, width: 1300, display: 'flex', flexDirection: 'column'}}>
+		<AutoFit
+			paddingX={SPACING.gutter}
+			paddingY={SPACING.xl}
+			widthMode="content"
+			maxScale={items.length <= 3 ? 1.45 : 1.3}
+		>
+			<div
+				style={{
+					fontFamily: fonts.family,
+					width: 'fit-content',
+					minWidth: 720,
+					maxWidth: 1300,
+					display: 'flex',
+					flexDirection: 'column',
+				}}
+			>
 				{eyebrow && (
 					<Animated enter="rise" delay={Math.round(durationInFrames * 0.03)} distance={24}>
 						<div style={{...t.eyebrow, marginBottom: SPACING.xs}}>

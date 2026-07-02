@@ -3,278 +3,279 @@ stage: 04-script
 platform: bilibili
 status: draft
 source_workflow: /04-script-draft
+upstream_inputs:
+  - 02-plan/README.md (status: approved)
+  - 02-plan/tutorial.final.md (status: approved)
 ---
 
 # ep02 视频脚本：用 Vibe Coding 搭一套能自动出片的视频渲染引擎
 
-> 画面（Remotion 模板场景映射 / Props / 镜头 shots / 录屏 zoom 指令）与口播一体；段 (section) 是叙事单位（一整段连续口播），镜头 (shot) 是画面单位。任何 >15s 的段都切成多个镜头，让画面随口播 ≤~15s 换一次。末尾 JSON 契约为下游 05/06/07 的唯一真相源（SSOT），07 组装按「一个 shot ↔ 一个模板场景」逐条映射。
+> 画面（Remotion 模板场景映射 / Props / 镜头 shots）与口播一体：段 (section) 是叙事单位（一整段连续口播），镜头 (shot) 才是画面单位。任何 > 15s 的段都切成多个镜头，让画面随口播 ≤~15s 换一次。末尾 JSON 契约是下游 05/06/07 的唯一真相源（SSOT），07 组装按「一个 shot ↔ props JSON 里一个 cut」逐条映射。
 >
-> 本稿严格对齐人工定稿 `02-plan/tutorial.final.md`（六章）：在原脚本基础上**新增两段**——§4「Remotion 怎么工作 + 为什么 AI 能驱动」（对应 tutorial 四.1）、§8「场景适配：适合 / 搭配 / 不适合」（对应 tutorial 五）；原 SSR 避坑、配置分发、数字人段保留并顺延编号。所有镜头映射到当前 14 个统一科技风（深色底 + 白字）模板场景。
+> 本稿严格对齐人工定稿 `02-plan/tutorial.final.md`（六章 + 文末「必讲要点覆盖清单」），主线与讲述人设口径见 `shared/rules/project-context.md`《频道配置》。所有镜头映射到 `OpenMontage/remotion-composer` 现有的统一深色科技风（深色底 + 白字）模板场景（清单见 `SCENE_TYPES.md`）。
 
 ---
 
-## 第一段：【intro_scene】开场（干货式钩子 + 三步路线图，30s → 3 镜头）
+## 第一段：【@IntroScene】开场（选题式钩子 + 关键认知 + 三步路线图，34s → 4 镜头）
 
-- **[口播]** 这期就一件事：用 Vibe Coding 搭一套渲染引擎，把视频写成代码、让 AI 按配置自动出片，改数据就改片。先记住一个关键认知：AI 最强的本事是啃文本和代码，所以想让渲染自动化，就得把视频变成代码和数据来驱动。我没有前后端基础，全程用大白话指挥 AI：我说要什么、判断对不对。这件事三步：让 AI 帮我找技术路径、对着约束选型、最后落地出片。
-- **[镜头 1.1–1.3]** `intro_scene` × 3：点题主副标题 → 关键认知卡 → 三步路线图点亮。
-
----
-
-## 第二段：【concept_scene】找技术路径·让 AI 把路都摆出来（50s → 4 镜头）
-
-- **[口播]** 第一步找路，我没自己埋头啃文档，直接把选择题丢给 AI：想把视频写成代码自动出片，现在都有哪些现成路子？它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做简单拼接，还有 Motion Canvas、PixiJS 这些。名字听着五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。这一步只摆路，先不评好坏。
-- **[镜头 2.1–2.4]** `concept_scene` × 4：抛问 → 六条路卡片阵列 → 高亮共同内核 → 收束「只列不评」。
+- **[口播]** 如何用 Vibe Coding 快速完成自动化视频渲染？先记一个关键认知：AI 最强的本事，是啃文本和代码。所以想让渲染自动化，就得把视频变成代码和数据来驱动。让 AI 按配置输出视频，改一行配置，整条片子自动重渲——这就是低成本、高效率的自动化生产。怎么落地？三步：让 AI 找技术路径，对着实际需求做选型，最后落地出片。
+- **[镜头 1.1]** `@IntroScene`（6s）选题问句点题：title="如何用 Vibe Coding 快速完成自动化视频渲染？" subtitle="把视频写成代码，让 AI 按配置自动出片｜不吹AI，真落地，真开源"（频道定位语固定挂首镜 subtitle 尾缀）
+- **[镜头 1.2]** `@IntroScene`（10s）关键认知卡：AI 最强的是啃文本和代码 → 渲染就该用代码/数据驱动
+- **[镜头 1.3]** `@IntroScene`（10s）价值卡：AI 按配置输出视频 = 低成本、高效率的自动化生产流程
+- **[镜头 1.4]** `@IntroScene`（8s）三步路线图：找技术路径 → 技术选型 → 落地出片
 
 ---
 
-## 第三段：【table_scene → comparison_scene】技术选型·逼 AI 给"坑"，回到约束定 Remotion（90s → 6 镜头）
+## 第二段：【@ConceptScene → @TableScene → @FlowScene】找技术路径·让 AI 把路都摆出来（28s → 3 镜头）
 
-- **[口播]** 第二步选型，这步最容易翻车——你要是直接问 AI 哪个好，它会跟个老好人似的每个都夸一遍，你还是不会选。值钱的是看清每条路什么时候不好使。所以我反过来逼它：把每条路的适用场景和会咬人的坑全列出来。看这张表：Remotion 适合前端栈和复杂排版，但你在组件顶层直接读 window，打包阶段就当场崩，而且是 BUSL 商业授权；Manim 排版弱、渲染慢；MoviePy 写自适应排版能把人写吐；FFmpeg 命令跟天书一样。看清坑，我再对着自己的需求做减法：我要一期一个模板换数据批量出几十期、要 AI 改内容不容易错、要跨期好维护——这三条一卡，Remotion 赢了。跟复制粘贴 HTML 比，它改一处全系列生效，AI 也只能乖乖填数据、不乱跑结构。代价就一条：React 栈加 BUSL 授权，规模化商用要付费——但前端反正是 AI 写、我把方向，不算门槛。一句话：让 AI 铺信息，拍板的事留给你自己。
-- **[镜头 3.1–3.6]** `table_scene`（判断层矩阵 stagger + 高亮坑列）接力 `comparison_scene`（需求做减法 / vs 复制粘贴 HTML + 代价 / 金句）。
-
----
-
-## 第四段【新增】：【flow_scene → code_scene → bullet_scene → quote_scene】技术落地·Remotion 怎么工作，为什么 AI 能轻松驱动（53s → 4 镜头）
-
-- **[口播]** 路线定了 Remotion，先花一分钟搞懂它大致怎么干活，你就明白为啥 AI 能轻松驱动它。一句话：用 React 把每一帧长什么样写出来，引擎再逐帧截图、合成视频。拆开看就三步——你用 React 组件描述这一帧画成什么样，渲染时它开一个无头浏览器，把组件从第一帧到最后一帧逐帧截成图片，再用 FFmpeg 把这些图和音轨合成 MP4，所以网页能画的它就能渲成视频。再说细一点：组件里用 useCurrentFrame 拿到现在是第几帧，按帧号算出这帧该画成什么样，位置、透明度、大小全是帧号到数值的插值，不用你一帧帧手摆；你按秒想、引擎按帧算，靠每秒三十帧换算，第三秒就是第九十帧。那为啥这套 AI 特别好驱动？四条：全是 React 加 CSS，正好是 AI 语料里最厚的一块；声明式，只描述长什么样、不写怎么一帧帧动；改数据就改片，正中它改文本的强项；字段格式用 TypeScript 定死，填错漏填编译当场报红。记住一句：把视频写成数据，AI 只填空、不乱跑。
-- **[镜头 4.1]** `flow_scene`（15s）：三步管线 React 描述每帧 → 无头浏览器逐帧截图 → FFmpeg 合成 MP4。
-- **[镜头 4.2]** `code_scene`（15s）：`useCurrentFrame` + `interpolate` 帧号→数值；注释「30fps：第 3 秒 = 第 90 帧」。
-- **[镜头 4.3]** `bullet_scene`（15s）：为什么 AI 好驱动的四条（React/CSS 语料厚 · 声明式 · 文本数据驱动 · TS 类型兜底）。
-- **[镜头 4.4]** `quote_scene`（8s）：金句「把视频写成数据，AI 只填空、不乱跑」。
+- **[口播]** 第一步，找技术路径。直接问 AI：通过 AI 编程做自动化渲染，现在都有哪些现成路子？它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做拼接，还有 Motion Canvas、PixiJS 这些。名字五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。路摆全了，选哪条？这就到第二步。
+- **[镜头 2.1]** `@ConceptScene`（7s）抛问：让 AI 把现成路子摆全
+- **[镜头 2.2]** `@TableScene`（12s）六条路线 × 代表工具 × 描述方式 × 适合干什么（逐行 stagger；画面表格承载全量清单，口播只念分组）
+- **[镜头 2.3]** `@FlowScene`（9s）共同内核：代码描述画面 → 编译成帧 → 合成视频
 
 ---
 
-## 第五段：【concept_scene → code_scene → comparison_scene】技术落地·配置分发 + 配置即内容（90s → 6 镜头）
+## 第三段：【@TableScene → @ConceptScene → @SplitLayout → @CalloutScene → @QuoteScene】技术选型·逼 AI 给"坑"，回到约束定 Remotion（78s → 6 镜头）
 
-- **[口播]** 选型定了，进落地。好消息是搭引擎也不用你手写，就是跟 AI 把配置和现成组件对上号。仓库这台引擎叫 remotion-composer，干活特别直白：你写一份配置说清这段画面长啥样，主程序 Explainer 就看配置里的 type 字段，自动去找对应组件来渲。type 写 comparison 就出对比卡，terminal 是合成终端、不用真录屏，还有图表、分屏。现在仓库里这样的模板场景有十四个——开场、概念、清单、流程、表格、对比、图表、数字、提示、金句、章节、终端都齐了，而且统一成深色科技底加白字，改一处全片生效。所以做内容这事，本质就是挑组件、填字段。最省心的一招是：我从不让 AI 去发明新组件，只让它照现成的填数据。比如要张对比卡，我说左边传统剪辑、右边代码即视频，它吐出来就是这么一段配置，齐活。为啥稳？因为每个字段都用 TypeScript 把格式焊死了，AI 填错漏填，编译当场报红。记住：让 AI 填空，别让它造轮子。想要更强辨识度，还能在现成组件上扩一套自有风格组件库——那是更大的话题，以后单开一期讲。
-- **[镜头 5.1–5.6]** `concept_scene` 流向 → `concept_scene` 14 场景清单 → `code_scene` comparison 配置逐行打字 → `code_scene` TS 字段焊死 → `comparison_scene` 手写❌ vs 填数据✅ → `concept_scene` 自有风格组件库一句带过。
-
----
-
-## 第六段：【code_scene + B 轨】技术落地·SSR 唯一的坑，把规则写死交给 AI（35s → 3 镜头）
-
-- **[口播]** 落地过程里唯一反复栽我的，就是 SSR 这个坑。看左边：组件顶层直接读了 window，可 Remotion 打包那会儿跑在 Node 里、还没进浏览器，当场就报 ReferenceError、渲染红屏。好比人还没进门就伸手拉灯，灯都没装上，当然摸空。右边怎么修：加一句 typeof window 判断。但更聪明的是别每次盯着 AI，而是把这条规则一次写死——塞进 .cursor/rules 一个 mdc 文件，指到引擎源码目录，往后 AI 生成组件自动带上。这就是 Vibe Coding 的精髓：重复的规矩，固化成规则交给 AI。
-- **[镜头 6.1–6.3]** B 轨双录屏（崩溃红屏 / 守卫后渲出）+ A 轨兜底 `code_scene`；末镜 `concept_scene` 浮出 `.cursor/rules/remotion-ssr.mdc` 规则。
+- **[口播]** 第二步技术选型，这步最容易翻车。直接问 AI 哪个好，它跟个老好人似的，每个都夸一遍，你还是没法选。值钱的是看清每条路什么时候不好使、会在哪一步咬人。所以反过来逼它：把每条路的适用场景、不适用场景和已知坑，列成一张表。你看 Remotion 这行——适合前端栈和复杂排版，但组件顶层直接读浏览器对象，打包阶段当场就崩，而且是 BUSL 商业授权。坑看清了，再回到实际约束做减法：一期一个固定模板、换数据批量出几十期，要 AI 改内容不出错，还要跨期好维护——三条一卡，Remotion 胜出。跟复制粘贴 HTML 那种土办法比，它改一处全系列生效，AI 也只能乖乖填数据、不乱改结构，十期之后照样管得住。代价也摆清楚：React 技术栈，加 BUSL 授权，规模化商用要付费。但前端本来就是 AI 写、人把方向，不构成门槛。一句话：让 AI 把信息铺开，真正拍板的判断，留给人。
+- **[镜头 3.1]** `@TableScene`（16s）判断层矩阵：方案 / 适合 / 不适合 / 已知坑（逐行 stagger）
+- **[镜头 3.2]** `@TableScene`（18s）Zoom 高亮「已知坑」列（Remotion 读 window 崩 + BUSL）
+- **[镜头 3.3]** `@ConceptScene`（14s）回到实际约束做减法
+- **[镜头 3.4]** `@SplitLayout`（12s）Remotion ✅ vs 复制粘贴 HTML ❌
+- **[镜头 3.5]** `@CalloutScene`(warning)（12s）代价摆清楚：React 栈 + BUSL 授权
+- **[镜头 3.6]** `@QuoteScene`（6s）金句：让 AI 铺信息，拍板留给人
 
 ---
 
-## 第七段：【concept_scene + table_scene】技术落地·数字人选型与落地（60s → 4 镜头）
+## 第四段：【@FlowScene → @TerminalScene → @BulletScene → @QuoteScene】技术落地·Remotion 怎么工作，为什么 AI 能轻松驱动（53s → 4 镜头）
 
-- **[口播]** 要不要个出镜形象做陪衬？这事也没拍脑袋，套的是跟选引擎一样的方法论：先把定位说死——它只是陪衬串场，不是主角。然后让 AI 把可选形象和各自的坑摆出来：真人最可信但要露脸、不能编程复用；写实对口型像真主播，可一不小心就掉进恐怖谷、可信度反而崩。对着我的约束——不想露脸、要可编程批量复用、还要避开恐怖谷——我选了 3D 风格化角色 VRMAvatar，并钉死一条死规矩：坚决不做对口型数字人、不做 AI 假界面，可信度只靠真实录屏换。落地也交给 AI：整体渲一次再按场景裁半身全身；之前它待机整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，脚就踩稳了。
-- **[镜头 7.1–7.4]** `concept_scene` 定位陪衬 → `table_scene` 三行形象选型矩阵 → `table_scene` 高亮选定 VRM 行 → `concept_scene` 取景 + 脚踩稳。
-
----
-
-## 第八段【新增】：【concept_scene → comparison_scene → callout_scene → quote_scene】场景适配·适合 / 搭配 / 不适合（53s → 4 镜头）
-
-- **[口播]** 最后一步，比把引擎跑通更值钱的判断是：什么场景该用它、什么场景别硬上。最适合的是纯 A 轨自动出片——模板化的概念讲解、要点流程，数据图表、对比、核心指标，开场片头、章节分隔、片尾，还有用合成终端演示命令和报错，这些画面用文本和数据就能说清，换组数据就能批量出几十期。第二种是搭配着用：当主体是真人口播或真实录屏时，Remotion 不必独占整屏，而是渲成透明背景的悬浮叠层贴上去——口播上浮数据卡、角标、字幕，录屏上叠箭头、高亮框、局部放大，把观众视线引到关键处。也有别硬上的：实拍人物、产品、Vlog，该拍就拍，别拿引擎替代摄像机；写实对口型数字人，容易掉恐怖谷、可信度反崩，本项目直接排除；影视级特效和逐帧手绘动画交给专业工具；纯后台超长批处理用 FFmpeg 更划算。一句话记住：主体是真实画面，Remotion 退居叠层；主体是讲解和数据，Remotion 独占整屏。
-- **[镜头 8.1]** `concept_scene`（15s）：适合纯 A 轨的四类（讲解 / 数据 / 包装 / 合成终端）。
-- **[镜头 8.2]** `comparison_scene`（15s）：独占整屏（纯 A 轨）vs 退居叠层（搭配 B 轨透明悬浮）。
-- **[镜头 8.3]** `callout_scene`（warning，15s）：不适合的四类（实拍 / 对口型 / 影视特效 / 后台批处理）。
-- **[镜头 8.4]** `quote_scene`（8s）：口诀「主体真实 → 退居叠层；主体讲解 → 独占整屏」。
+- **[口播]** 路线定了 Remotion，它干活就三步：用 React 组件描述每一帧长什么样，渲染时开一个无头浏览器，逐帧截成图片，再用 FFmpeg 把图和音轨合成 MP4。所以网页能画的，它就能渲成视频。组件里用 useCurrentFrame 拿当前帧号，位置、透明度、大小，全是帧号到数值的插值，不用一帧帧手摆。你按秒想、引擎按帧算：每秒三十帧，第三秒就是第九十帧。为什么这套 AI 特别好驱动？四条：全是 React 加 CSS，它语料里最厚的一块；声明式，只描述长什么样；改数据就改片，正中它改文本的强项；字段用 TypeScript 定死，填错当场报红。记住一句：把视频写成数据，AI 只填空、不乱跑。原理通了，接着把引擎搭起来。
+- **[镜头 4.1]** `@FlowScene`（16s）三步管线：React 描述每帧 → 无头浏览器逐帧截图 → FFmpeg 合成 MP4
+- **[镜头 4.2]** `@TerminalScene`（15s）`useCurrentFrame` + `interpolate` 帧号→数值；30fps 第 3 秒 = 第 90 帧
+- **[镜头 4.3]** `@BulletScene`（16s）为什么 AI 好驱动的四条
+- **[镜头 4.4]** `@QuoteScene`（6s）金句：把视频写成数据，AI 只填空、不乱跑
 
 ---
 
-## 第九段：【outro_scene】结尾 CTA（20s → 2 镜头）
+## 第五段：【@FlowScene → @BulletScene → @TerminalScene ×2 → @SplitLayout → @CalloutScene】技术落地·配置分发 + 配置即内容 + SSR 坑（84s → 6 镜头）
 
-- **[口播]** 回头看就三步：找路径让 AI 把现成方案全摆出来、选型让 AI 列坑人对约束拍板、落地填配置套组件规则兜底让 AI 跑渲染。你要会的不是写代码，是讲清需求、看住坑、把规则固化给 AI——没基础也能复制。下期 EP03，用 Whisper 拿字级时间戳，让字幕踩着话音跳。关注别错过。
-- **[镜头 9.1–9.2]** `outro_scene` × 2：三步法回扣 + 仓库地址/关注引导/EP03 预告。
+- **[口播]** 选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。落地唯一反复咬人的是 SSR 坑：组件顶层直接读 window，打包时还跑在 Node 里、没有浏览器——人还没进门就伸手拉灯，灯还没装上，当然报错红屏。修法是加一句 typeof window 判断；更聪明的，是把这条规则写进 .cursor/rules，一次固化给 AI。还有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。
+- **[镜头 5.1]** `@FlowScene`（16s）一份配置 → Explainer 按 type 分发 → 对应组件
+- **[镜头 5.2]** `@BulletScene`（14s）现成模板场景清单（统一深色科技风 + 白字）
+- **[镜头 5.3]** `@TerminalScene`（13s）一份 `comparison_scene` 配置：AI 只填字段
+- **[镜头 5.4]** `@TerminalScene`（18s）SSR 唯一的坑：顶层读 window → ReferenceError 红屏；加 `typeof window` 守卫 + `.cursor/rules` 固化
+- **[镜头 5.5]** `@SplitLayout`（13s）让 AI 从零造组件 ❌ vs 只填数据复用 ✅
+- **[镜头 5.6]** `@CalloutScene`(tip)（10s）自有风格组件库：更大话题，后续单独一期
 
 ---
+
+## 第六段：【@ConceptScene → @TableScene → @ConceptScene → @BulletScene】技术落地·数字人选型与落地（58s → 4 镜头）
+
+- **[口播]** 视频要不要一个出镜形象串场？先把定位钉死：数字人只是陪衬，不是主角，干货主体永远是屏幕上的真实操作。然后套一样的方法论，让 AI 把可选形象和各自的坑摆出来：真人出镜最可信，但要露脸、没法编程复用；写实数字人对口型，容易掉进恐怖谷，可信度反而崩；二次元或 3D 风格化角色走 VRM，风格统一、可编程、渲一次到处用，还不踩恐怖谷。对着约束——不露脸、可编程批量复用、避开恐怖谷——我选定 3D 风格化角色 VRMAvatar，并且定死：只做陪衬，坚决不做对口型。落地交给 AI：整体渲一次，再按场景裁角落、半身或全身。之前待机时整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，让脚踩稳原地。
+- **[镜头 6.1]** `@ConceptScene`（13s）先定位：数字人只做陪衬、不是主角
+- **[镜头 6.2]** `@TableScene`（18s）形象选型矩阵：真人 / 写实对口型 / 二次元 VRM（高亮 VRM 行）
+- **[镜头 6.3]** `@ConceptScene`（15s）对约束拍板：选定 VRM、定死不做对口型
+- **[镜头 6.4]** `@BulletScene`（12s）AI 落地：按场景取景 + 脚站稳
+
+---
+
+## 第七段：【@ConceptScene → @SplitLayout → @CalloutScene → @QuoteScene】场景适配·适合 / 搭配 / 不适合（52s → 4 镜头）
+
+- **[口播]** 引擎跑通了，更值钱的判断是：什么场景该用它？适合纯 A 轨自动出片的，是模板化、换数据就能批量复用的内容——概念讲解、要点流程、图表对比、开场收尾这些；命令和报错用合成终端兜底，不用真录屏。第二种是搭配用：主体是真人口播或真实录屏时，Remotion 不独占整屏，渲成透明背景的悬浮叠层贴上去——数据卡、字幕高亮、局部标注都行。三类别硬上：真实物理世界，该拍就拍；写实对口型数字人，恐怖谷加可信度崩，本项目明确排除；影视级特效和超长批处理，交给专业工具和 FFmpeg。一句口诀：主体是真实画面，就退居叠层；主体是讲解和数据，就独占整屏。
+- **[镜头 7.1]** `@ConceptScene`（16s）适合纯 A 轨的三类（讲解 / 数据 / 合成演示）
+- **[镜头 7.2]** `@SplitLayout`（14s）独占整屏 vs 退居叠层
+- **[镜头 7.3]** `@CalloutScene`(warning)（14s）这三类别硬上
+- **[镜头 7.4]** `@QuoteScene`（8s）口诀：主体真实→退居叠层，主体讲解→独占整屏
+
+---
+
+## 第八段：【@OutroScene】结尾 CTA（19s → 2 镜头）
+
+- **[口播]** 回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。这个频道就一条原则：不吹AI，真落地，真开源。觉得有用点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。
+- **[镜头 8.1]** `@OutroScene`（8s）三步法回顾 + 会讲需求、会判断就能复制
+- **[镜头 8.2]** `@OutroScene`（11s）品牌收束卡：headline=频道定位语「不吹AI，真落地，真开源」（口播同帧念出），cta=关注 + EP03 预告
+
+---
+
+## 必讲要点覆盖清单（逐条核对 tutorial.final.md 文末清单）
+
+- ✅ 开场：选题式问句点题「自动化视频渲染」/ 关键认知钩子（AI 强在文本代码）/ 人设以价值前置表达点一次（低成本高效自动化：讲需求→AI 实现→人判断验收）/ 三步路线图 → 段一
+- ✅ 找技术路径：AI 罗列六条路线（口播分组压缩，画面表格承载全量）/ 点明共同内核「描述→编译成帧→合成」（好坏评估留到选型段，过程旁白不入口播）→ 段二
+- ✅ 技术选型：逼 AI 给「不适用 + 坑」/ 回到约束选 Remotion / vs 复制粘贴 HTML + 代价如实说 → 段三
+- ✅ 技术落地·原理：useCurrentFrame/插值 + 无头浏览器逐帧截图 + FFmpeg 合成、30fps 秒↔帧 / 为何 AI 好驱动四条 → 段四
+- ✅ 技术落地·配置分发：一份配置 → Explainer 按 type 分发 / 现成模板场景统一主题 / 配置即内容 / TS 类型兜底 / SSR 坑 / 自有风格组件库一句带过 → 段五
+- ✅ 技术落地·数字人：定位陪衬 → 三种形象选型与坑 → 选定 VRM、定死不做对口型 → AI 落地（取景、脚站稳）→ 段六
+- ✅ 场景适配：适合纯 A 轨 / 可搭配透明叠层 / 不适合四类 / 口诀 → 段七
+- ✅ 总结 + 结尾 CTA：三步法回顾 + 「不吃编程基础，会讲需求、会判断就能复制」（价值前置表达）/ 频道定位语口播念一次（与品牌卡同帧）/ 关注 + EP03 预告 → 段八
+
+---
+
+## 结构化契约块 (JSON — 下游 05/06/07 唯一真相源)
 
 ```json
 {
   "title": "用 Vibe Coding 搭一套能自动出片的视频渲染引擎",
   "platform": "bilibili",
-  "estimated_duration_seconds": 481,
-  "total_word_count": 2150,
+  "estimated_duration_seconds": 406,
+  "total_word_count": 2207,
   "anti_hype_forbidden": [
-    "颠覆",
-    "革命性",
-    "效率提升百倍",
-    "几行代码搞定一切",
-    "震撼",
-    "封神"
+    "100 行",
+    "百倍",
+    "百倍效率",
+    "一键出片",
+    "躺赚",
+    "最强",
+    "碾压",
+    "秒杀"
   ],
+  "b_track_assets_required": [],
   "video_spec": {
     "aspect_ratio": "16:9",
     "resolution": "1920x1080",
     "fps": 30
   },
-  "b_track_assets_required": [
-    "b-ssr-crash",
-    "b-ssr-fix"
-  ],
   "sections": [
     {
       "id": "1",
-      "section_ref": "开场钩子",
       "track": "A",
-      "voice": "这期就一件事：用 Vibe Coding 搭一套渲染引擎，把视频写成代码、让 AI 按配置自动出片，改数据就改片。先记住一个关键认知：AI 最强的本事是啃文本和代码，所以想让渲染自动化，就得把视频变成代码和数据来驱动。我没有前后端基础，全程用大白话指挥 AI：我说要什么、判断对不对。这件事三步：让 AI 帮我找技术路径、对着约束选型、最后落地出片。",
-      "visual_instructions": "intro_scene 大字报 + 干货式钩子（首屏呈现配置→成片的真实成果，非演示表演）→ 关键认知卡 → 三步路线图点亮；按口播切为 3 个 intro_scene 镜头",
-      "duration_hint_seconds": 30,
+      "voice": "如何用 Vibe Coding 快速完成自动化视频渲染？先记一个关键认知：AI 最强的本事，是啃文本和代码。所以想让渲染自动化，就得把视频变成代码和数据来驱动。让 AI 按配置输出视频，改一行配置，整条片子自动重渲——这就是低成本、高效率的自动化生产。怎么落地？三步：让 AI 找技术路径，对着实际需求做选型，最后落地出片。",
+      "visual_instructions": "@IntroScene ×4：选题问句点题 → 关键认知卡 → 价值卡（低成本高效自动化）→ 三步路线图点亮。",
+      "duration_hint_seconds": 34,
       "shots": [
         {
           "id": "1.1",
           "scene_template": "@IntroScene",
           "props": {
-            "title": "用 Vibe Coding 搭一套自动出片的渲染引擎",
-            "subtitle": "把视频写成代码，让 AI 按配置自动出片",
-            "background": "holo"
+            "title": "如何用 Vibe Coding 快速完成自动化视频渲染？",
+            "subtitle": "把视频写成代码，让 AI 按配置自动出片｜不吹AI，真落地，真开源"
           },
-          "voice_slice": "这期就一件事：用 Vibe Coding 搭一套渲染引擎，把视频写成代码、让 AI 按配置自动出片，改数据就改片。",
-          "duration_seconds": 10,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "首屏呈现本期成果：一份配置 + 由它渲出的成片并排"
-            },
-            {
-              "at_seconds": 4,
-              "action": "一句话点题落到主标题"
-            }
-          ]
+          "voice_slice": "如何用 Vibe Coding 快速完成自动化视频渲染？",
+          "duration_seconds": 6
         },
         {
           "id": "1.2",
-          "scene_template": "@StatScene",
+          "scene_template": "@IntroScene",
           "props": {
-            "label": "AI 的主场",
-            "stat": "文本 + 代码",
-            "subtitle": "AI 强在啃文本和代码 → 渲染就该数据驱动",
-            "background": "holo"
+            "title": "关键认知：AI 最强的是啃文本和代码",
+            "subtitle": "所以渲染就该用代码 / 数据来驱动"
           },
-          "voice_slice": "先记住一个关键认知：AI 最强的本事是啃文本和代码，所以想让渲染自动化，就得把视频变成代码和数据来驱动。我没有前后端基础，全程用大白话指挥 AI：我说要什么、判断对不对。",
-          "duration_seconds": 10,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "关键认知卡浮出：AI 强在文本/代码 → 渲染用数据驱动"
-            },
-            {
-              "at_seconds": 6,
-              "action": "人设小字：大白话指挥 AI、只做判断"
-            }
-          ]
+          "voice_slice": "先记一个关键认知：AI 最强的本事，是啃文本和代码。所以想让渲染自动化，就得把视频变成代码和数据来驱动。",
+          "duration_seconds": 10
         },
         {
           "id": "1.3",
-          "scene_template": "@FlowScene",
+          "scene_template": "@IntroScene",
           "props": {
-            "eyebrow": "本期路线",
-            "title": "三步：找路径 · 选型 · 落地",
-            "orientation": "horizontal",
-            "steps": [
-              {
-                "label": "找路径",
-                "desc": "把选择题交给 AI，列出现成方案",
-                "icon": "🧭"
-              },
-              {
-                "label": "选型",
-                "desc": "对着真实需求做减法，筛掉不合适的",
-                "icon": "⚖️"
-              },
-              {
-                "label": "落地",
-                "desc": "照现成组件填数据，改一行配置全片重排",
-                "icon": "🚀"
-              }
-            ]
+            "title": "AI 按配置输出视频",
+            "subtitle": "低成本、高效率的自动化视频生产流程"
           },
-          "voice_slice": "这件事三步：让 AI 帮我找技术路径、对着约束选型、最后落地出片。",
-          "duration_seconds": 10,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "三步路线图依次点亮"
-            }
-          ]
+          "voice_slice": "让 AI 按配置输出视频，改一行配置，整条片子自动重渲——这就是低成本、高效率的自动化生产。",
+          "duration_seconds": 10
+        },
+        {
+          "id": "1.4",
+          "scene_template": "@IntroScene",
+          "props": {
+            "title": "三步：找技术路径 → 技术选型 → 落地出片",
+            "subtitle": "AI 铺信息与实现，人做判断与验收"
+          },
+          "voice_slice": "怎么落地？三步：让 AI 找技术路径，对着实际需求做选型，最后落地出片。",
+          "duration_seconds": 8
         }
       ]
     },
     {
       "id": "2",
-      "section_ref": "找技术路径",
       "track": "A",
-      "voice": "第一步找路，我没自己埋头啃文档，直接把选择题丢给 AI：想把视频写成代码自动出片，现在都有哪些现成路子？它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做简单拼接，还有 Motion Canvas、PixiJS 这些。名字听着五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。这一步只摆路，先不评好坏。",
-      "visual_instructions": "concept_scene 内核标题 + 三张路线卡 stagger，底部补一行 Motion Canvas/PixiJS·Cocos 补全六条路；按口播切为 4 个 concept_scene 镜头",
-      "duration_hint_seconds": 50,
+      "voice": "第一步，找技术路径。直接问 AI：通过 AI 编程做自动化渲染，现在都有哪些现成路子？它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做拼接，还有 Motion Canvas、PixiJS 这些。名字五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。路摆全了，选哪条？这就到第二步。",
+      "visual_instructions": "先 @ConceptScene 抛问，再 @TableScene 摆六条路线矩阵（画面承载全量清单），@FlowScene 收共同内核。",
+      "duration_hint_seconds": 28,
       "shots": [
         {
           "id": "2.1",
           "scene_template": "@ConceptScene",
           "props": {
-            "eyebrow": "找技术路径",
-            "title": "把选择题丢给 AI：有哪些现成路子？",
-            "background": "holo",
+            "eyebrow": "第一步 · 找技术路径",
+            "title": "让 AI 把现成路子摆全",
             "items": [
               {
-                "label": "NOT",
-                "title": "不埋头啃文档",
-                "desc": "不自己从零调研，直接把选择题交给 AI",
-                "icon": "🙅"
+                "icon": "🧭",
+                "label": "PROMPT",
+                "title": "抛出问题",
+                "desc": "通过 AI 编程实现视频自动化渲染，现在都有哪些现成路子？"
               },
               {
-                "label": "ASK",
-                "title": "一句话需求",
-                "desc": "想把视频写成代码自动出片，有哪些现成路子？",
-                "icon": "💬"
+                "icon": "📚",
+                "label": "策略",
+                "title": "AI 铺信息",
+                "desc": "先把选项摆全，好坏评估留到下一步选型"
               }
             ]
           },
-          "voice_slice": "第一步找路，我没自己埋头啃文档，直接把选择题丢给 AI：想把视频写成代码自动出片，现在都有哪些现成路子？",
-          "duration_seconds": 13,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "内核标题入场"
-            }
-          ]
+          "voice_slice": "第一步，找技术路径。直接问 AI：通过 AI 编程做自动化渲染，现在都有哪些现成路子？",
+          "duration_seconds": 7
         },
         {
           "id": "2.2",
-          "scene_template": "@BulletScene",
+          "scene_template": "@TableScene",
           "props": {
-            "eyebrow": "六条路线",
-            "title": "AI 一口气摆了六条",
-            "items": [
-              {
-                "text": "Remotion — 网页那套：React + CSS 渲染",
-                "icon": "🌐"
-              },
-              {
-                "text": "Manim — 画数学公式 / 几何",
-                "icon": "📐"
-              },
-              {
-                "text": "Motion Canvas — 代码演示、精确时序",
-                "icon": "🎬"
-              },
-              {
-                "text": "MoviePy — 简单拼接、音轨闪避",
-                "icon": "🎞️"
-              },
-              {
-                "text": "FFmpeg — 批量转码、字幕烧录",
-                "icon": "⚙️"
-              },
-              {
-                "text": "PixiJS — 2D 粒子 / WebGL 动画",
-                "icon": "✨"
-              }
-            ]
+            "title": "AI 罗列的六条现成路线",
+            "headers": [
+              "路线",
+              "代表工具",
+              "用什么描述画面",
+              "适合干什么"
+            ],
+            "rows": [
+              [
+                "网页渲染",
+                "Remotion",
+                "React 组件 + CSS/SVG",
+                "前端栈、复杂排版、模板复用"
+              ],
+              [
+                "代码动画",
+                "Motion Canvas / Revideo",
+                "写函数描述动画时序",
+                "代码演示、讲解类动画"
+              ],
+              [
+                "公式动画",
+                "Manim",
+                "Python 描述几何/公式",
+                "数学、算法可视化"
+              ],
+              [
+                "像素拼接",
+                "MoviePy",
+                "Python 操作像素 + FFmpeg",
+                "纯 Python、简单拼接"
+              ],
+              [
+                "画布/游戏",
+                "PixiJS / Cocos",
+                "Canvas 上逐帧画",
+                "复杂粒子、游戏化动画"
+              ],
+              [
+                "命令行合成",
+                "FFmpeg + 脚本",
+                "命令拼接",
+                "批量转码、字幕烧录"
+              ]
+            ],
+            "enter": "rise"
           },
-          "voice_slice": "它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做简单拼接，还有 Motion Canvas、PixiJS 这些。",
-          "duration_seconds": 15,
+          "voice_slice": "它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做拼接，还有 Motion Canvas、PixiJS 这些。",
+          "duration_seconds": 12,
           "visual_beats": [
             {
               "at_seconds": 0,
-              "action": "三张路线卡依次 stagger"
+              "action": "表头淡入"
             },
             {
-              "at_seconds": 8,
-              "action": "底部追加 Motion Canvas/PixiJS·Cocos 小卡补全六条"
+              "at_seconds": 3,
+              "action": "六行依次 stagger 入场"
             }
           ]
         },
@@ -282,1022 +283,628 @@ source_workflow: /04-script-draft
           "id": "2.3",
           "scene_template": "@FlowScene",
           "props": {
-            "eyebrow": "同一个内核",
-            "title": "代码描述画面 → 编译成帧 → 合成视频",
+            "title": "六条路的共同内核",
             "orientation": "horizontal",
             "steps": [
               {
-                "label": "DESC",
-                "desc": "拿代码/数据把画面声明出来",
-                "icon": "📄"
+                "icon": "📝",
+                "title": "代码/数据描述画面",
+                "desc": "声明式说清每一帧长什么样"
               },
               {
-                "label": "COMPILE",
-                "desc": "渲染器算出每个时刻的画面",
-                "icon": "⚙️"
+                "icon": "⚙️",
+                "title": "编译成帧",
+                "desc": "程序把描述逐帧渲染出来"
               },
               {
-                "label": "COMPOSE",
-                "desc": "帧序列合成成片",
-                "icon": "🎬"
+                "icon": "🎬",
+                "title": "合成视频",
+                "desc": "帧序列 + 音轨合成 MP4"
               }
             ]
           },
-          "voice_slice": "名字听着五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "高亮共同内核那句话"
-            }
-          ]
-        },
-        {
-          "id": "2.4",
-          "scene_template": "@BulletScene",
-          "props": {
-            "eyebrow": "本步小结",
-            "title": "这一步只摆路，先不评好坏",
-            "items": [
-              {
-                "text": "只罗列：先把候选方案摆全",
-                "icon": "📋"
-              },
-              {
-                "text": "不评判：好坏留到下一步选型再说",
-                "icon": "⏭️"
-              }
-            ]
-          },
-          "voice_slice": "这一步只摆路，先不评好坏。",
-          "duration_seconds": 7
+          "voice_slice": "名字五花八门，但你扒到底，全在干同一件事：拿代码描述画面，编译成一帧帧，再合成视频。路摆全了，选哪条？这就到第二步。",
+          "duration_seconds": 9
         }
       ]
     },
     {
       "id": "3",
-      "section_ref": "技术选型",
       "track": "A",
-      "voice": "第二步选型，这步最容易翻车——你要是直接问 AI 哪个好，它会跟个老好人似的每个都夸一遍，你还是不会选。值钱的是看清每条路什么时候不好使。所以我反过来逼它：把每条路的适用场景和会咬人的坑全列出来。看这张表：Remotion 适合前端栈和复杂排版，但你在组件顶层直接读 window，打包阶段就当场崩，而且是 BUSL 商业授权；Manim 排版弱、渲染慢；MoviePy 写自适应排版能把人写吐；FFmpeg 命令跟天书一样。看清坑，我再对着自己的需求做减法：我要一期一个模板换数据批量出几十期、要 AI 改内容不容易错、要跨期好维护——这三条一卡，Remotion 赢了。跟复制粘贴 HTML 比，它改一处全系列生效，AI 也只能乖乖填数据、不乱跑结构。代价就一条：React 栈加 BUSL 授权，规模化商用要付费——但前端反正是 AI 写、我把方向，不算门槛。一句话：让 AI 铺信息，拍板的事留给你自己。",
-      "visual_instructions": "table_scene 判断层矩阵（方案/适用场景/已知坑，stagger + 高亮坑列/当前行）→ 切 comparison_scene 做需求减法、Remotion vs 复制粘贴 HTML 对照 + 代价；多组件接力，按口播切为 6 个镜头（3×table_scene + 3×comparison_scene）",
-      "duration_hint_seconds": 80,
+      "voice": "第二步技术选型，这步最容易翻车。直接问 AI 哪个好，它跟个老好人似的，每个都夸一遍，你还是没法选。值钱的是看清每条路什么时候不好使、会在哪一步咬人。所以反过来逼它：把每条路的适用场景、不适用场景和已知坑，列成一张表。你看 Remotion 这行——适合前端栈和复杂排版，但组件顶层直接读浏览器对象，打包阶段当场就崩，而且是 BUSL 商业授权。坑看清了，再回到实际约束做减法：一期一个固定模板、换数据批量出几十期，要 AI 改内容不出错，还要跨期好维护——三条一卡，Remotion 胜出。跟复制粘贴 HTML 那种土办法比，它改一处全系列生效，AI 也只能乖乖填数据、不乱改结构，十期之后照样管得住。代价也摆清楚：React 技术栈，加 BUSL 授权，规模化商用要付费。但前端本来就是 AI 写、人把方向，不构成门槛。一句话：让 AI 把信息铺开，真正拍板的判断，留给人。",
+      "visual_instructions": "@TableScene 判断层矩阵 + Zoom 高亮坑列 → @ConceptScene 三条约束 → @SplitLayout vs 复制粘贴 HTML → @CalloutScene 代价 → @QuoteScene 金句。",
+      "duration_hint_seconds": 78,
       "shots": [
         {
           "id": "3.1",
           "scene_template": "@TableScene",
           "props": {
-            "eyebrow": "判断层 = 边界，非中立百科",
-            "title": "选型最容易翻车：看清每条路何时不好使",
+            "title": "逼 AI 给出「不适用 + 已知坑」",
             "headers": [
               "方案",
-              "适用场景",
+              "适合",
+              "不适合",
               "已知坑"
             ],
-            "background": "grid",
             "rows": [
               [
                 "Remotion",
                 "前端栈、复杂排版、跨期复用",
-                "顶层读 window 崩；BUSL 授权"
-              ],
-              [
-                "Motion Canvas",
-                "代码演示、精确时序",
-                "生态小、模板自建"
+                "纯后台超长批处理",
+                "组件顶层读 window 打包崩；BUSL 授权"
               ],
               [
                 "Manim",
-                "数学/公式可视化",
-                "排版弱、渲染慢"
+                "数学/公式/算法可视化",
+                "普通 UI、网页排版",
+                "学习曲线陡、排版弱、渲染慢"
               ],
               [
                 "MoviePy",
                 "简单拼接、音轨闪避",
-                "自适应排版繁琐、吃内存"
+                "自适应排版、复杂动效",
+                "文字排版繁琐、改了要重跑"
               ],
               [
                 "FFmpeg",
                 "批量转码、字幕烧录",
-                "命令晦涩难调试"
+                "复杂动效、交互排版",
+                "命令语法晦涩、难调试"
               ]
-            ]
+            ],
+            "enter": "rise"
           },
-          "voice_slice": "第二步选型，这步最容易翻车——你要是直接问 AI 哪个好，它会跟个老好人似的每个都夸一遍，你还是不会选。值钱的是看清每条路什么时候不好使。",
-          "duration_seconds": 15,
+          "voice_slice": "第二步技术选型，这步最容易翻车。直接问 AI 哪个好，它跟个老好人似的，每个都夸一遍，你还是没法选。值钱的是看清每条路什么时候不好使、会在哪一步咬人。",
+          "duration_seconds": 16,
           "visual_beats": [
             {
               "at_seconds": 0,
               "action": "表头淡入"
+            },
+            {
+              "at_seconds": 4,
+              "action": "四行依次 stagger 入场"
             }
           ]
         },
         {
           "id": "3.2",
-          "scene_template": "@ChartScene",
+          "scene_template": "@TableScene",
           "props": {
-            "kind": "bar",
-            "title": "各方案上手成本（越低越好）",
-            "eyebrow": "可视化对比",
-            "data": [
-              {
-                "label": "Remotion",
-                "value": 7
-              },
-              {
-                "label": "Motion Canvas",
-                "value": 5
-              },
-              {
-                "label": "Manim",
-                "value": 8
-              },
-              {
-                "label": "MoviePy",
-                "value": 4
-              },
-              {
-                "label": "FFmpeg",
-                "value": 9
-              }
-            ]
+            "title": "盯着「已知坑」这一列做减法",
+            "headers": [
+              "方案",
+              "适合",
+              "不适合",
+              "已知坑"
+            ],
+            "rows": [
+              [
+                "Remotion",
+                "前端栈、复杂排版、跨期复用",
+                "纯后台超长批处理",
+                "组件顶层读 window 打包崩；BUSL 授权"
+              ],
+              [
+                "Manim",
+                "数学/公式/算法可视化",
+                "普通 UI、网页排版",
+                "学习曲线陡、排版弱、渲染慢"
+              ],
+              [
+                "MoviePy",
+                "简单拼接、音轨闪避",
+                "自适应排版、复杂动效",
+                "文字排版繁琐、改了要重跑"
+              ],
+              [
+                "FFmpeg",
+                "批量转码、字幕烧录",
+                "复杂动效、交互排版",
+                "命令语法晦涩、难调试"
+              ]
+            ],
+            "highlightCell": "1-4"
           },
-          "voice_slice": "所以我反过来逼它：把每条路的适用场景和会咬人的坑全列出来。看这张表：Remotion 适合前端栈和复杂排版，但你在组件顶层直接读 window，打包阶段就当场崩，而且是 BUSL 商业授权；",
-          "duration_seconds": 15,
+          "voice_slice": "所以反过来逼它：把每条路的适用场景、不适用场景和已知坑，列成一张表。你看 Remotion 这行——适合前端栈和复杂排版，但组件顶层直接读浏览器对象，打包阶段当场就崩，而且是 BUSL 商业授权。",
+          "duration_seconds": 18,
           "visual_beats": [
             {
-              "at_seconds": 0,
-              "action": "各行依次 stagger 入场"
+              "at_seconds": 2,
+              "action": "Zoom 聚焦「已知坑」列"
             },
             {
               "at_seconds": 8,
-              "action": "高亮 Remotion 行的坑列"
+              "action": "highlight_cell(1,4) 高亮 Remotion 坑"
             }
           ]
         },
         {
           "id": "3.3",
-          "scene_template": "@CalloutScene",
+          "scene_template": "@ConceptScene",
           "props": {
-            "callout_type": "warning",
-            "title": "其余几条的硬伤",
-            "text": "Manim 排版弱渲染慢 / MoviePy 繁琐吃内存 / FFmpeg 命令晦涩难调试",
+            "eyebrow": "回到我的工程约束",
+            "title": "三条约束一卡，Remotion 胜出",
             "items": [
-              "Manim：数学公式专用，正文排版能力弱、渲染速度慢",
-              "MoviePy：简单拼接还行，自适应排版繁琐、吃内存",
-              "FFmpeg：批量转码利器，但命令晦涩、出错难调试"
+              {
+                "icon": "🧩",
+                "label": "复用",
+                "title": "固定模板换数据",
+                "desc": "改一处主题，全系列生效"
+              },
+              {
+                "icon": "🤖",
+                "label": "稳",
+                "title": "让 AI 接手最稳",
+                "desc": "只填数据、套现成组件"
+              },
+              {
+                "icon": "🛠️",
+                "label": "维护",
+                "title": "跨期好维护",
+                "desc": "十期后还管得住"
+              }
             ]
           },
-          "voice_slice": "Manim 排版弱、渲染慢；MoviePy 写自适应排版能把人写吐；FFmpeg 命令跟天书一样。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "Zoom 聚焦其余几条的坑列"
-            }
-          ]
+          "voice_slice": "坑看清了，再回到实际约束做减法：一期一个固定模板、换数据批量出几十期，要 AI 改内容不出错，还要跨期好维护——三条一卡，Remotion 胜出。",
+          "duration_seconds": 14
         },
         {
           "id": "3.4",
           "scene_template": "@SplitLayout",
           "props": {
-            "title": "对着需求做减法",
-            "leftLabel": "我的三条需求",
-            "leftValue": "批量换数据 · AI 改不易错 · 跨期好维护",
-            "rightLabel": "✅ Remotion 命中",
-            "rightValue": "三条全中，Remotion 赢"
+            "title": "Remotion vs 复制粘贴 HTML",
+            "leftLabel": "Remotion ✅",
+            "leftValue": "改一处全系列生效；AI 只填数据不乱改结构；十期后还好维护",
+            "rightLabel": "复制粘贴 HTML ❌",
+            "rightValue": "每期复制改，越改越乱，结构容易跑偏"
           },
-          "voice_slice": "看清坑，我再对着自己的需求做减法：我要一期一个模板换数据批量出几十期、要 AI 改内容不容易错、要跨期好维护——这三条一卡，Remotion 赢了。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "左右对照入场，右侧 Remotion 命中"
-            }
-          ]
+          "voice_slice": "跟复制粘贴 HTML 那种土办法比，它改一处全系列生效，AI 也只能乖乖填数据、不乱改结构，十期之后照样管得住。",
+          "duration_seconds": 12
         },
         {
           "id": "3.5",
-          "scene_template": "@SplitLayout",
+          "scene_template": "@CalloutScene",
           "props": {
-            "title": "Remotion ✅ vs 复制粘贴 HTML ❌",
-            "leftLabel": "Remotion",
-            "leftValue": "改一处全系列生效 · 只填数据 · 代价：React + BUSL 付费",
-            "rightLabel": "复制粘贴 HTML",
-            "rightValue": "每期复制越改越乱 · 结构易跑偏"
+            "callout_type": "warning",
+            "title": "代价如实说",
+            "text": "React 技术栈 + BUSL 授权，规模化商用要付费；但前端是 AI 写、我把方向，不算门槛。"
           },
-          "voice_slice": "跟复制粘贴 HTML 比，它改一处全系列生效，AI 也只能乖乖填数据、不乱跑结构。代价就一条：React 栈加 BUSL 授权，规模化商用要付费——但前端反正是 AI 写、我把方向，不算门槛。",
-          "duration_seconds": 13,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "左右对照 Remotion vs 复制粘贴 HTML"
-            },
-            {
-              "at_seconds": 10,
-              "action": "代价并入 Remotion 卡：React 栈 + BUSL 授权"
-            }
-          ]
+          "voice_slice": "代价也摆清楚：React 技术栈，加 BUSL 授权，规模化商用要付费。但前端本来就是 AI 写、人把方向，不构成门槛。",
+          "duration_seconds": 12
         },
         {
           "id": "3.6",
           "scene_template": "@QuoteScene",
           "props": {
-            "text": "AI 铺信息，你拍板",
-            "attribution": "选型分工口诀"
+            "text": "让 AI 把信息铺开，真正拍板的判断，还得你自己来。"
           },
-          "voice_slice": "一句话：让 AI 铺信息，拍板的事留给你自己。",
-          "duration_seconds": 7
+          "voice_slice": "一句话：让 AI 把信息铺开，真正拍板的判断，留给人。",
+          "duration_seconds": 6
         }
       ]
     },
     {
       "id": "4",
-      "section_ref": "技术落地·Remotion 怎么工作，为什么 AI 能驱动",
       "track": "A",
-      "voice": "路线定了 Remotion，先花一分钟搞懂它大致怎么干活，你就明白为啥 AI 能轻松驱动它。一句话：用 React 把每一帧长什么样写出来，引擎再逐帧截图、合成视频。拆开看就三步——你用 React 组件描述这一帧画成什么样，渲染时它开一个无头浏览器，把组件从第一帧到最后一帧逐帧截成图片，再用 FFmpeg 把这些图和音轨合成 MP4，所以网页能画的它就能渲成视频。再说细一点：组件里用 useCurrentFrame 拿到现在是第几帧，按帧号算出这帧该画成什么样，位置、透明度、大小全是帧号到数值的插值，不用你一帧帧手摆；你按秒想、引擎按帧算，靠每秒三十帧换算，第三秒就是第九十帧。那为啥这套 AI 特别好驱动？四条：全是 React 加 CSS，正好是 AI 语料里最厚的一块；声明式，只描述长什么样、不写怎么一帧帧动；改数据就改片，正中它改文本的强项；字段格式用 TypeScript 定死，填错漏填编译当场报红。记住一句：把视频写成数据，AI 只填空、不乱跑。",
-      "visual_instructions": "flow_scene 三步管线（React 描述每帧 → 无头浏览器逐帧截图 → FFmpeg 合成 MP4）→ code_scene 展示 useCurrentFrame + interpolate + 30fps 秒帧换算 → bullet_scene 列「为什么 AI 好驱动」四条 → quote_scene 金句；按口播切为 4 个镜头",
+      "voice": "路线定了 Remotion，它干活就三步：用 React 组件描述每一帧长什么样，渲染时开一个无头浏览器，逐帧截成图片，再用 FFmpeg 把图和音轨合成 MP4。所以网页能画的，它就能渲成视频。组件里用 useCurrentFrame 拿当前帧号，位置、透明度、大小，全是帧号到数值的插值，不用一帧帧手摆。你按秒想、引擎按帧算：每秒三十帧，第三秒就是第九十帧。为什么这套 AI 特别好驱动？四条：全是 React 加 CSS，它语料里最厚的一块；声明式，只描述长什么样；改数据就改片，正中它改文本的强项；字段用 TypeScript 定死，填错当场报红。记住一句：把视频写成数据，AI 只填空、不乱跑。原理通了，接着把引擎搭起来。",
+      "visual_instructions": "@FlowScene 三步管线 → @TerminalScene 帧插值 + 30fps 换算 → @BulletScene 四条 → @QuoteScene 金句。",
       "duration_hint_seconds": 53,
       "shots": [
         {
           "id": "4.1",
           "scene_template": "@FlowScene",
           "props": {
-            "eyebrow": "Remotion 怎么工作",
-            "title": "用 React 写每帧 → 逐帧截图 → 合成视频",
+            "title": "Remotion 大致怎么工作",
             "orientation": "horizontal",
             "steps": [
               {
-                "label": "WRITE",
-                "desc": "用 React 组件描述这一帧画成什么样",
-                "icon": "⚛️"
+                "icon": "⚛️",
+                "title": "React 描述每一帧",
+                "desc": "组件说清这一帧画成什么样"
               },
               {
-                "label": "SHOT",
-                "desc": "无头浏览器从头到尾逐帧把组件截成图片",
-                "icon": "📸"
+                "icon": "🖥️",
+                "title": "无头浏览器逐帧截图",
+                "desc": "从第 0 帧到末帧逐帧截图"
               },
               {
-                "label": "COMPOSE",
-                "desc": "FFmpeg 把帧序列 + 音轨合成 MP4",
-                "icon": "🎬"
+                "icon": "🎬",
+                "title": "FFmpeg 合成 MP4",
+                "desc": "帧序列 + 音轨合成视频"
               }
             ]
           },
-          "voice_slice": "路线定了 Remotion，先花一分钟搞懂它大致怎么干活，你就明白为啥 AI 能轻松驱动它。一句话：用 React 把每一帧长什么样写出来，引擎再逐帧截图、合成视频。拆开看就三步——你用 React 组件描述这一帧画成什么样，渲染时它开一个无头浏览器，把组件从第一帧到最后一帧逐帧截成图片，再用 FFmpeg 把这些图和音轨合成 MP4，所以网页能画的它就能渲成视频。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "三步管线卡依次入场，箭头连通"
-            },
-            {
-              "at_seconds": 9,
-              "action": "末卡高亮「网页能画的就能渲成视频」"
-            }
-          ]
+          "voice_slice": "路线定了 Remotion，它干活就三步：用 React 组件描述每一帧长什么样，渲染时开一个无头浏览器，逐帧截成图片，再用 FFmpeg 把图和音轨合成 MP4。所以网页能画的，它就能渲成视频。",
+          "duration_seconds": 16
         },
         {
           "id": "4.2",
           "scene_template": "@TerminalScene",
           "props": {
-            "terminalTitle": "帧为单位：useCurrentFrame + interpolate",
-            "prompt": "$",
+            "terminalTitle": "帧驱动动画（不手摆关键帧）",
+            "prompt": "tsx",
             "steps": [
               {
-                "kind": "out",
-                "text": "const frame = useCurrentFrame();   // 现在第几帧"
+                "pill": "useCurrentFrame → interpolate"
               },
               {
-                "kind": "out",
-                "text": "// 按帧号算这帧该画成什么样：位置/透明度/大小"
+                "cmd": "const frame = useCurrentFrame();"
               },
               {
-                "kind": "out",
-                "text": "const opacity = interpolate(frame, [0, 30], [0, 1]);"
+                "cmd": "const opacity = interpolate(frame, [0, 30], [0, 1]);"
               },
               {
-                "kind": "out",
-                "text": "// 30fps：你按秒想，引擎按帧算"
-              },
-              {
-                "kind": "out",
-                "text": "// 第 3 秒 = 第 90 帧，不用一帧帧手摆"
+                "out": "// 30fps：第 3 秒 = 第 90 帧，秒↔帧靠 fps 打通"
               }
             ]
           },
-          "voice_slice": "再说细一点：组件里用 useCurrentFrame 拿到现在是第几帧，按帧号算出这帧该画成什么样，位置、透明度、大小全是帧号到数值的插值，不用你一帧帧手摆；你按秒想、引擎按帧算，靠每秒三十帧换算，第三秒就是第九十帧。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "代码逐行打字：useCurrentFrame → interpolate"
-            },
-            {
-              "at_seconds": 9,
-              "action": "高亮注释「30fps：第 3 秒 = 第 90 帧」"
-            }
-          ]
+          "voice_slice": "组件里用 useCurrentFrame 拿当前帧号，位置、透明度、大小，全是帧号到数值的插值，不用一帧帧手摆。你按秒想、引擎按帧算：每秒三十帧，第三秒就是第九十帧。",
+          "duration_seconds": 15
         },
         {
           "id": "4.3",
           "scene_template": "@BulletScene",
           "props": {
-            "eyebrow": "为什么 AI 能轻松驱动",
-            "title": "四条对 AI 友好的底层原因",
+            "eyebrow": "为什么 AI 特别好驱动",
+            "title": "四条",
             "ordered": true,
             "items": [
-              {
-                "text": "全是 React + CSS：AI 语料里最厚的一块",
-                "icon": "⚛️"
-              },
-              {
-                "text": "声明式：只描述长什么样，不写怎么一帧帧动",
-                "icon": "📐"
-              },
-              {
-                "text": "改数据就改片：正中 AI 改文本的强项",
-                "icon": "🔤"
-              },
-              {
-                "text": "TypeScript 字段焊死：填错漏填编译当场报红",
-                "icon": "🛡️"
-              }
+              "全是 React + CSS：AI 语料里最厚的一块",
+              "声明式：只描述长什么样，不写怎么一帧帧动",
+              "文本/数据驱动：改数据就改片，正中改文本之长",
+              "TypeScript 字段焊死：填错漏填编译当场报红"
             ]
           },
-          "voice_slice": "那为啥这套 AI 特别好驱动？四条：全是 React 加 CSS，正好是 AI 语料里最厚的一块；声明式，只描述长什么样、不写怎么一帧帧动；改数据就改片，正中它改文本的强项；字段格式用 TypeScript 定死，填错漏填编译当场报红。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "四条要点逐行错峰入场"
-            }
-          ]
+          "voice_slice": "为什么这套 AI 特别好驱动？四条：全是 React 加 CSS，它语料里最厚的一块；声明式，只描述长什么样；改数据就改片，正中它改文本的强项；字段用 TypeScript 定死，填错当场报红。",
+          "duration_seconds": 16
         },
         {
           "id": "4.4",
           "scene_template": "@QuoteScene",
           "props": {
-            "text": "把视频写成数据，AI 只填空、不乱跑",
-            "attribution": "Remotion × Vibe Coding"
+            "text": "把视频写成数据，AI 只填空、不乱跑。"
           },
-          "voice_slice": "记住一句：把视频写成数据，AI 只填空、不乱跑。",
-          "duration_seconds": 8
+          "voice_slice": "记住一句：把视频写成数据，AI 只填空、不乱跑。原理通了，接着把引擎搭起来。",
+          "duration_seconds": 6
         }
       ]
     },
     {
       "id": "5",
-      "section_ref": "技术落地·配置分发与配置即内容",
       "track": "A",
-      "voice": "选型定了，进落地。好消息是搭引擎也不用你手写，就是跟 AI 把配置和现成组件对上号。仓库这台引擎叫 remotion-composer，干活特别直白：你写一份配置说清这段画面长啥样，主程序 Explainer 就看配置里的 type 字段，自动去找对应组件来渲。type 写 comparison 就出对比卡，terminal 是合成终端、不用真录屏，还有图表、分屏。现在仓库里这样的模板场景有十四个——开场、概念、清单、流程、表格、对比、图表、数字、提示、金句、章节、终端都齐了，而且统一成深色科技底加白字，改一处全片生效。所以做内容这事，本质就是挑组件、填字段。最省心的一招是：我从不让 AI 去发明新组件，只让它照现成的填数据。比如要张对比卡，我说左边传统剪辑、右边代码即视频，它吐出来就是这么一段配置，齐活。为啥稳？因为每个字段都用 TypeScript 把格式焊死了，AI 填错漏填，编译当场报红。记住：让 AI 填空，别让它造轮子。想要更强辨识度，还能在现成组件上扩一套自有风格组件库——那是更大的话题，以后单开一期讲。",
-      "visual_instructions": "concept_scene 配置→Explainer→组件流向 → concept_scene 14 场景清单（统一皮肤）→ code_scene 展示 comparison 配置逐行打字 → code_scene TS 字段焊死 → comparison_scene 左从零手写❌ 右只填数据✅ → concept_scene 自有风格组件库一句带过；多组件接力，按口播切为 6 个镜头",
-      "duration_hint_seconds": 90,
+      "voice": "选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。落地唯一反复咬人的是 SSR 坑：组件顶层直接读 window，打包时还跑在 Node 里、没有浏览器——人还没进门就伸手拉灯，灯还没装上，当然报错红屏。修法是加一句 typeof window 判断；更聪明的，是把这条规则写进 .cursor/rules，一次固化给 AI。还有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。",
+      "visual_instructions": "@FlowScene 分发流向 → @BulletScene 场景清单 → @TerminalScene 配置样例 → @TerminalScene SSR 崩→守卫 → @SplitLayout 造轮子 vs 填数据 → @CalloutScene 自有组件库一句带过。",
+      "duration_hint_seconds": 84,
       "shots": [
         {
           "id": "5.1",
           "scene_template": "@FlowScene",
           "props": {
-            "eyebrow": "引擎怎么干活",
-            "title": "一份配置 → Explainer 按 type 分发 → 现成组件",
+            "title": "一份配置 → Explainer 按 type 分发 → 组件",
             "orientation": "horizontal",
             "steps": [
               {
-                "label": "WRITE",
-                "desc": "你写配置：说清这段画面长啥样",
-                "icon": "📝"
+                "icon": "🧾",
+                "title": "写一份配置",
+                "desc": "说清这段画面是什么、叠什么"
               },
               {
-                "label": "DISPATCH",
-                "desc": "Explainer 分发：看 type 字段自动找组件",
-                "icon": "🔀"
+                "icon": "🔀",
+                "title": "Explainer 读 type",
+                "desc": "按 type 字段自动分发"
               },
               {
-                "label": "RENDER",
-                "desc": "现成组件渲染：comparison/terminal/charts… 照填就渲",
-                "icon": "🧩"
+                "icon": "🧱",
+                "title": "对应组件渲染",
+                "desc": "comparison→对比卡，terminal→合成终端…"
               }
             ]
           },
-          "voice_slice": "选型定了，进落地。好消息是搭引擎也不用你手写，就是跟 AI 把配置和现成组件对上号。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "流向图入场"
-            }
-          ]
+          "voice_slice": "选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。",
+          "duration_seconds": 16
         },
         {
           "id": "5.2",
-          "scene_template": "@ConceptScene",
+          "scene_template": "@BulletScene",
           "props": {
-            "eyebrow": "remotion-composer",
-            "title": "做内容 = 挑组件 + 填字段",
-            "background": "holo",
+            "eyebrow": "现成模板场景（统一深色科技风 + 白字）",
+            "title": "照着填就能用",
             "items": [
-              {
-                "label": "comparison",
-                "title": "对比卡",
-                "desc": "type=comparison 出对比卡",
-                "icon": "🆚"
-              },
-              {
-                "label": "terminal",
-                "title": "合成终端",
-                "desc": "不用真录屏",
-                "icon": "🖥️"
-              },
-              {
-                "label": "charts",
-                "title": "十四个模板场景",
-                "desc": "统一深色科技底 + 白字，改一处全片生效",
-                "icon": "📊"
-              }
+              "开场 / 章节 / 片尾",
+              "概念卡 / 要点清单 / 流程图",
+              "表格 / 左右对比",
+              "图表 / 核心数字",
+              "提示避坑框 / 金句",
+              "合成终端 / 截图叠层（不用真录屏）"
             ]
           },
-          "voice_slice": "仓库这台引擎叫 remotion-composer，干活特别直白：你写一份配置说清这段画面长啥样，主程序 Explainer 就看配置里的 type 字段，自动去找对应组件来渲。type 写 comparison 就出对比卡，terminal 是合成终端、不用真录屏，还有图表、分屏。现在仓库里这样的模板场景有十四个——开场、概念、清单、流程、表格、对比、图表、数字、提示、金句、章节、终端都齐了，而且统一成深色科技底加白字，改一处全片生效。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "组件清单网格点亮，强调统一皮肤"
-            }
-          ]
+          "voice_slice": "现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。",
+          "duration_seconds": 14
         },
         {
           "id": "5.3",
           "scene_template": "@TerminalScene",
           "props": {
-            "terminalTitle": "comparison 配置：照现成组件填数据",
-            "prompt": "$",
+            "terminalTitle": "让 AI 只填字段、不造组件",
+            "prompt": "jsonc",
             "steps": [
               {
-                "kind": "out",
-                "text": "{"
+                "cmd": "{ 'type': 'comparison_scene',"
               },
               {
-                "kind": "out",
-                "text": "  \"type\": \"comparison\","
+                "cmd": "  'leftLabel': '传统剪辑', 'leftValue': '拖时间轴，改一处全手工重排',"
               },
               {
-                "kind": "out",
-                "text": "  \"title\": \"传统剪辑 vs 代码即视频\","
+                "cmd": "  'rightLabel': '代码即视频', 'rightValue': '改一行配置，重新编译出片' }"
               },
               {
-                "kind": "out",
-                "text": "  \"leftLabel\": \"传统剪辑\","
-              },
-              {
-                "kind": "out",
-                "text": "  \"leftValue\": \"拖时间轴，改一处全手工重排\","
-              },
-              {
-                "kind": "out",
-                "text": "  \"rightLabel\": \"代码即视频\","
-              },
-              {
-                "kind": "out",
-                "text": "  \"rightValue\": \"改一行配置，重新编译出片\""
-              },
-              {
-                "kind": "out",
-                "text": "}"
+                "out": "// Explainer 自动渲成对比卡，无需新建组件"
               }
             ]
           },
-          "voice_slice": "所以做内容这事，本质就是挑组件、填字段。最省心的一招是：我从不让 AI 去发明新组件，只让它照现成的填数据。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "config 逐行打字"
-            }
-          ]
+          "voice_slice": "所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。",
+          "duration_seconds": 13
         },
         {
           "id": "5.4",
           "scene_template": "@TerminalScene",
           "props": {
-            "terminalTitle": "TS 把字段格式焊死，填错即编译报红",
-            "prompt": "$",
+            "terminalTitle": "SSR 唯一的坑：把规则固化给 AI",
+            "prompt": "tsx",
             "steps": [
               {
-                "kind": "out",
-                "text": "type Comparison = {"
+                "cmd": "const w = window.innerWidth; // ❌ 组件顶层直接读"
               },
               {
-                "kind": "out",
-                "text": "  type: 'comparison';"
+                "out": "ReferenceError: window is not defined （Node 打包阶段崩、渲染红屏）"
               },
               {
-                "kind": "out",
-                "text": "  leftLabel: string; leftValue: string;"
+                "pause": 1
               },
               {
-                "kind": "out",
-                "text": "  rightLabel: string; rightValue: string;"
+                "cmd": "if (typeof window !== 'undefined') { /* 安全读取 */ } // ✅ 守卫"
               },
               {
-                "kind": "out",
-                "text": "};"
-              },
-              {
-                "kind": "out",
-                "text": "// 漏填 / 写错字段 → tsc 当场报错，AI 跑不偏"
+                "pill": ".cursor/rules 固化这条规则，往后 AI 自动带上"
               }
             ]
           },
-          "voice_slice": "比如要张对比卡，我说左边传统剪辑、右边代码即视频，它吐出来就是这么一段配置，齐活。为啥稳？因为每个字段都用 TypeScript 把格式焊死了，AI 填错漏填，编译当场报红。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "类型定义打字 + 漏填报错提示"
-            }
-          ]
+          "voice_slice": "落地唯一反复咬人的是 SSR 坑：组件顶层直接读 window，打包时还跑在 Node 里、没有浏览器——人还没进门就伸手拉灯，灯还没装上，当然报错红屏。修法是加一句 typeof window 判断；更聪明的，是把这条规则写进 .cursor/rules，一次固化给 AI。",
+          "duration_seconds": 18
         },
         {
           "id": "5.5",
           "scene_template": "@SplitLayout",
           "props": {
-            "title": "让 AI 填空，别让它造轮子",
-            "leftLabel": "❌ 从零手写",
-            "leftValue": "让 AI 手写 ComparisonScene.tsx，易错难维护",
-            "rightLabel": "✅ 只填数据",
-            "rightValue": "复用现成 @ComparisonCard，TS 兜底"
+            "title": "心法：填数据，别造轮子",
+            "leftLabel": "让 AI 从零手写组件 ❌",
+            "leftValue": "重复造轮子，丢掉「换数据就复用」的好处",
+            "rightLabel": "只填数据、复用现成组件 ✅",
+            "rightValue": "结构稳、可复用，AI 乱发挥空间最小"
           },
-          "voice_slice": "记住：让 AI 填空，别让它造轮子。",
-          "duration_seconds": 18,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "切分屏左右对照"
-            },
-            {
-              "at_seconds": 8,
-              "action": "右侧注释浮出 TS 字段定死格式"
-            }
-          ]
+          "voice_slice": "还有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。",
+          "duration_seconds": 13
         },
         {
           "id": "5.6",
-          "scene_template": "@BulletScene",
+          "scene_template": "@CalloutScene",
           "props": {
-            "eyebrow": "延伸",
-            "title": "还能扩一套自有风格组件库",
-            "items": [
-              {
-                "text": "自有风格组件：在现成组件上扩一套，辨识度更强",
-                "icon": "🎨"
-              },
-              {
-                "text": "以后单开一期：那是更大的话题",
-                "icon": "📅"
-              }
-            ]
+            "callout_type": "tip",
+            "title": "自有风格组件库",
+            "text": "想要更强品牌辨识度，可在现成组件上再扩一套——更大的话题，后续单独开一期，这期先用现成的把片子跑通。"
           },
-          "voice_slice": "想要更强辨识度，还能在现成组件上扩一套自有风格组件库——那是更大的话题，以后单开一期讲。",
-          "duration_seconds": 12
+          "voice_slice": "至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。",
+          "duration_seconds": 10
         }
       ]
     },
     {
       "id": "6",
-      "section_ref": "技术落地·SSR 避坑",
-      "track": "A/B",
-      "voice": "落地过程里唯一反复栽我的，就是 SSR 这个坑。看左边：组件顶层直接读了 window，可 Remotion 打包那会儿跑在 Node 里、还没进浏览器，当场就报 ReferenceError、渲染红屏。好比人还没进门就伸手拉灯，灯都没装上，当然摸空。右边怎么修：加一句 typeof window 判断。但更聪明的是别每次盯着 AI，而是把这条规则一次写死——塞进 .cursor/rules 一个 mdc 文件，指到引擎源码目录，往后 AI 生成组件自动带上。这就是 Vibe Coding 的精髓：重复的规矩，固化成规则交给 AI。",
-      "visual_instructions": "B 轨双录屏（左崩溃红屏/右守卫+规则一次渲出）；A 轨兜底 code_scene 对照 + 浮出 .cursor/rules/remotion-ssr.mdc；按口播切为 3 个镜头",
-      "duration_hint_seconds": 35,
+      "track": "A",
+      "voice": "视频要不要一个出镜形象串场？先把定位钉死：数字人只是陪衬，不是主角，干货主体永远是屏幕上的真实操作。然后套一样的方法论，让 AI 把可选形象和各自的坑摆出来：真人出镜最可信，但要露脸、没法编程复用；写实数字人对口型，容易掉进恐怖谷，可信度反而崩；二次元或 3D 风格化角色走 VRM，风格统一、可编程、渲一次到处用，还不踩恐怖谷。对着约束——不露脸、可编程批量复用、避开恐怖谷——我选定 3D 风格化角色 VRMAvatar，并且定死：只做陪衬，坚决不做对口型。落地交给 AI：整体渲一次，再按场景裁角落、半身或全身。之前待机时整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，让脚踩稳原地。",
+      "visual_instructions": "@ConceptScene 定位 → @TableScene 形象选型矩阵（高亮 VRM）→ @ConceptScene 对约束拍板 → @BulletScene AI 落地两处。",
+      "duration_hint_seconds": 58,
       "shots": [
         {
           "id": "6.1",
-          "scene_template": "@TerminalScene",
-          "track": "A/B",
+          "scene_template": "@ConceptScene",
           "props": {
-            "b_track_clip": "b-ssr-crash",
-            "b_track_note": "[B 轨占位：IDE 顶层读 window 触发 ReferenceError 红屏]",
-            "terminalTitle": "💥 SSR 坑：组件顶层读 window，渲染红屏",
-            "prompt": "$",
-            "steps": [
+            "eyebrow": "数字人 · 先定位",
+            "title": "陪衬、串场，不是主角",
+            "items": [
               {
-                "kind": "out",
-                "text": "// ❌ 组件顶层直接读 window"
+                "icon": "🎭",
+                "label": "定位",
+                "title": "只做陪衬",
+                "desc": "干货主体永远是屏幕上的真实操作"
               },
               {
-                "kind": "out",
-                "text": "const w = window.innerWidth;"
-              },
-              {
-                "kind": "out",
-                "text": "// 打包跑在 Node 里、还没进浏览器："
-              },
-              {
-                "kind": "out",
-                "text": "// 💥 ReferenceError: window is not defined"
+                "icon": "🧭",
+                "label": "方法",
+                "title": "套同一套选型",
+                "desc": "先定位，再让 AI 列选型说清坑"
               }
             ]
           },
-          "voice_slice": "落地过程里唯一反复栽我的，就是 SSR 这个坑。看左边：组件顶层直接读了 window，可 Remotion 打包那会儿跑在 Node 里、还没进浏览器，当场就报 ReferenceError、渲染红屏。好比人还没进门就伸手拉灯，灯都没装上，当然摸空。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "崩溃代码/录屏淡入"
-            },
-            {
-              "at_seconds": 8,
-              "action": "震动强调 ReferenceError"
-            }
-          ]
+          "voice_slice": "视频要不要一个出镜形象串场？先把定位钉死：数字人只是陪衬，不是主角，干货主体永远是屏幕上的真实操作。",
+          "duration_seconds": 13
         },
         {
           "id": "6.2",
-          "scene_template": "@TerminalScene",
-          "track": "A/B",
+          "scene_template": "@TableScene",
           "props": {
-            "b_track_clip": "b-ssr-fix",
-            "b_track_note": "[B 轨占位：加 typeof window 守卫后一次性渲出]",
-            "terminalTitle": "✅ typeof window 守卫 + MDC 规则",
-            "prompt": "$",
-            "steps": [
-              {
-                "kind": "out",
-                "text": "// ✅ SSR 时用默认值兜底"
-              },
-              {
-                "kind": "out",
-                "text": "const w = typeof window !== 'undefined'"
-              },
-              {
-                "kind": "out",
-                "text": "  ? window.innerWidth"
-              },
-              {
-                "kind": "out",
-                "text": "  : 1920;"
-              },
-              {
-                "kind": "out",
-                "text": "// .cursor/rules/remotion-ssr.mdc:"
-              },
-              {
-                "kind": "out",
-                "text": "// 组件顶层禁止直接读 window/document"
-              }
-            ]
+            "title": "让 AI 摆形象选型 + 坑",
+            "headers": [
+              "形象方案",
+              "适合",
+              "坑 / 代价"
+            ],
+            "rows": [
+              [
+                "真人出镜",
+                "最可信、有温度",
+                "要露脸、不可编程复用、隐私成本"
+              ],
+              [
+                "写实数字人 / 对口型",
+                "像真主播",
+                "易掉恐怖谷、可信度反崩；口型是重活"
+              ],
+              [
+                "二次元 / 3D 风格化（VRM）",
+                "风格统一、可编程、渲一次到处用",
+                "要建模与动作绑定，可交给 AI"
+              ]
+            ],
+            "highlightCell": "3-1",
+            "enter": "rise"
           },
-          "voice_slice": "右边怎么修：加一句 typeof window 判断。",
-          "duration_seconds": 12,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "守卫代码/录屏淡入"
-            }
-          ]
+          "voice_slice": "然后套一样的方法论，让 AI 把可选形象和各自的坑摆出来：真人出镜最可信，但要露脸、没法编程复用；写实数字人对口型，容易掉进恐怖谷，可信度反而崩；二次元或 3D 风格化角色走 VRM，风格统一、可编程、渲一次到处用，还不踩恐怖谷。",
+          "duration_seconds": 18
         },
         {
           "id": "6.3",
-          "scene_template": "@CalloutScene",
+          "scene_template": "@ConceptScene",
           "props": {
-            "callout_type": "info",
-            "title": "Vibe Coding 精髓：重复的规矩，固化成规则交给 AI",
-            "text": "把踩过的坑写成 .cursor/rules/remotion-ssr.mdc，AI 往后生成组件自动遵守，不用每次盯着",
+            "eyebrow": "对约束拍板",
+            "title": "选定 VRM 3D 角色",
             "items": [
-              ".cursor/rules/remotion-ssr.mdc — 组件顶层禁止直接读 window/document",
-              "AI 自动带上规则，往后生成组件自动遵守"
+              {
+                "icon": "🙈",
+                "label": "约束",
+                "title": "不露脸 · 可批量 · 避恐怖谷",
+                "desc": "三条一卡，选 VRMAvatar"
+              },
+              {
+                "icon": "🚫",
+                "label": "定死",
+                "title": "坚决不做对口型",
+                "desc": "可信度只靠真实录屏"
+              }
             ]
           },
-          "voice_slice": "但更聪明的是别每次盯着 AI，而是把这条规则一次写死——塞进 .cursor/rules 一个 mdc 文件，指到引擎源码目录，往后 AI 生成组件自动带上。这就是 Vibe Coding 的精髓：重复的规矩，固化成规则交给 AI。",
-          "duration_seconds": 8,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "浮出 .cursor/rules/remotion-ssr.mdc"
-            }
-          ]
+          "voice_slice": "对着约束——不露脸、可编程批量复用、避开恐怖谷——我选定 3D 风格化角色 VRMAvatar，并且定死：只做陪衬，坚决不做对口型。",
+          "duration_seconds": 15
+        },
+        {
+          "id": "6.4",
+          "scene_template": "@BulletScene",
+          "props": {
+            "eyebrow": "AI 落地",
+            "title": "两处关键",
+            "items": [
+              "渲一次、按场景取景：裁角落 / 半身 / 全身",
+              "脚站稳：在大腿上反向抵消髋部摆动，脚踩原地"
+            ]
+          },
+          "voice_slice": "落地交给 AI：整体渲一次，再按场景裁角落、半身或全身。之前待机时整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，让脚踩稳原地。",
+          "duration_seconds": 12
         }
       ]
     },
     {
       "id": "7",
-      "section_ref": "技术落地·数字人选型与落地",
       "track": "A",
-      "voice": "要不要个出镜形象做陪衬？这事也没拍脑袋，套的是跟选引擎一样的方法论：先把定位说死——它只是陪衬串场，不是主角。然后让 AI 把可选形象和各自的坑摆出来：真人最可信但要露脸、不能编程复用；写实对口型像真主播，可一不小心就掉进恐怖谷、可信度反而崩。对着我的约束——不想露脸、要可编程批量复用、还要避开恐怖谷——我选了 3D 风格化角色 VRMAvatar，并钉死一条死规矩：坚决不做对口型数字人、不做 AI 假界面，可信度只靠真实录屏换。落地也交给 AI：整体渲一次再按场景裁半身全身；之前它待机整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，脚就踩稳了。",
-      "visual_instructions": "concept_scene 定位陪衬 → table_scene 三行形象选型矩阵（stagger + 高亮选定 VRM 行）→ 切主持人取景预设示意 + 脚踩稳；按口播切为 4 个镜头",
-      "duration_hint_seconds": 60,
+      "voice": "引擎跑通了，更值钱的判断是：什么场景该用它？适合纯 A 轨自动出片的，是模板化、换数据就能批量复用的内容——概念讲解、要点流程、图表对比、开场收尾这些；命令和报错用合成终端兜底，不用真录屏。第二种是搭配用：主体是真人口播或真实录屏时，Remotion 不独占整屏，渲成透明背景的悬浮叠层贴上去——数据卡、字幕高亮、局部标注都行。三类别硬上：真实物理世界，该拍就拍；写实对口型数字人，恐怖谷加可信度崩，本项目明确排除；影视级特效和超长批处理，交给专业工具和 FFmpeg。一句口诀：主体是真实画面，就退居叠层；主体是讲解和数据，就独占整屏。",
+      "visual_instructions": "@ConceptScene 适合纯 A 轨 → @SplitLayout 独占整屏 vs 退居叠层 → @CalloutScene(warning) 不适合四类 → @QuoteScene 口诀。",
+      "duration_hint_seconds": 52,
       "shots": [
         {
           "id": "7.1",
           "scene_template": "@ConceptScene",
           "props": {
-            "eyebrow": "数字人选型",
-            "title": "出镜形象只是陪衬串场，不是主角",
-            "background": "holo",
+            "eyebrow": "用在哪 · 适合纯 A 轨",
+            "title": "模板化、换数据批量复用",
             "items": [
               {
-                "label": "METHOD",
-                "title": "套选引擎的方法论",
-                "desc": "先把定位说死，再摆选项和坑",
-                "icon": "🧭"
+                "icon": "🧠",
+                "label": "讲解",
+                "title": "概念 / 要点 / 流程",
+                "desc": "concept / bullet / flow"
               },
               {
-                "label": "ROLE",
-                "title": "陪衬定位",
-                "desc": "串场，不抢内容主角",
-                "icon": "🎭"
+                "icon": "📊",
+                "label": "数据",
+                "title": "图表 / 对比 / 核心数字",
+                "desc": "chart / table / comparison / stat"
+              },
+              {
+                "icon": "💻",
+                "label": "演示",
+                "title": "合成终端兜底",
+                "desc": "命令 / 报错不用真录屏"
               }
             ]
           },
-          "voice_slice": "要不要个出镜形象做陪衬？这事也没拍脑袋，套的是跟选引擎一样的方法论：先把定位说死——它只是陪衬串场，不是主角。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "定位卡入场"
-            }
-          ]
+          "voice_slice": "引擎跑通了，更值钱的判断是：什么场景该用它？适合纯 A 轨自动出片的，是模板化、换数据就能批量复用的内容——概念讲解、要点流程、图表对比、开场收尾这些；命令和报错用合成终端兜底，不用真录屏。",
+          "duration_seconds": 16
         },
         {
           "id": "7.2",
-          "scene_template": "@TableScene",
+          "scene_template": "@SplitLayout",
           "props": {
-            "eyebrow": "三种形象方案",
-            "title": "可选形象 + 各自的坑",
-            "headers": [
-              "形象方案",
-              "适用场景",
-              "坑 / 代价"
-            ],
-            "background": "grid",
-            "rows": [
-              [
-                "真人出镜",
-                "最可信、有温度",
-                "要露脸、不可编程复用、隐私成本"
-              ],
-              [
-                "写实/对口型数字人",
-                "像真主播",
-                "易掉恐怖谷、可信度反崩；口型重活"
-              ],
-              [
-                "3D 风格化 VRM",
-                "风格统一、可编程、渲一次到处用",
-                "要建模与动作绑定，可交给 AI"
-              ]
-            ]
+            "title": "主体不同，站位不同",
+            "leftLabel": "讲解 / 数据为主 → 独占整屏",
+            "leftValue": "文本、数据就能说清的内容，Remotion 全屏出片",
+            "rightLabel": "真人 / 录屏为主 → 退居叠层",
+            "rightValue": "渲透明背景悬浮层：数据卡 / 字幕 / 角标 / Zoom 标注"
           },
-          "voice_slice": "然后让 AI 把可选形象和各自的坑摆出来：真人最可信但要露脸、不能编程复用；写实对口型像真主播，可一不小心就掉进恐怖谷、可信度反而崩。",
-          "duration_seconds": 17,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "三行 stagger 入场"
-            }
-          ]
+          "voice_slice": "第二种是搭配用：主体是真人口播或真实录屏时，Remotion 不独占整屏，渲成透明背景的悬浮叠层贴上去——数据卡、字幕高亮、局部标注都行。",
+          "duration_seconds": 14
         },
         {
           "id": "7.3",
-          "scene_template": "@TableScene",
-          "props": {
-            "highlightCell": "3-1",
-            "eyebrow": "回到约束",
-            "title": "选定 3D 风格化 VRMAvatar",
-            "background": "grid",
-            "headers": [
-              "形象方案",
-              "适用场景",
-              "坑 / 代价"
-            ],
-            "rows": [
-              [
-                "真人出镜",
-                "最可信、有温度",
-                "要露脸、不可编程复用、隐私成本"
-              ],
-              [
-                "写实/对口型数字人",
-                "像真主播",
-                "易掉恐怖谷、可信度反崩；口型重活"
-              ],
-              [
-                "3D 风格化 VRM",
-                "风格统一、可编程、渲一次到处用",
-                "要建模与动作绑定，可交给 AI"
-              ]
-            ]
-          },
-          "voice_slice": "对着我的约束——不想露脸、要可编程批量复用、还要避开恐怖谷——我选了 3D 风格化角色 VRMAvatar，并钉死一条死规矩：坚决不做对口型数字人、不做 AI 假界面，可信度只靠真实录屏换。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "高亮选定的 VRM 行"
-            }
-          ]
-        },
-        {
-          "id": "7.4",
-          "scene_template": "@BulletScene",
-          "props": {
-            "eyebrow": "落地交给 AI",
-            "title": "整体渲一次按场景裁，脚踩稳",
-            "items": [
-              {
-                "text": "按场景裁切：整体渲一次，再裁半身/全身",
-                "icon": "✂️"
-              },
-              {
-                "text": "脚踩稳：大腿反向抵消髋部摆动，修掉钟摆甩腿",
-                "icon": "🦵"
-              }
-            ]
-          },
-          "voice_slice": "落地也交给 AI：整体渲一次再按场景裁半身全身；之前它待机整条腿像钟摆一样甩，修法是在大腿上把髋部摆动反向抵消，脚就踩稳了。",
-          "duration_seconds": 13,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "主持人取景预设示意（角落/半身/全身）"
-            },
-            {
-              "at_seconds": 6,
-              "action": "脚踩稳：大腿反向抵消髋部摆动"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "8",
-      "section_ref": "场景适配·适合 / 搭配 / 不适合",
-      "track": "A",
-      "voice": "最后一步，比把引擎跑通更值钱的判断是：什么场景该用它、什么场景别硬上。最适合的是纯 A 轨自动出片——模板化的概念讲解、要点流程，数据图表、对比、核心指标，开场片头、章节分隔、片尾，还有用合成终端演示命令和报错，这些画面用文本和数据就能说清，换组数据就能批量出几十期。第二种是搭配着用：当主体是真人口播或真实录屏时，Remotion 不必独占整屏，而是渲成透明背景的悬浮叠层贴上去——口播上浮数据卡、角标、字幕，录屏上叠箭头、高亮框、局部放大，把观众视线引到关键处。也有别硬上的：实拍人物、产品、Vlog，该拍就拍，别拿引擎替代摄像机；写实对口型数字人，容易掉恐怖谷、可信度反崩，本项目直接排除；影视级特效和逐帧手绘动画交给专业工具；纯后台超长批处理用 FFmpeg 更划算。一句话记住：主体是真实画面，Remotion 退居叠层；主体是讲解和数据，Remotion 独占整屏。",
-      "visual_instructions": "concept_scene 适合纯 A 轨的四类 → comparison_scene 独占整屏 vs 退居叠层 → callout_scene(warning) 不适合的四类 → quote_scene 口诀；按口播切为 4 个镜头",
-      "duration_hint_seconds": 53,
-      "shots": [
-        {
-          "id": "8.1",
-          "scene_template": "@BulletScene",
-          "props": {
-            "eyebrow": "用在哪 ①",
-            "title": "最适合：纯 A 轨自动出片",
-            "items": [
-              {
-                "text": "概念讲解 / 要点流程：模板化讲解，文本就能说清",
-                "icon": "🗣️"
-              },
-              {
-                "text": "数据图表 / 对比 / 指标：图表、对比卡、核心数字",
-                "icon": "📊"
-              },
-              {
-                "text": "片头 / 章节 / 片尾 / 合成终端：包装 + 演示命令报错",
-                "icon": "🎬"
-              }
-            ]
-          },
-          "voice_slice": "最后一步，比把引擎跑通更值钱的判断是：什么场景该用它、什么场景别硬上。最适合的是纯 A 轨自动出片——模板化的概念讲解、要点流程，数据图表、对比、核心指标，开场片头、章节分隔、片尾，还有用合成终端演示命令和报错，这些画面用文本和数据就能说清，换组数据就能批量出几十期。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "四类适用卡 stagger 入场"
-            }
-          ]
-        },
-        {
-          "id": "8.2",
-          "scene_template": "@SplitLayout",
-          "props": {
-            "title": "Remotion 的两种用法",
-            "leftLabel": "独占整屏（纯 A 轨）",
-            "leftValue": "主体是讲解/数据时，整屏交给 Remotion",
-            "rightLabel": "退居叠层（搭配 B 轨）",
-            "rightValue": "主体是真人/录屏时，渲透明叠层：数据卡/字幕/箭头/Zoom"
-          },
-          "voice_slice": "第二种是搭配着用：当主体是真人口播或真实录屏时，Remotion 不必独占整屏，而是渲成透明背景的悬浮叠层贴上去——口播上浮数据卡、角标、字幕，录屏上叠箭头、高亮框、局部放大，把观众视线引到关键处。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "左右两种用法对照入场"
-            }
-          ]
-        },
-        {
-          "id": "8.3",
           "scene_template": "@CalloutScene",
           "props": {
             "callout_type": "warning",
-            "title": "这些别硬上",
-            "text": "主体不是文本/数据、或要写实物理世界时，Remotion 不是对的工具",
-            "items": [
-              "实拍人物 / 产品 / Vlog：该拍就拍，别拿引擎替代摄像机",
-              "写实对口型数字人：易掉恐怖谷、可信度反崩，本项目排除",
-              "影视级特效 / 逐帧手绘动画：交给专业工具",
-              "纯后台超长批处理：FFmpeg 更划算"
-            ]
+            "title": "这三类别硬上",
+            "text": "实拍人物产品该拍就拍；写实对口型数字人（恐怖谷）本项目排除；影视级特效 / 逐帧手绘交专业工具；纯后台超长批处理用 FFmpeg 更划算。"
           },
-          "voice_slice": "也有别硬上的：实拍人物、产品、Vlog，该拍就拍，别拿引擎替代摄像机；写实对口型数字人，容易掉恐怖谷、可信度反崩，本项目直接排除；影视级特效和逐帧手绘动画交给专业工具；纯后台超长批处理用 FFmpeg 更划算。",
-          "duration_seconds": 15,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "warning 卡 + 四条不适用要点入场"
-            }
-          ]
+          "voice_slice": "三类别硬上：真实物理世界，该拍就拍；写实对口型数字人，恐怖谷加可信度崩，本项目明确排除；影视级特效和超长批处理，交给专业工具和 FFmpeg。",
+          "duration_seconds": 14
         },
         {
-          "id": "8.4",
+          "id": "7.4",
           "scene_template": "@QuoteScene",
           "props": {
-            "text": "主体真实 → 退居叠层；主体讲解 → 独占整屏",
-            "attribution": "场景适配口诀"
+            "text": "主体是真实画面就退居叠层，主体是讲解和数据就独占整屏。"
           },
-          "voice_slice": "一句话记住：主体是真实画面，Remotion 退居叠层；主体是讲解和数据，Remotion 独占整屏。",
+          "voice_slice": "一句口诀：主体是真实画面，就退居叠层；主体是讲解和数据，就独占整屏。",
           "duration_seconds": 8
         }
       ]
     },
     {
-      "id": "9",
-      "section_ref": "结尾 CTA",
+      "id": "8",
       "track": "A",
-      "voice": "回头看就三步：找路径让 AI 把现成方案全摆出来、选型让 AI 列坑人对约束拍板、落地填配置套组件规则兜底让 AI 跑渲染。你要会的不是写代码，是讲清需求、看住坑、把规则固化给 AI——没基础也能复制。下期 EP03，用 Whisper 拿字级时间戳，让字幕踩着话音跳。关注别错过。",
-      "visual_instructions": "outro_scene 三步法回扣点亮 + 开源仓库地址 + 关注引导 + EP03 预告卡；按口播切为 2 个 outro_scene 镜头",
-      "duration_hint_seconds": 20,
+      "voice": "回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。这个频道就一条原则：不吹AI，真落地，真开源。觉得有用点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
+      "visual_instructions": "@OutroScene ×2：三步法回顾 + 没基础也能复制；关注引导 + EP03 预告。",
+      "duration_hint_seconds": 19,
       "shots": [
         {
-          "id": "9.1",
+          "id": "8.1",
           "scene_template": "@OutroScene",
           "props": {
-            "headline": "三步搭好你的自动出片引擎，没基础也能复制",
-            "cta": "找路径 · 选型 · 落地",
-            "background": "holo"
+            "headline": "三步法：AI 罗列 → 人对约束拍板 → AI 填配置出片",
+            "cta": "会讲需求、会判断，就能复制这套流程"
           },
-          "voice_slice": "回头看就三步：找路径让 AI 把现成方案全摆出来、选型让 AI 列坑人对约束拍板、落地填配置套组件规则兜底让 AI 跑渲染。你要会的不是写代码，是讲清需求、看住坑、把规则固化给 AI——没基础也能复制。",
-          "duration_seconds": 12,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "三步法依次点亮"
-            }
-          ]
+          "voice_slice": "回顾一下，整期就三步：让 AI 罗列技术路径，人对着约束拍板选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础：会讲需求、会判断验收，就能复制。",
+          "duration_seconds": 8
         },
         {
-          "id": "9.2",
+          "id": "8.2",
           "scene_template": "@OutroScene",
           "props": {
-            "headline": "下期 EP03：用 Whisper 让字幕踩着话音跳",
-            "cta": "关注 · 别错过",
-            "background": "holo"
+            "headline": "不吹AI，真落地，真开源",
+            "cta": "关注 · 下期 EP03：Whisper 字级时间戳驱动字幕"
           },
-          "voice_slice": "下期 EP03，用 Whisper 拿字级时间戳，让字幕踩着话音跳。关注别错过。",
-          "duration_seconds": 8,
-          "visual_beats": [
-            {
-              "at_seconds": 0,
-              "action": "开源仓库地址 + 关注引导 + EP03 预告卡"
-            }
-          ]
+          "voice_slice": "这个频道就一条原则：不吹AI，真落地，真开源。觉得有用点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字跳。",
+          "duration_seconds": 11
         }
       ]
     }
   ],
-  "zoom_crop_directives": [
-    {
-      "clip_id": "b-ssr-crash",
-      "timestamp_start": "00:00",
-      "timestamp_end": "00:08",
-      "zoom_level": 1.6,
-      "focal_point": {
-        "x": 0.4,
-        "y": 0.45
-      }
-    },
-    {
-      "clip_id": "b-ssr-fix",
-      "timestamp_start": "00:00",
-      "timestamp_end": "00:10",
-      "zoom_level": 1.6,
-      "focal_point": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    }
-  ],
-  "coverage_checklist": {
-    "开场": "S1：点题+AI 强在文本代码→数据驱动+人设+三步路线图",
-    "找技术路径": "S2：AI 罗列六条路线+共同内核只列不评",
-    "技术选型": "S3：逼 AI 给不适用+坑+回到约束选 Remotion+vs 复制粘贴 HTML+代价如实说",
-    "技术落地·Remotion 原理": "S4：Remotion 工作原理（useCurrentFrame/插值→无头浏览器逐帧截图→FFmpeg 合成、30fps 秒帧换算）+ 为什么 AI 好驱动（React/CSS·声明式·数据驱动·TS 兜底）",
-    "技术落地·配置分发": "S5：配置→Explainer 按 type 分发+14 个统一皮肤模板场景+配置即内容 TS 兜底+自有风格组件库一句带过",
-    "技术落地·SSR": "S6：SSR window 崩溃坑+typeof 守卫+规则固化进 .cursor/rules",
-    "技术落地·数字人": "S7：数字人定位陪衬+三种形象选型+选定 VRM 不做对口型+取景/脚站稳落地",
-    "场景适配": "S8：适合纯 A 轨/可搭配透明叠层/不适合（实拍·对口型·影视特效·后台批处理）",
-    "总结CTA": "S9：三步法回顾+没基础也能复制+EP03 预告"
-  },
   "judgment_layer_coverage": {
     "highlights_pitfall": true,
     "explains_boundary": true,

@@ -5,7 +5,8 @@ slug: rules-readme
 
 # shared/rules — 项目规则单一真相源 (Single Source of Truth)
 
-本目录是项目常驻规则（项目上下文、角色调用规则等）的**唯一真相源**，IDE 无关，
+本目录是项目常驻规则（项目上下文、角色调用规则等）的**唯一真相源**，IDE 无关。
+指令层级与冲突裁决见根目录 `AGENTS.md`：`forbidden-actions.md` 为 L1 最高优先级，本目录其余规则属 L2，
 与 `shared/roles/`（角色）、`shared/workflows/`（工作流）并列。各 AI IDE 实际加载的规则文件
 由脚本从这里**生成**，不要手改生成副本。
 

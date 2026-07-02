@@ -26,7 +26,7 @@
 
 ```python
 visual_qa.run({
-    "video_path": "video/out/<slug>-mixed.mp4",
+    "video_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
     "checks": [
         "resolution",        # 分辨率 ≥ 1080p
         "black_frames",      # 检测黑帧/空白帧
@@ -49,7 +49,7 @@ visual_qa.run({
 
 ```python
 video_understand.run({
-    "video_path": "video/out/<slug>-mixed.mp4",
+    "video_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
     "analysis_type": "motion_detection",
     "static_threshold_seconds": 15   # 静止超过 15s 即告警
 })
@@ -66,7 +66,7 @@ video_understand.run({
 
 ```python
 audio_energy.run({
-    "audio_path": "video/out/<slug>-mixed.mp4",
+    "audio_path": "OpenMontage/remotion-composer/out/<slug>-mixed.mp4",
     "checks": ["loudness", "clipping", "silence", "balance"]
 })
 ```
@@ -90,7 +90,7 @@ audio_energy.run({
 ### 5. 内容准确性复核（人工）
 
 对照 04 脚本和 tutorial.final.md 检查：
-- **必讲要点覆盖**：21 条必讲要点是否都在成片中出现？
+- **必讲要点覆盖**：本期全部必讲要点是否都在成片中出现？（要点清单与条数以该期 `04-script` 末尾「必讲要点覆盖清单」为准）
 - **数据准确性**：对比表格数据、代码示例是否与 tutorial.final.md 一致？
 - **B 轨匹配**：B 轨录屏内容是否与脚本描述一致？（或 A 轨兜底是否正确渲染？）
 

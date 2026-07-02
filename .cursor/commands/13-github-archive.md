@@ -52,7 +52,7 @@ content-library/<epNN-slug>/
 
 ### 5. Git 提交与同步
 - 将文件推送到 GitHub 对应仓库。
-  - 编写专业的 Git Commit 信息（如 `feat(ep01): archive companions and prompt rules`）。
+  - 编写专业的 Git Commit 信息（如 `feat(epNN): archive companions and prompt rules`）。
   - 执行 `git add` / `git commit` / `git push`（如有安全指令，先运行测试再 push）。
 
 ### 6. 输出归档记录

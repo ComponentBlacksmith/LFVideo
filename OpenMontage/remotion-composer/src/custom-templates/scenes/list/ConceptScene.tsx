@@ -67,6 +67,7 @@ const ItemCard: React.FC<{
 				display: 'flex',
 				alignItems: 'flex-start',
 				gap: GAP,
+				minWidth: [560, 0, 0][tier],
 				padding: `${PAD_Y}px ${PAD_X}px`,
 			}}
 		>
@@ -141,7 +142,12 @@ export const ConceptScene: React.FC<
 	const gridGap = [SPACING.md, SPACING.md, SPACING.sm][tier];
 
 	return (
-		<AutoFit paddingX={SPACING.gutter} paddingY={SPACING.xl}>
+		<AutoFit
+			paddingX={SPACING.gutter}
+			paddingY={SPACING.xl}
+			widthMode="content"
+			maxScale={tier === 0 ? 1.6 : 1.25}
+		>
 			<div
 				style={{
 					fontFamily: fonts.family,
