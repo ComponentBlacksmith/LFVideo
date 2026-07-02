@@ -116,7 +116,7 @@
           "批量转码、字幕烧录"
         ]
       ],
-      "enter": "stagger",
+      "enter": "rise",
       "background": "holo"
     },
     {
@@ -185,7 +185,7 @@
           "命令语法晦涩、难调试"
         ]
       ],
-      "enter": "stagger",
+      "enter": "rise",
       "background": "holo"
     },
     {
@@ -537,7 +537,7 @@
         ]
       ],
       "highlightCell": "3-1",
-      "enter": "stagger",
+      "enter": "rise",
       "background": "holo"
     },
     {

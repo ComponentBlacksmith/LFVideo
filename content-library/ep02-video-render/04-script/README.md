@@ -264,7 +264,7 @@ upstream_inputs:
                 "批量转码、字幕烧录"
               ]
             ],
-            "enter": "stagger"
+            "enter": "rise"
           },
           "voice_slice": "它一口气摆了六条——Remotion 走网页那套、Manim 画数学公式、MoviePy 和 FFmpeg 做拼接，还有 Motion Canvas、PixiJS 这些。",
           "duration_seconds": 12,
@@ -352,7 +352,7 @@ upstream_inputs:
                 "命令语法晦涩、难调试"
               ]
             ],
-            "enter": "stagger"
+            "enter": "rise"
           },
           "voice_slice": "第二步技术选型，这步最容易翻车。直接问 AI 哪个好，它跟个老好人似的，每个都夸一遍，你还是没法选。值钱的是看清每条路什么时候不好使、会在哪一步咬人。",
           "duration_seconds": 16,
@@ -758,7 +758,7 @@ upstream_inputs:
               ]
             ],
             "highlightCell": "3-1",
-            "enter": "stagger"
+            "enter": "rise"
           },
           "voice_slice": "然后套一样的方法论，让 AI 把可选形象和各自的坑摆出来：真人出镜最可信，但要露脸、没法编程复用；写实数字人对口型，容易掉进恐怖谷，可信度反而崩；二次元或 3D 风格化角色走 VRM，风格统一、可编程、渲一次到处用，还不踩恐怖谷。",
           "duration_seconds": 18
