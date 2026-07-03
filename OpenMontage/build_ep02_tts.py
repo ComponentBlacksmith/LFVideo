@@ -48,7 +48,10 @@ FPS = 30
 DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural"
 
 SENTENCE_END = set("。！？.!?…")
-CLAUSE_END = set("，、；：,;:")
+CLAUSE_END = set("，、；：,;:—―")
+# A chunk shorter than this reads as a flash of text on screen; merge it with
+# its neighbour instead of emitting it as its own caption unit.
+MIN_CHUNK_CHARS = 5
 
 
 def load_shots() -> list[tuple[str, str, str]]:
@@ -102,7 +105,12 @@ def ffprobe_duration(path: Path) -> float:
 
 
 def chunk_text(text: str) -> list[str]:
-    """Split a sentence into clause-level chunks, keeping trailing punctuation."""
+    """Split a sentence into clause-level chunks, keeping trailing punctuation.
+
+    Chunks below MIN_CHUNK_CHARS visible characters are merged into the next
+    chunk (or the previous one at end of sentence) so no caption unit flashes
+    by as a two/three-character fragment.
+    """
     chunks: list[str] = []
     buf = ""
     for ch in text:
@@ -112,35 +120,81 @@ def chunk_text(text: str) -> list[str]:
             buf = ""
     if buf.strip():
         chunks.append(buf)
-    return [c for c in chunks if c.strip()]
+    chunks = [c for c in chunks if c.strip()]
+
+    merged: list[str] = []
+    for c in chunks:
+        if merged and _visible_len(merged[-1]) < MIN_CHUNK_CHARS:
+            merged[-1] += c
+        else:
+            merged.append(c)
+    if len(merged) >= 2 and _visible_len(merged[-1]) < MIN_CHUNK_CHARS:
+        merged[-2] += merged[-1]
+        merged.pop()
+    return merged
+
+
+def _visible_len(text: str) -> int:
+    """Character count ignoring punctuation and whitespace."""
+    return sum(1 for ch in text if not (ch.isspace() or ch in SENTENCE_END or ch in CLAUSE_END))
+
+
+def _speech_weight(text: str) -> float:
+    """Approximate spoken duration weight of a chunk.
+
+    One CJK glyph is roughly one syllable; a run of Latin/digit characters is
+    one word spoken at roughly one syllable per ~3 characters. Punctuation and
+    whitespace carry no weight. Splitting sentence time by raw ``len()`` makes
+    ASCII-heavy chunks (URLs, identifiers) hog far more time than is actually
+    spoken, drifting every following caption in the sentence.
+    """
+    weight = 0.0
+    ascii_run = 0
+    for ch in text:
+        if "\u4e00" <= ch <= "\u9fff" or "\u3400" <= ch <= "\u4dbf":
+            weight += 1.0
+            ascii_run = 0
+        elif ch.isalnum():
+            ascii_run += 1
+        else:
+            if ascii_run:
+                weight += max(1.0, ascii_run / 3.0)
+            ascii_run = 0
+    if ascii_run:
+        weight += max(1.0, ascii_run / 3.0)
+    return max(weight, 1.0)
 
 
 def build_captions(
     boundaries: list[tuple[float, float, str]],
-    shot_start_s: float,
     shot_dur_s: float,
     voice_slice: str,
 ) -> list[dict[str, Any]]:
-    """Absolute-ms WordCaption list for one shot.
+    """Shot-relative-ms WordCaption list for one shot.
+
+    Timestamps are relative to the shot's own start; the 07 props generator
+    (build_ep02_shots_props.py) offsets them onto the absolute timeline.
 
     Anchors to the engine's sentence boundaries (real speech timing); within each
-    sentence, time is split across clause chunks proportional to character count.
+    sentence, time is split across clause chunks proportional to their spoken
+    weight (CJK syllables + ASCII words), not raw character count.
     Falls back to one caption spanning the whole shot if no boundaries fired.
     """
     caps: list[dict[str, Any]] = []
     if not boundaries:
         caps.append({
             "word": voice_slice,
-            "startMs": round(shot_start_s * 1000),
-            "endMs": round((shot_start_s + shot_dur_s) * 1000),
+            "startMs": 0,
+            "endMs": round(shot_dur_s * 1000),
         })
         return caps
     for start_s, dur_s, text in boundaries:
         chunks = chunk_text(text) or [text]
-        total_chars = sum(len(c) for c in chunks) or 1
-        cur = shot_start_s + start_s
-        for c in chunks:
-            seg = dur_s * len(c) / total_chars
+        weights = [_speech_weight(c) for c in chunks]
+        total_weight = sum(weights) or 1.0
+        cur = start_s
+        for c, w in zip(chunks, weights):
+            seg = dur_s * w / total_weight
             caps.append({
                 "word": c.strip(),
                 "startMs": round(cur * 1000),
@@ -187,7 +241,7 @@ def main() -> int:
         mp3 = ASSETS / f"{sid}.mp3"
         boundaries = synth(voice, args.voice, mp3)
         dur = ffprobe_duration(mp3)
-        caps = build_captions(boundaries, cursor, dur, voice)
+        caps = build_captions(boundaries, dur, voice)
         manifest_shots.append({
             "id": sid,
             "section_id": sec_id,

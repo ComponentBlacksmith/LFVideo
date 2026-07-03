@@ -25,6 +25,8 @@ interface CaptionOverlayProps {
   pauseThresholdMs?: number;
   // Max on-screen duration (ms) for a single page.
   maxDurationMs?: number;
+  // Min on-screen duration (ms); shorter pages merge into a neighbour.
+  minDurationMs?: number;
   fontSize?: number;
   color?: string;
   highlightColor?: string;
@@ -42,7 +44,7 @@ interface CaptionPage {
 // Kept in sync with tools/subtitle/subtitle_gen.py so the burned-in captions
 // segment identically to the generated SRT/VTT files.
 const SENTENCE_END = new Set([".", "!", "?", "…", "。", "！", "？"]);
-const CLAUSE_END = new Set([",", ";", ":", "，", "、", "；", "："]);
+const CLAUSE_END = new Set([",", ";", ":", "，", "、", "；", "：", "—", "―"]);
 
 function isCJKText(text: string): boolean {
   const glyphs = [...text].filter((c) => !/\s/.test(c));
@@ -57,6 +59,7 @@ interface PageBreakOptions {
   maxCharsCjk: number;
   pauseThresholdMs: number;
   maxDurationMs: number;
+  minDurationMs: number;
   maxLines: number;
 }
 
@@ -106,7 +109,27 @@ function buildPages(words: WordCaption[], opts: PageBreakOptions): CaptionPage[]
     }
   }
   flush();
-  return pages;
+
+  // Merge pages that would flash by into the previous page when the combined
+  // page still fits the char/time budget and no real speech pause separates
+  // them — a lone "齐活。" blinking for half a second reads as a glitch.
+  const merged: CaptionPage[] = [];
+  for (const page of pages) {
+    const prev = merged[merged.length - 1];
+    const dur = page.endMs - page.startMs;
+    if (prev && dur < opts.minDurationMs) {
+      const gap = page.startMs - prev.endMs;
+      const fitsChars = join([...prev.words, ...page.words]).length <= charLimit;
+      const fitsTime = page.endMs - prev.startMs <= opts.maxDurationMs;
+      if (gap < opts.pauseThresholdMs && fitsChars && fitsTime) {
+        prev.words = [...prev.words, ...page.words];
+        prev.endMs = page.endMs;
+        continue;
+      }
+    }
+    merged.push(page);
+  }
+  return merged;
 }
 
 const PageRenderer: React.FC<{
@@ -191,6 +214,7 @@ export const CaptionOverlay: React.FC<CaptionOverlayProps> = ({
   maxCharsCjk = 20,
   pauseThresholdMs = 500,
   maxDurationMs = 6000,
+  minDurationMs = 1200,
   fontSize = 42,
   color = "#F8FAFC",
   highlightColor = "#22D3EE",
@@ -204,6 +228,7 @@ export const CaptionOverlay: React.FC<CaptionOverlayProps> = ({
     maxCharsCjk,
     pauseThresholdMs,
     maxDurationMs,
+    minDurationMs,
     maxLines: 2,
   });
 

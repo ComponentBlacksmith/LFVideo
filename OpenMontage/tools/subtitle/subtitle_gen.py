@@ -27,7 +27,7 @@ from tools.base_tool import (
 SENTENCE_END = frozenset(".!?…。！？")
 # Punctuation that ends a clause — a softer break point, used once a cue is
 # already reasonably full so we don't strand a couple of words on their own line.
-CLAUSE_END = frozenset(",;:，、；：")
+CLAUSE_END = frozenset(",;:，、；：—―")
 
 
 def _is_cjk_char(ch: str) -> bool:
