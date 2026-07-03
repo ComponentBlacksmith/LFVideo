@@ -436,8 +436,7 @@
     },
     {
       "id": "shot-5.4",
-      "type": "code_scene",
-      "source": "",
+      "source": "broll/b-ssr-crash-fix.mp4",
       "in_seconds": 257.4,
       "out_seconds": 280.296,
       "terminalTitle": "SSR 唯一的坑：把规则固化给 AI",

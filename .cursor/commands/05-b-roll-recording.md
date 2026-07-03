@@ -40,7 +40,21 @@
 - 关闭无关 Tab、通知和系统弹窗
 - 如使用 OpenMontage 工具，可调用 `screen_capture_selector.py` 选择最佳录屏方案
 
-### 3. 逐条录制
+### 3. 优先尝试自动化采集（无需真人在场）
+
+先对照下表判断每条任务能否由 `OpenMontage/tools/capture/` 的自动化工具产出，能自动化的不再排真人录制：
+
+| 画面类型 | 工具 | 真实性保障（F-06/TAD-01） |
+|---------|------|--------------------------|
+| GitHub / 文档页面截图或滚动录制 | `github_page_capture`（`screenshot` / `scroll_record`） | 无头浏览器渲染真实 URL，产物带 `.provenance.json` 源地址边车 |
+| 终端/CLI 操作演示（含真实报错复现） | `scripted_terminal_recorder` | 命令**真实执行**、输出真实捕获，仅执行者从人变为脚本；完整 transcript 落盘可审计；禁止手写假输出 |
+| AI 对话过程展示 | `chat_replay_recorder` | 只回放**真实发生过的对话导出件**（缺 `provenance.source` 拒执行）；画面常驻「对话回放 · 真实记录」角标；允许裁剪、禁止改写内容 |
+
+- 三个工具均产出 1920×1080 / 30fps MP4（或 PNG），命名仍按 `b-<scene_id>.mp4` 落 `assets/`，`.provenance.json` 边车一并归档。
+- 依赖：`pip install playwright && python -m playwright install chromium`（另需 ffmpeg 转 MP4）。
+- **红线不变**：凡需要真实 IDE GUI 操作、无法由上述工具真实产出的画面，仍按 F-06 标 `[B 轨占位：请提供 xxx.png/mp4]` 交真人，或降级 A 轨兜底。
+
+### 4. 逐条录制（仅剩余真人任务）
 
 对每条录屏任务：
 
@@ -52,14 +66,14 @@
 3. **录制**：使用 OBS / OpenMontage `screen_recorder.py` / `cap_recorder.py` 录制
 4. **命名规范**：`b-<scene_id>.mp4`（如 `b-s5a-left.mp4`、`b-s5b-right.mp4`）
 
-### 4. 素材后处理
+### 5. 素材后处理
 
 - 裁剪首尾空白（保留操作核心部分）
 - 统一分辨率：1920×1080（或按 zoom_crop 裁剪后的目标分辨率）
 - 统一帧率：30fps
 - 可选：使用 `video_trimmer.py` 或 `silence_cutter.py` 去除静默段
 
-### 5. 落盘归档
+### 6. 落盘归档
 
 素材存放路径：
 ```
@@ -93,14 +107,15 @@ source_workflow: /05-b-roll-recording
 
 - 更新 `PIPELINE.md`：该期 05 列置 `draft`
 
-### 6. 自我检查
+### 7. 自我检查
 
 - ❌ 所有 `@VideoSlot` 场景是否都有对应录屏（或明确标注使用 A 轨兜底）？
+- ❌ 自动化采集的素材是否都有 `.provenance.json` 边车（来源可审计）？
 - ❌ 录屏分辨率/帧率是否统一？
 - ❌ 录屏内容是否与脚本 `[画面]` 描述一致？
 - ❌ 文件命名是否符合 `b-<scene_id>.mp4` 规范？
 
-### 7. 交付与下一步
+### 8. 交付与下一步
 
 提示用户：
 > 录屏素材就绪后（看板标 `approved`），可并行执行 `/06-tts-synthesis` 生成口播音频，然后进入 `/07-video-assembly` 组装成片。
@@ -111,4 +126,4 @@ source_workflow: /05-b-roll-recording
 
 - 上游：`04-script-draft.md`（已合并原 03 视听蓝图）
 - 下游：`07-video-assembly.md`
-- OpenMontage 工具：`tools/capture/screen_recorder.py`、`tools/capture/cap_recorder.py`、`tools/capture/screen_capture_selector.py`
+- OpenMontage 工具：`tools/capture/screen_recorder.py`、`tools/capture/cap_recorder.py`、`tools/capture/screen_capture_selector.py`、`tools/capture/github_page_capture.py`、`tools/capture/scripted_terminal_recorder.py`、`tools/capture/chat_replay_recorder.py`
