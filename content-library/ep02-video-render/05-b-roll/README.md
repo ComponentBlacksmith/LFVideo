@@ -8,27 +8,28 @@ upstream_inputs:
 
 # ep02 B 轨录屏素材清单
 
-按 04 脚本 SSOT 的各镜头 `scene_template`/`track` 标注提取。本期只有 **第 6 段（SSR 落地踩坑）** 走 A/B 轨，需要真实 IDE 录屏；其余段全是 A 轨概念/数据动画（Remotion 模板场景全自动），无录屏需求。
+按 04 脚本 SSOT 的各镜头 `scene_template`/`track` 标注提取。本期只有 **镜头 5.4（SSR 落地踩坑）** 走 B 轨真实录屏；其余镜头全是 A 轨概念/数据动画（Remotion 模板场景全自动），无录屏需求。
 
-> ⚠️ 04 脚本本次按新 `tutorial.final.md` 六章结构重排为 9 段 36 镜：在「选型」后插入 **§4 Remotion 怎么工作**、在「数字人」后插入 **§8 场景适配**，原 SSR 段顺延为 **§6**。下表镜头号已对齐新编号。
+> ⚠️ 04 脚本已按新 `tutorial.final.md` 六章结构重排为 8 段 33 镜，SSR 坑合并为单镜 **5.4**（原 §6 两镜）。下表已对齐新编号。
 
 ## 录屏任务清单
 
-| # | 录屏 id | 对应镜头 | 录屏内容 | zoom_crop | 预估时长 | A 轨兜底 | 状态 |
-|---|---------|---------|---------|-----------|---------|---------|------|
-| 1 | `b-ssr-crash` | 6.1 | IDE/终端：组件顶层 `window.innerWidth` 渲染时 `ReferenceError: window is not defined` 红屏 | `crop: terminal_only` | ~14s | `@TerminalScene`（6.1 合成终端） | ⏸ 未录制 → 用 A 轨兜底 |
-| 2 | `b-ssr-fix` | 6.2 | IDE：加 `typeof window !== 'undefined'` 守卫 + 写 `.cursor/rules/remotion-ssr.mdc`，重渲通过 | `crop: editor_only` | ~12s | `@TerminalScene`（6.2 合成终端） | ⏸ 未录制 → 用 A 轨兜底 |
+| # | 录屏 id | 对应镜头 | 录屏内容 | 时长 | A 轨兜底 | 状态 |
+|---|---------|---------|---------|------|---------|------|
+| 1 | `b-ssr-crash-fix` | 5.4 | 终端真实执行：顶层读 `window` → `ReferenceError: window is not defined`（exit 1）→ 加 `typeof window` 守卫 → 重跑通过（exit 0） | ~23s | `@TerminalScene`（5.4 合成终端） | ✅ 已录制并接入 07 |
 
 ## 说明
 
-- 这两处需**真人录屏**（TAD-01：真实操作不可由 AI 伪造），属工作流设计的「挂起等待」项。
-- 录屏缺失时，07 组装按 05 工作流约定**自动降级到 A 轨兜底**（`fallback_a_track`）：6.1 / 6.2 用合成 `@TerminalScene`（`type: code_scene`，无需真录屏）呈现报错与修复代码。本期 07 成片即走该兜底路径，画面完整、可独立成片。
-- 待用户真人补录后，把 `b-ssr-crash.mp4` / `b-ssr-fix.mp4` 放入 `assets/`，在 07 `ep02-shots.json` 把对应 shot 的 `type` 换成视频 cut（`source` 指向素材）即可，无需改其它段。
+- 素材由 `OpenMontage/tools/capture/scripted_terminal_recorder.py` 产出：命令**真实执行**（stdout/stderr/exit code 均为真），仅回放呈现为合成，符合 F-06 红线；执行审计见 `assets/b-ssr-crash-fix.mp4.provenance.json`。
+- 接入方式：`OpenMontage/build_ep02_shots_props.py` 的 `SHOT_OVERRIDES["5.4"]` 把 cut 的 `source` 指向 `public/broll/b-ssr-crash-fix.mp4`，Explainer 走 media fallback 全屏播放；删除 override 重新生成即可回退到 `@TerminalScene` A 轨兜底。
+- 素材需同时存在两处：`assets/`（存档 + provenance）与 `OpenMontage/remotion-composer/public/broll/`（渲染时经 staticFile 读取）。
 
 ## 素材路径
 
 ```
 content-library/ep02-video-render/05-b-roll/
 ├── README.md        # 本清单
-└── assets/          # 真人录屏落盘处（当前空 → A 轨兜底）
+└── assets/
+    ├── b-ssr-crash-fix.mp4                  # scripted_terminal_recorder 真实录制
+    └── b-ssr-crash-fix.mp4.provenance.json  # 执行审计边车（真实 transcript）
 ```
