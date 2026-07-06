@@ -29,6 +29,8 @@ from tools.subtitle.segmentation import (
     is_cjk_text as _is_cjk_text,
     merge_short_groups,
     split_words,
+    strip_leading_punct,
+    strip_trailing_punct,
 )
 
 
@@ -367,8 +369,14 @@ class SubtitleGen(BaseTool):
         return lines
 
     def _make_cue(self, buf: list[dict], opts: SegmentationOptions) -> dict:
-        """Build a cue dict from a buffer of words, with wrapped display lines."""
+        """Build a cue dict from a buffer of words, with wrapped display lines.
+
+        Neutral trailing stops (。，、；：) are dropped from the displayed text —
+        broadcast-subtitle convention: the cue change itself marks the pause.
+        """
         tokens = [b["word"].strip() for b in buf]
+        tokens[0] = strip_leading_punct(tokens[0])
+        tokens[-1] = strip_trailing_punct(tokens[-1])
         cjk = _is_cjk_text("".join(tokens))
         single_line = self._join_words(tokens, cjk)
         lines = self._wrap_lines(single_line, cjk, opts)

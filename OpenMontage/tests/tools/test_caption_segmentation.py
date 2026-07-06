@@ -16,6 +16,8 @@ from tools.subtitle.segmentation import (
     paginate,
     speech_weight,
     split_words,
+    strip_leading_punct,
+    strip_trailing_punct,
     visible_len,
 )
 
@@ -48,6 +50,26 @@ class TestChunkText:
     def test_reassembles_to_original(self):
         text = "原理通了，接着把引擎搭起来。引擎不用手写，跟 AI 把配置和模板对齐就行。"
         assert "".join(chunk_text(text)) == text
+
+
+class TestStripTrailingPunct:
+    def test_neutral_stops_dropped(self):
+        # Broadcast convention: the page break itself marks the pause.
+        assert strip_trailing_punct("接着把引擎搭起来。") == "接着把引擎搭起来"
+        assert strip_trailing_punct("原理通了，") == "原理通了"
+        assert strip_trailing_punct("三步：") == "三步"
+
+    def test_expressive_marks_kept(self):
+        assert strip_trailing_punct("真的吗？") == "真的吗？"
+        assert strip_trailing_punct("齐活！") == "齐活！"
+        assert strip_trailing_punct("等等…") == "等等…"
+
+    def test_runs_of_stops_dropped(self):
+        assert strip_trailing_punct("对齐就行。。") == "对齐就行"
+
+    def test_stray_leading_dash_dropped(self):
+        # A —— dash split across pages leaves its second half stranded.
+        assert strip_leading_punct("—这就是自动化生产") == "这就是自动化生产"
 
 
 class TestSpeechWeight:

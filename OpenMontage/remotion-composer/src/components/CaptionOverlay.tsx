@@ -62,6 +62,18 @@ interface CaptionPage {
 const SENTENCE_END = new Set([".", "!", "?", "…", "。", "！", "？"]);
 const CLAUSE_END = new Set([",", ";", ":", "，", "、", "；", "：", "—", "―"]);
 
+// Neutral trailing stops dropped from the end of a displayed page — the page
+// change itself marks the pause (broadcast-subtitle convention). Expressive
+// marks (？！…) stay. Mirrors segmentation.py TRAILING_STRIP.
+const TRAILING_STRIP_RE = /[。．.，、；：,;:—―]+\s*$/;
+const LEADING_STRIP_RE = /^\s*[。．.，、；：,;:—―]+/;
+function stripEdgePunct(text: string, isFirst: boolean, isLast: boolean): string {
+  let t = text;
+  if (isFirst) t = t.replace(LEADING_STRIP_RE, "").trimStart();
+  if (isLast) t = t.replace(TRAILING_STRIP_RE, "").trimEnd();
+  return t;
+}
+
 function isCJKText(text: string): boolean {
   const glyphs = [...text].filter((c) => !/\s/.test(c));
   if (glyphs.length === 0) return false;
@@ -213,7 +225,8 @@ const PageRenderer: React.FC<{
                     : "0 2px 4px rgba(0,0,0,0.5)",
                 }}
               >
-                {w.word}{i < page.words.length - 1 ? wordSep : ""}
+                {stripEdgePunct(w.word, i === 0, i === page.words.length - 1)}
+                {i < page.words.length - 1 ? wordSep : ""}
               </span>
             );
           })}

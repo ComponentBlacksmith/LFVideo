@@ -44,8 +44,7 @@ SCHEMA_DIR = REPO_ROOT / "shared" / "schemas"
 
 sys.path.insert(0, str(REPO_ROOT / "OpenMontage"))
 from tools.subtitle.segmentation import (  # noqa: E402
-    CLAUSE_END,
-    SENTENCE_END,
+    TRAILING_STRIP,
     PaginationOptions,
     is_cjk_text,
 )
@@ -520,7 +519,7 @@ def lint_caption_pages(
     OpenMontage/tools/subtitle/segmentation.py): pages flashing by faster than
     the minimum duration, pages overflowing the two-line char budget, pages
     running past the video's end (the double-offset failure mode), out-of-order
-    timing, and mid-clause breaks (warning only — sometimes forced by budget).
+    timing, and neutral trailing stops the generator should have stripped.
     """
     if not props_dir.exists():
         return
@@ -591,16 +590,16 @@ def lint_caption_pages(
                     f"(> {char_limit} two-line budget)"
                 )
             trailing = text[-1] if text else ""
-            if (
-                trailing
-                and trailing not in SENTENCE_END
-                and trailing not in CLAUSE_END
-                and gap_after is not None
-                and gap_after < opts.pause_threshold_s * 1000
-            ):
-                report.warn(
-                    f"{tag} captions: {pid} breaks mid-clause (no punctuation, "
-                    f"no pause) — forced by the char/time budget?"
+            if trailing in TRAILING_STRIP:
+                report.error(
+                    f"{tag} captions: {pid} ends with '{trailing}' — neutral "
+                    f"trailing stops must be stripped (broadcast convention)"
+                )
+            leading = text[0] if text else ""
+            if leading in TRAILING_STRIP:
+                report.error(
+                    f"{tag} captions: {pid} starts with '{leading}' — stray "
+                    f"leading stops must be stripped"
                 )
 
 

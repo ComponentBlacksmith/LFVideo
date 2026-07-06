@@ -35,7 +35,11 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from tools.subtitle.segmentation import paginate  # noqa: E402
+from tools.subtitle.segmentation import (  # noqa: E402
+    paginate,
+    strip_leading_punct,
+    strip_trailing_punct,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPT_MD = REPO_ROOT / "content-library" / "ep02-video-render" / "04-script" / "README.md"
@@ -203,17 +207,22 @@ def paginate_captions(captions: list[dict[str, Any]]) -> list[dict[str, Any]]:
             cur["end"] = nxt["start"]
     pages = []
     for group in paginate(words):
+        page_words = [
+            {
+                "word": w["word"],
+                "startMs": round(w["start"] * 1000),
+                "endMs": round(w["end"] * 1000),
+            }
+            for w in group
+        ]
+        # Broadcast-subtitle convention: neutral stops at the edges of a page
+        # are dropped — the page change itself marks the pause.
+        page_words[0]["word"] = strip_leading_punct(page_words[0]["word"])
+        page_words[-1]["word"] = strip_trailing_punct(page_words[-1]["word"])
         pages.append({
             "startMs": round(group[0]["start"] * 1000),
             "endMs": round(group[-1]["end"] * 1000),
-            "words": [
-                {
-                    "word": w["word"],
-                    "startMs": round(w["start"] * 1000),
-                    "endMs": round(w["end"] * 1000),
-                }
-                for w in group
-            ],
+            "words": page_words,
         })
     return pages
 

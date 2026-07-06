@@ -28,6 +28,24 @@ CLAUSE_END = frozenset(",;:，、；：—―")
 # A chunk shorter than this reads as a flash of text on screen; merge it with
 # its neighbour instead of emitting it as its own caption unit.
 MIN_CHUNK_CHARS = 5
+# Neutral stops stripped from the END of a displayed page/cue — the page break
+# itself marks the pause, so they read as clutter. Expressive marks (？！…)
+# stay because they carry tone, not just rhythm.
+TRAILING_STRIP = frozenset("。．.，、；：,;:—―")
+
+
+def strip_trailing_punct(text: str) -> str:
+    """Drop neutral trailing stops from a page/cue's displayed text."""
+    while text and text[-1] in TRAILING_STRIP:
+        text = text[:-1]
+    return text.rstrip()
+
+
+def strip_leading_punct(text: str) -> str:
+    """Drop stray leading stops (e.g. the second half of a —— dash) from a page."""
+    while text and text[0] in TRAILING_STRIP:
+        text = text[1:]
+    return text.lstrip()
 
 
 def is_cjk_char(ch: str) -> bool:
