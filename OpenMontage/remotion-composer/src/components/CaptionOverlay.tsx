@@ -14,8 +14,23 @@ export interface WordCaption {
   endMs: number;
 }
 
-interface CaptionOverlayProps {
+// Pre-paged caption: one on-screen page with its word-level timings. Produced
+// by the 07 props generator via tools/subtitle/segmentation.py — the single
+// source of truth for segmentation — so the renderer never re-segments.
+export interface CaptionPageInput {
+  startMs: number;
+  endMs: number;
   words: WordCaption[];
+}
+
+export type CaptionsInput = WordCaption[] | CaptionPageInput[];
+
+export function isPagedCaptions(items: CaptionsInput): items is CaptionPageInput[] {
+  return items.length > 0 && Array.isArray((items[0] as CaptionPageInput).words);
+}
+
+interface CaptionOverlayProps {
+  words: CaptionsInput;
   // Hard cap on words per page (Latin scripts); CJK is governed by chars.
   wordsPerPage?: number;
   // Max characters per page before forcing a break (Latin / CJK).
@@ -41,8 +56,9 @@ interface CaptionPage {
 }
 
 // Punctuation that ends a sentence (strong break) / clause (soft break).
-// Kept in sync with tools/subtitle/subtitle_gen.py so the burned-in captions
-// segment identically to the generated SRT/VTT files.
+// Legacy fallback only: pre-paged captions are segmented upstream by
+// tools/subtitle/segmentation.py (the single source of truth). Keep these
+// sets in sync with that module for compositions still passing flat words.
 const SENTENCE_END = new Set([".", "!", "?", "…", "。", "！", "？"]);
 const CLAUSE_END = new Set([",", ";", ":", "，", "、", "；", "：", "—", "―"]);
 
@@ -222,15 +238,19 @@ export const CaptionOverlay: React.FC<CaptionOverlayProps> = ({
   fontFamily = "Space Grotesk, Inter, system-ui, sans-serif",
 }) => {
   const { fps } = useVideoConfig();
-  const pages = buildPages(words, {
-    wordsPerPage,
-    maxCharsLatin,
-    maxCharsCjk,
-    pauseThresholdMs,
-    maxDurationMs,
-    minDurationMs,
-    maxLines: 2,
-  });
+  // Pre-paged captions (from the 07 props generator) render as-is; the legacy
+  // flat WordCaption[] shape falls back to client-side pagination.
+  const pages: CaptionPage[] = isPagedCaptions(words)
+    ? words.map((p) => ({ words: p.words, startMs: p.startMs, endMs: p.endMs }))
+    : buildPages(words, {
+        wordsPerPage,
+        maxCharsLatin,
+        maxCharsCjk,
+        pauseThresholdMs,
+        maxDurationMs,
+        minDurationMs,
+        maxLines: 2,
+      });
 
   return (
     <AbsoluteFill style={{zIndex: 100}}>

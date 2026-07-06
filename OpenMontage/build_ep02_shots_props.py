@@ -30,8 +30,12 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from tools.subtitle.segmentation import paginate  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPT_MD = REPO_ROOT / "content-library" / "ep02-video-render" / "04-script" / "README.md"
@@ -181,15 +185,49 @@ def build_cuts(
     return cuts, captions, cursor
 
 
+def paginate_captions(captions: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Group flat WordCaptions into pre-paged captions for the CaptionOverlay.
+
+    Pagination lives here (tools/subtitle/segmentation is the single source of
+    truth) so the renderer never re-segments; each page carries its word-level
+    timings for the in-page highlight and the host lip-sync.
+    """
+    words = [
+        {"word": c["word"], "start": c["startMs"] / 1000.0, "end": c["endMs"] / 1000.0}
+        for c in captions
+    ]
+    # edge-tts sentence boundaries can overlap the next sentence by ~50ms;
+    # clamp so the word stream (and thus the pages) is strictly monotonic.
+    for cur, nxt in zip(words, words[1:]):
+        if cur["end"] > nxt["start"]:
+            cur["end"] = nxt["start"]
+    pages = []
+    for group in paginate(words):
+        pages.append({
+            "startMs": round(group[0]["start"] * 1000),
+            "endMs": round(group[-1]["end"] * 1000),
+            "words": [
+                {
+                    "word": w["word"],
+                    "startMs": round(w["start"] * 1000),
+                    "endMs": round(w["end"] * 1000),
+                }
+                for w in group
+            ],
+        })
+    return pages
+
+
 def main() -> int:
     sections = load_ssot_sections()
     tts = load_tts_manifest()
     cuts, captions, total = build_cuts(sections, tts)
+    caption_pages = paginate_captions(captions)
     payload: dict[str, Any] = {
         "theme": THEME,
         "cuts": cuts,
         "overlays": [],
-        "captions": captions,
+        "captions": caption_pages,
         "avatar": AVATAR,
     }
     # Warp room is ep02's authored look. Keep it enabled regardless of whether
@@ -211,7 +249,7 @@ def main() -> int:
     print("=" * 60)
     print(f"Wrote {OUTPUT_JSON.relative_to(REPO_ROOT)}")
     print(f"Cuts: {len(cuts)} | Duration: {total:.2f}s ({int(round(total * FPS))} frames @ {FPS}fps)")
-    print(f"Captions: {len(captions)} | TTS: {'on' if tts else 'off (storyboard timing)'}")
+    print(f"Captions: {len(captions)} words / {len(caption_pages)} pages | TTS: {'on' if tts else 'off (storyboard timing)'}")
     by_type: dict[str, int] = {}
     for c in cuts:
         t = c.get("type") or "(media)"

@@ -34,7 +34,12 @@ import { LineChart } from "./components/charts/LineChart";
 import { PieChart } from "./components/charts/PieChart";
 import { KPIGrid } from "./components/charts/KPIGrid";
 import { ProgressBar } from "./components/ProgressBar";
-import { CaptionOverlay, WordCaption } from "./components/CaptionOverlay";
+import {
+  CaptionOverlay,
+  CaptionsInput,
+  WordCaption,
+  isPagedCaptions,
+} from "./components/CaptionOverlay";
 import { VRMAvatar, AvatarTimelineEntry } from "./components/VRMAvatar";
 import { quadMatrix3d, animatedQuadMatrix3d, UnityBackgroundConfig } from "./components/screenWarp";
 import {
@@ -262,7 +267,8 @@ export interface ExplainerProps {
   [key: string]: unknown;
   cuts: Cut[];
   overlays?: Overlay[];
-  captions?: WordCaption[];
+  // Pre-paged pages (07 generator output) or legacy flat WordCaption[].
+  captions?: CaptionsInput;
   audio?: AudioConfig;
   avatar?: AvatarConfig;
   /** Live Unity WebGL build rendered as the bottom-most background layer. */
@@ -850,6 +856,11 @@ const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
 
 export const Explainer: React.FC<ExplainerProps> = (props) => {
   const { cuts, overlays, captions, audio, avatar, unityBackground } = props;
+  // Lip-sync consumes flat word timings; flatten pre-paged captions.
+  const captionWords: WordCaption[] | undefined =
+    captions && isPagedCaptions(captions)
+      ? captions.flatMap((p) => p.words)
+      : captions;
   const { fps, durationInFrames, width, height } = useVideoConfig();
   const frame = useCurrentFrame();
 
@@ -991,7 +1002,7 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
       {/* Layer 2.5: Digital host (overlay mode) — scene-aware framing via per-cut presets */}
       {avatar?.enabled && !bgAvatar && (
         <VRMAvatar
-          captions={captions}
+          captions={captionWords}
           timeline={cuts.map<AvatarTimelineEntry>((cut) => ({
             from: Math.round(cut.in_seconds * fps),
             to: Math.round(cut.out_seconds * fps),
@@ -1060,7 +1071,7 @@ export const Explainer: React.FC<ExplainerProps> = (props) => {
         bgModelY={avatar?.bgModelY}
         bgCameraZ={avatar?.bgCameraZ}
         bgModelYawDeg={avatar?.bgModelYawDeg}
-        captions={captions}
+        captions={captionWords}
       />
     </AbsoluteFill>
   ) : null;
