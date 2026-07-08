@@ -14,8 +14,23 @@ export interface WordCaption {
   endMs: number;
 }
 
-interface CaptionOverlayProps {
+// Pre-paged caption: one on-screen page with its word-level timings. Produced
+// by the 07 props generator via tools/subtitle/segmentation.py — the single
+// source of truth for segmentation — so the renderer never re-segments.
+export interface CaptionPageInput {
+  startMs: number;
+  endMs: number;
   words: WordCaption[];
+}
+
+export type CaptionsInput = WordCaption[] | CaptionPageInput[];
+
+export function isPagedCaptions(items: CaptionsInput): items is CaptionPageInput[] {
+  return items.length > 0 && Array.isArray((items[0] as CaptionPageInput).words);
+}
+
+interface CaptionOverlayProps {
+  words: CaptionsInput;
   // Hard cap on words per page (Latin scripts); CJK is governed by chars.
   wordsPerPage?: number;
   // Max characters per page before forcing a break (Latin / CJK).
@@ -25,6 +40,8 @@ interface CaptionOverlayProps {
   pauseThresholdMs?: number;
   // Max on-screen duration (ms) for a single page.
   maxDurationMs?: number;
+  // Min on-screen duration (ms); shorter pages merge into a neighbour.
+  minDurationMs?: number;
   fontSize?: number;
   color?: string;
   highlightColor?: string;
@@ -39,10 +56,23 @@ interface CaptionPage {
 }
 
 // Punctuation that ends a sentence (strong break) / clause (soft break).
-// Kept in sync with tools/subtitle/subtitle_gen.py so the burned-in captions
-// segment identically to the generated SRT/VTT files.
+// Legacy fallback only: pre-paged captions are segmented upstream by
+// tools/subtitle/segmentation.py (the single source of truth). Keep these
+// sets in sync with that module for compositions still passing flat words.
 const SENTENCE_END = new Set([".", "!", "?", "…", "。", "！", "？"]);
-const CLAUSE_END = new Set([",", ";", ":", "，", "、", "；", "："]);
+const CLAUSE_END = new Set([",", ";", ":", "，", "、", "；", "：", "—", "―"]);
+
+// Neutral trailing stops dropped from the end of a displayed page — the page
+// change itself marks the pause (broadcast-subtitle convention). Expressive
+// marks (？！…) stay. Mirrors segmentation.py TRAILING_STRIP.
+const TRAILING_STRIP_RE = /[。．.，、；：,;:—―]+\s*$/;
+const LEADING_STRIP_RE = /^\s*[。．.，、；：,;:—―]+/;
+function stripEdgePunct(text: string, isFirst: boolean, isLast: boolean): string {
+  let t = text;
+  if (isFirst) t = t.replace(LEADING_STRIP_RE, "").trimStart();
+  if (isLast) t = t.replace(TRAILING_STRIP_RE, "").trimEnd();
+  return t;
+}
 
 function isCJKText(text: string): boolean {
   const glyphs = [...text].filter((c) => !/\s/.test(c));
@@ -57,6 +87,7 @@ interface PageBreakOptions {
   maxCharsCjk: number;
   pauseThresholdMs: number;
   maxDurationMs: number;
+  minDurationMs: number;
   maxLines: number;
 }
 
@@ -106,7 +137,27 @@ function buildPages(words: WordCaption[], opts: PageBreakOptions): CaptionPage[]
     }
   }
   flush();
-  return pages;
+
+  // Merge pages that would flash by into the previous page when the combined
+  // page still fits the char/time budget and no real speech pause separates
+  // them — a lone "齐活。" blinking for half a second reads as a glitch.
+  const merged: CaptionPage[] = [];
+  for (const page of pages) {
+    const prev = merged[merged.length - 1];
+    const dur = page.endMs - page.startMs;
+    if (prev && dur < opts.minDurationMs) {
+      const gap = page.startMs - prev.endMs;
+      const fitsChars = join([...prev.words, ...page.words]).length <= charLimit;
+      const fitsTime = page.endMs - prev.startMs <= opts.maxDurationMs;
+      if (gap < opts.pauseThresholdMs && fitsChars && fitsTime) {
+        prev.words = [...prev.words, ...page.words];
+        prev.endMs = page.endMs;
+        continue;
+      }
+    }
+    merged.push(page);
+  }
+  return merged;
 }
 
 const PageRenderer: React.FC<{
@@ -174,7 +225,8 @@ const PageRenderer: React.FC<{
                     : "0 2px 4px rgba(0,0,0,0.5)",
                 }}
               >
-                {w.word}{i < page.words.length - 1 ? wordSep : ""}
+                {stripEdgePunct(w.word, i === 0, i === page.words.length - 1)}
+                {i < page.words.length - 1 ? wordSep : ""}
               </span>
             );
           })}
@@ -191,6 +243,7 @@ export const CaptionOverlay: React.FC<CaptionOverlayProps> = ({
   maxCharsCjk = 20,
   pauseThresholdMs = 500,
   maxDurationMs = 6000,
+  minDurationMs = 1200,
   fontSize = 42,
   color = "#F8FAFC",
   highlightColor = "#22D3EE",
@@ -198,14 +251,19 @@ export const CaptionOverlay: React.FC<CaptionOverlayProps> = ({
   fontFamily = "Space Grotesk, Inter, system-ui, sans-serif",
 }) => {
   const { fps } = useVideoConfig();
-  const pages = buildPages(words, {
-    wordsPerPage,
-    maxCharsLatin,
-    maxCharsCjk,
-    pauseThresholdMs,
-    maxDurationMs,
-    maxLines: 2,
-  });
+  // Pre-paged captions (from the 07 props generator) render as-is; the legacy
+  // flat WordCaption[] shape falls back to client-side pagination.
+  const pages: CaptionPage[] = isPagedCaptions(words)
+    ? words.map((p) => ({ words: p.words, startMs: p.startMs, endMs: p.endMs }))
+    : buildPages(words, {
+        wordsPerPage,
+        maxCharsLatin,
+        maxCharsCjk,
+        pauseThresholdMs,
+        maxDurationMs,
+        minDurationMs,
+        maxLines: 2,
+      });
 
   return (
     <AbsoluteFill style={{zIndex: 100}}>

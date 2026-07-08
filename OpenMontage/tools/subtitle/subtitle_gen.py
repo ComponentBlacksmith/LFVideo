@@ -22,33 +22,16 @@ from tools.base_tool import (
     ToolStability,
     ToolTier,
 )
-
-# Punctuation that ends a sentence — a strong, almost-always-correct break point.
-SENTENCE_END = frozenset(".!?…。！？")
-# Punctuation that ends a clause — a softer break point, used once a cue is
-# already reasonably full so we don't strand a couple of words on their own line.
-CLAUSE_END = frozenset(",;:，、；：")
-
-
-def _is_cjk_char(ch: str) -> bool:
-    """True for CJK ideographs, kana, and Hangul (scripts written without spaces)."""
-    code = ord(ch)
-    return (
-        0x3040 <= code <= 0x30FF  # Hiragana + Katakana
-        or 0x3400 <= code <= 0x4DBF  # CJK Extension A
-        or 0x4E00 <= code <= 0x9FFF  # CJK Unified Ideographs
-        or 0xF900 <= code <= 0xFAFF  # CJK Compatibility Ideographs
-        or 0xAC00 <= code <= 0xD7A3  # Hangul syllables
-    )
-
-
-def _is_cjk_text(text: str) -> bool:
-    """Heuristic: treat text as CJK if a meaningful fraction of glyphs are CJK."""
-    glyphs = [c for c in text if not c.isspace()]
-    if not glyphs:
-        return False
-    cjk = sum(1 for c in glyphs if _is_cjk_char(c))
-    return cjk / len(glyphs) >= 0.3
+from tools.subtitle.segmentation import (
+    CLAUSE_END,
+    SENTENCE_END,
+    PaginationOptions,
+    is_cjk_text as _is_cjk_text,
+    merge_short_groups,
+    split_words,
+    strip_leading_punct,
+    strip_trailing_punct,
+)
 
 
 @dataclass
@@ -62,6 +45,17 @@ class SegmentationOptions:
     pause_threshold: float = 0.5
     max_duration: float = 6.0
     min_duration: float = 1.2
+
+    def to_pagination(self) -> PaginationOptions:
+        return PaginationOptions(
+            max_words=self.max_words,
+            max_chars=self.max_chars,
+            max_chars_cjk=self.max_chars_cjk,
+            max_lines=self.max_lines,
+            pause_threshold_s=self.pause_threshold,
+            max_duration_s=self.max_duration,
+            min_duration_s=self.min_duration,
+        )
 
 
 class SubtitleGen(BaseTool):
@@ -301,97 +295,24 @@ class SubtitleGen(BaseTool):
     def _split_words(
         self, words: list[dict], opts: SegmentationOptions
     ) -> list[dict]:
-        """Split a single transcriber segment's words into one or more cues."""
-        cjk = _is_cjk_text("".join(w.get("word", "") for w in words))
-        char_limit = (opts.max_chars_cjk if cjk else opts.max_chars) * max(opts.max_lines, 1)
+        """Split a single transcriber segment's words into one or more cues.
 
-        cues: list[dict] = []
-        buf: list[dict] = []
-
-        def visible_len(items: list[dict]) -> int:
-            return len(self._join_words([i["word"].strip() for i in items], cjk))
-
-        for i, w in enumerate(words):
-            word_text = w["word"].strip()
-
-            # Hard limits: flush the current buffer before it overflows.
-            if buf:
-                over_words = (not cjk) and len(buf) >= opts.max_words
-                over_chars = visible_len(buf + [w]) > char_limit
-                over_time = (w["end"] - buf[0]["start"]) > opts.max_duration
-                if over_words or over_chars or over_time:
-                    cues.append(self._make_cue(buf, opts))
-                    buf = []
-
-            buf.append(w)
-
-            if i == len(words) - 1:
-                break
-
-            trailing = word_text[-1] if word_text else ""
-            gap = words[i + 1]["start"] - w["end"]
-
-            # Preferred break points, in descending priority.
-            if trailing in SENTENCE_END:
-                cues.append(self._make_cue(buf, opts))
-                buf = []
-            elif gap >= opts.pause_threshold and len(buf) >= 2:
-                cues.append(self._make_cue(buf, opts))
-                buf = []
-            elif trailing in CLAUSE_END and visible_len(buf) >= char_limit * 0.6:
-                cues.append(self._make_cue(buf, opts))
-                buf = []
-
-        if buf:
-            cues.append(self._make_cue(buf, opts))
-        return cues
+        Delegates the grouping to tools.subtitle.segmentation — the single
+        source of truth shared with the 06/07 caption builders.
+        """
+        groups = split_words(words, opts.to_pagination())
+        return [self._make_cue(g, opts) for g in groups]
 
     def _merge_short_cues(
         self, cues: list[dict], opts: SegmentationOptions
     ) -> list[dict]:
-        """Merge cues that flash by too quickly into the following cue.
+        """Merge cues that flash by too quickly into a neighbouring cue.
 
-        Only merges when the short cue does not end a sentence and the combined
-        cue still respects the word/char/duration limits, so we never undo a
-        good linguistic break.
+        Delegates to tools.subtitle.segmentation.merge_short_groups so the
+        SRT/VTT output segments identically to the burned-in captions.
         """
-        if len(cues) < 2:
-            return cues
-
-        merged: list[dict] = []
-        i = 0
-        while i < len(cues):
-            cue = cues[i]
-            duration = cue["end"] - cue["start"]
-            if i + 1 < len(cues) and duration < opts.min_duration:
-                nxt = cues[i + 1]
-                combined = cue["words"] + nxt["words"]
-                cjk = _is_cjk_text(cue["text"] + nxt["text"])
-                char_limit = (
-                    opts.max_chars_cjk if cjk else opts.max_chars
-                ) * max(opts.max_lines, 1)
-                text = cue["text"].replace("\n", " ")
-                ends_sentence = bool(text) and text[-1] in SENTENCE_END
-                # Don't merge back across a real pause — that gap is exactly why
-                # we split here in the first place.
-                across_pause = (nxt["start"] - cue["end"]) >= opts.pause_threshold
-                combined_len = len(
-                    self._join_words([w["word"].strip() for w in combined], cjk)
-                )
-                combined_dur = nxt["end"] - cue["start"]
-                if (
-                    not ends_sentence
-                    and not across_pause
-                    and combined_len <= char_limit
-                    and (cjk or len(combined) <= opts.max_words)
-                    and combined_dur <= opts.max_duration
-                ):
-                    cues[i + 1] = self._make_cue(combined, opts)
-                    i += 1
-                    continue
-            merged.append(cue)
-            i += 1
-        return merged
+        groups = merge_short_groups([c["words"] for c in cues], opts.to_pagination())
+        return [self._make_cue(g, opts) for g in groups]
 
     @staticmethod
     def _join_words(tokens: list[str], cjk: bool) -> str:
@@ -448,8 +369,14 @@ class SubtitleGen(BaseTool):
         return lines
 
     def _make_cue(self, buf: list[dict], opts: SegmentationOptions) -> dict:
-        """Build a cue dict from a buffer of words, with wrapped display lines."""
+        """Build a cue dict from a buffer of words, with wrapped display lines.
+
+        Neutral trailing stops (。，、；：) are dropped from the displayed text —
+        broadcast-subtitle convention: the cue change itself marks the pause.
+        """
         tokens = [b["word"].strip() for b in buf]
+        tokens[0] = strip_leading_punct(tokens[0])
+        tokens[-1] = strip_trailing_punct(tokens[-1])
         cjk = _is_cjk_text("".join(tokens))
         single_line = self._join_words(tokens, cjk)
         lines = self._wrap_lines(single_line, cjk, opts)
