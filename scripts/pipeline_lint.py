@@ -340,6 +340,47 @@ def _check_anti_deadtime(stage: "Stage", tag: str, report: Report, promote) -> N
             )
 
 
+# Internal pipeline jargon that must never be read out to the audience
+# (voice-style.md《术语白话化》). Industry-standard names (React, FFmpeg,
+# TypeScript) are fine and not listed here.
+VOICE_JARGON = (
+    "A 轨", "A轨", "B 轨", "B轨", "B-roll", "b-roll", "SSOT", "分镜号",
+)
+
+
+def _check_voice_jargon(stage: "Stage", tag: str, report: Report, promote) -> None:
+    """Scan 04 voice text for internal jargon the audience can't know."""
+    contract = stage.contract
+    if not isinstance(contract, dict):
+        return
+    sections = contract.get("sections")
+    if not isinstance(sections, list):
+        return
+    for sec in sections:
+        if not isinstance(sec, dict):
+            continue
+        sid = sec.get("id", "?")
+        texts = [("voice", sec.get("voice"))]
+        shots = sec.get("shots")
+        if isinstance(shots, list):
+            for shot in shots:
+                if isinstance(shot, dict):
+                    texts.append(
+                        (f"shot {shot.get('id', '?')} voice_slice",
+                         shot.get("voice_slice"))
+                    )
+        for label, text in texts:
+            if not isinstance(text, str):
+                continue
+            for term in VOICE_JARGON:
+                if term in text:
+                    promote(
+                        f"{tag} voice-jargon: section '{sid}' {label} contains "
+                        f"internal term '{term}' — rephrase for the audience "
+                        f"(voice-style.md《术语白话化》)"
+                    )
+
+
 def lint_episode(episode_dir: Path, report: Report) -> None:
     stages = load_stages(episode_dir)
     ep = episode_dir.name
@@ -430,6 +471,8 @@ def lint_episode(episode_dir: Path, report: Report) -> None:
         # 6. anti-deadtime (04 script only): long sections must be cut into shots
         if stage.stage.startswith("04") and isinstance(stage.contract, dict):
             _check_anti_deadtime(stage, tag, report, promote)
+            # 7. voice jargon scan: internal pipeline terms must not be read out
+            _check_voice_jargon(stage, tag, report, promote)
 
 
 def _load_template_scene_manifest(
