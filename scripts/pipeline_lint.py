@@ -42,6 +42,13 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_DIR = REPO_ROOT / "shared" / "schemas"
 
+sys.path.insert(0, str(REPO_ROOT / "OpenMontage"))
+from tools.subtitle.segmentation import (  # noqa: E402
+    TRAILING_STRIP,
+    PaginationOptions,
+    is_cjk_text,
+)
+
 # Generated Remotion props live here; their cut.type must hit a renderable type.
 COMPOSER_DIR = REPO_ROOT / "OpenMontage" / "remotion-composer"
 SCENE_TYPES_JSON = COMPOSER_DIR / "src" / "custom-templates" / "scene-types.json"
@@ -333,6 +340,47 @@ def _check_anti_deadtime(stage: "Stage", tag: str, report: Report, promote) -> N
             )
 
 
+# Internal pipeline jargon that must never be read out to the audience
+# (voice-style.md《术语白话化》). Industry-standard names (React, FFmpeg,
+# TypeScript) are fine and not listed here.
+VOICE_JARGON = (
+    "A 轨", "A轨", "B 轨", "B轨", "B-roll", "b-roll", "SSOT", "分镜号",
+)
+
+
+def _check_voice_jargon(stage: "Stage", tag: str, report: Report, promote) -> None:
+    """Scan 04 voice text for internal jargon the audience can't know."""
+    contract = stage.contract
+    if not isinstance(contract, dict):
+        return
+    sections = contract.get("sections")
+    if not isinstance(sections, list):
+        return
+    for sec in sections:
+        if not isinstance(sec, dict):
+            continue
+        sid = sec.get("id", "?")
+        texts = [("voice", sec.get("voice"))]
+        shots = sec.get("shots")
+        if isinstance(shots, list):
+            for shot in shots:
+                if isinstance(shot, dict):
+                    texts.append(
+                        (f"shot {shot.get('id', '?')} voice_slice",
+                         shot.get("voice_slice"))
+                    )
+        for label, text in texts:
+            if not isinstance(text, str):
+                continue
+            for term in VOICE_JARGON:
+                if term in text:
+                    promote(
+                        f"{tag} voice-jargon: section '{sid}' {label} contains "
+                        f"internal term '{term}' — rephrase for the audience "
+                        f"(voice-style.md《术语白话化》)"
+                    )
+
+
 def lint_episode(episode_dir: Path, report: Report) -> None:
     stages = load_stages(episode_dir)
     ep = episode_dir.name
@@ -423,6 +471,8 @@ def lint_episode(episode_dir: Path, report: Report) -> None:
         # 6. anti-deadtime (04 script only): long sections must be cut into shots
         if stage.stage.startswith("04") and isinstance(stage.contract, dict):
             _check_anti_deadtime(stage, tag, report, promote)
+            # 7. voice jargon scan: internal pipeline terms must not be read out
+            _check_voice_jargon(stage, tag, report, promote)
 
 
 def _load_template_scene_manifest(
@@ -502,6 +552,100 @@ def lint_remotion_props(
                 )
 
 
+def lint_caption_pages(
+    report: Report,
+    props_dir: Path = DEMO_PROPS_DIR,
+) -> None:
+    """Generated caption pages must be readable and stay on the timeline.
+
+    Catches the ways caption segmentation silently regresses (the rules live in
+    OpenMontage/tools/subtitle/segmentation.py): pages flashing by faster than
+    the minimum duration, pages overflowing the two-line char budget, pages
+    running past the video's end (the double-offset failure mode), out-of-order
+    timing, and neutral trailing stops the generator should have stripped.
+    """
+    if not props_dir.exists():
+        return
+    opts = PaginationOptions()
+
+    for props_file in sorted(props_dir.glob("*.json")):
+        try:
+            data = json.loads(props_file.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue  # reported by lint_remotion_props
+        captions = data.get("captions")
+        cuts = data.get("cuts")
+        if not captions or not isinstance(captions, list):
+            continue
+        try:
+            shown = props_file.relative_to(REPO_ROOT)
+        except ValueError:
+            shown = props_file.name
+        tag = f"[{shown}]"
+
+        if not isinstance(captions[0], dict) or "words" not in captions[0]:
+            report.warn(
+                f"{tag} captions: flat WordCaption list (not pre-paged); the "
+                f"renderer falls back to client-side pagination — regenerate "
+                f"props with the 07 generator"
+            )
+            continue
+
+        timeline_end_ms = None
+        if isinstance(cuts, list) and cuts:
+            timeline_end_ms = max(
+                float(c.get("out_seconds", 0)) for c in cuts if isinstance(c, dict)
+            ) * 1000
+
+        prev_end = None
+        for i, page in enumerate(captions):
+            words = page.get("words") or []
+            text = "".join(w.get("word", "").strip() for w in words)
+            pid = f"page {i} ({text[:12]}…)" if len(text) > 12 else f"page {i} ({text})"
+            start, end = page.get("startMs", 0), page.get("endMs", 0)
+            dur = end - start
+            if end < start:
+                report.error(f"{tag} captions: {pid} endMs < startMs")
+            if prev_end is not None and start < prev_end:
+                report.error(f"{tag} captions: {pid} overlaps previous page")
+            prev_end = end
+            if timeline_end_ms is not None and end > timeline_end_ms + 50:
+                report.error(
+                    f"{tag} captions: {pid} ends at {end}ms, past the "
+                    f"{timeline_end_ms:.0f}ms timeline (double offset?)"
+                )
+            gap_after = (
+                captions[i + 1]["startMs"] - end if i + 1 < len(captions) else None
+            )
+            if dur < opts.min_duration_s * 1000 and (
+                gap_after is None or gap_after < opts.pause_threshold_s * 1000
+            ):
+                report.error(
+                    f"{tag} captions: {pid} flashes by ({dur}ms < "
+                    f"{opts.min_duration_s * 1000:.0f}ms minimum)"
+                )
+            char_limit = (
+                opts.max_chars_cjk if is_cjk_text(text) else opts.max_chars
+            ) * opts.max_lines
+            if len(text) > char_limit:
+                report.error(
+                    f"{tag} captions: {pid} is {len(text)} chars "
+                    f"(> {char_limit} two-line budget)"
+                )
+            trailing = text[-1] if text else ""
+            if trailing in TRAILING_STRIP:
+                report.error(
+                    f"{tag} captions: {pid} ends with '{trailing}' — neutral "
+                    f"trailing stops must be stripped (broadcast convention)"
+                )
+            leading = text[0] if text else ""
+            if leading in TRAILING_STRIP:
+                report.error(
+                    f"{tag} captions: {pid} starts with '{leading}' — stray "
+                    f"leading stops must be stripped"
+                )
+
+
 def _has_numbered_stages(path: Path) -> bool:
     return any(c.is_dir() and re.match(r"\d+-", c.name) for c in path.iterdir())
 
@@ -535,6 +679,9 @@ def main(argv: list[str]) -> int:
 
     # Generated Remotion props (cut.type must hit the template registry).
     lint_remotion_props(report)
+
+    # Generated caption pages (readability + timeline bounds).
+    lint_caption_pages(report)
 
     for note in report.notes:
         print(f"note  {note}")

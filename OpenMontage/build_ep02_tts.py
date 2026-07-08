@@ -36,6 +36,9 @@ from typing import Any
 
 import edge_tts
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from tools.subtitle.segmentation import chunk_text, speech_weight  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPT_MD = REPO_ROOT / "content-library" / "ep02-video-render" / "04-script" / "README.md"
 ASSETS = REPO_ROOT / "content-library" / "ep02-video-render" / "06-tts" / "assets"
@@ -46,9 +49,6 @@ MANIFEST = ASSETS / "manifest.json"
 
 FPS = 30
 DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural"
-
-SENTENCE_END = set("。！？.!?…")
-CLAUSE_END = set("，、；：,;:")
 
 
 def load_shots() -> list[tuple[str, str, str]]:
@@ -101,46 +101,36 @@ def ffprobe_duration(path: Path) -> float:
     return float(out.decode().strip())
 
 
-def chunk_text(text: str) -> list[str]:
-    """Split a sentence into clause-level chunks, keeping trailing punctuation."""
-    chunks: list[str] = []
-    buf = ""
-    for ch in text:
-        buf += ch
-        if ch in SENTENCE_END or ch in CLAUSE_END:
-            chunks.append(buf)
-            buf = ""
-    if buf.strip():
-        chunks.append(buf)
-    return [c for c in chunks if c.strip()]
-
-
 def build_captions(
     boundaries: list[tuple[float, float, str]],
-    shot_start_s: float,
     shot_dur_s: float,
     voice_slice: str,
 ) -> list[dict[str, Any]]:
-    """Absolute-ms WordCaption list for one shot.
+    """Shot-relative-ms WordCaption list for one shot.
+
+    Timestamps are relative to the shot's own start; the 07 props generator
+    (build_ep02_shots_props.py) offsets them onto the absolute timeline.
 
     Anchors to the engine's sentence boundaries (real speech timing); within each
-    sentence, time is split across clause chunks proportional to character count.
+    sentence, time is split across clause chunks proportional to their spoken
+    weight (CJK syllables + ASCII words), not raw character count.
     Falls back to one caption spanning the whole shot if no boundaries fired.
     """
     caps: list[dict[str, Any]] = []
     if not boundaries:
         caps.append({
             "word": voice_slice,
-            "startMs": round(shot_start_s * 1000),
-            "endMs": round((shot_start_s + shot_dur_s) * 1000),
+            "startMs": 0,
+            "endMs": round(shot_dur_s * 1000),
         })
         return caps
     for start_s, dur_s, text in boundaries:
         chunks = chunk_text(text) or [text]
-        total_chars = sum(len(c) for c in chunks) or 1
-        cur = shot_start_s + start_s
-        for c in chunks:
-            seg = dur_s * len(c) / total_chars
+        weights = [speech_weight(c) for c in chunks]
+        total_weight = sum(weights) or 1.0
+        cur = start_s
+        for c, w in zip(chunks, weights):
+            seg = dur_s * w / total_weight
             caps.append({
                 "word": c.strip(),
                 "startMs": round(cur * 1000),
@@ -187,7 +177,7 @@ def main() -> int:
         mp3 = ASSETS / f"{sid}.mp3"
         boundaries = synth(voice, args.voice, mp3)
         dur = ffprobe_duration(mp3)
-        caps = build_captions(boundaries, cursor, dur, voice)
+        caps = build_captions(boundaries, dur, voice)
         manifest_shots.append({
             "id": sid,
             "section_id": sec_id,
