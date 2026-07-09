@@ -55,15 +55,14 @@ upstream_inputs:
 
 ---
 
-## 第五段：【@FlowScene → @BulletScene → @TerminalScene ×2 → @SplitLayout → @CalloutScene】技术落地·配置分发 + 配置即内容 + SSR 坑（84s → 6 镜头）
+## 第五段：【@FlowScene → @BulletScene → @TerminalScene → @SplitLayout → @CalloutScene】技术落地·引擎按 type 分发 + 配置即内容（70s → 5 镜头）
 
-- **[口播]** 选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。落地唯一反复出问题的是 SSR 坑：组件顶层直接读 window，打包时还跑在 Node 里、没有浏览器——人还没进门就伸手拉灯，灯还没装上，当然报错红屏。修法是加一句 typeof window 判断；更聪明的，是把这条规则写进 .cursor/rules，一次固化给 AI。还有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。
+- **[口播]** 选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。这里有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。而且每个字段的格式都用 TypeScript 定死，AI 填错、漏填当场报红，乱发挥的空间压到最小。至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。
 - **[镜头 5.1]** `@FlowScene`（16s）一份配置 → Explainer 按 type 分发 → 对应组件
 - **[镜头 5.2]** `@BulletScene`（14s）现成模板场景清单（统一深色科技风 + 白字）
-- **[镜头 5.3]** `@TerminalScene`（13s）一份 `comparison_scene` 配置：AI 只填字段
-- **[镜头 5.4]** `@TerminalScene`（18s）SSR 唯一的坑：顶层读 window → ReferenceError 红屏；加 `typeof window` 守卫 + `.cursor/rules` 固化
-- **[镜头 5.5]** `@SplitLayout`（13s）让 AI 从零造组件 ❌ vs 只填数据复用 ✅
-- **[镜头 5.6]** `@CalloutScene`(tip)（10s）自有风格组件库：更大话题，后续单独一期
+- **[镜头 5.3]** `@TerminalScene`（15s）一份 `comparison_scene` 配置：AI 只填字段
+- **[镜头 5.4]** `@SplitLayout`（15s）让 AI 从零造组件 ❌ vs 只填数据复用 ✅（TypeScript 字段兜底、填错即报红）
+- **[镜头 5.5]** `@CalloutScene`(tip)（10s）自有风格组件库：更大话题，后续单独一期
 
 ---
 
@@ -101,7 +100,7 @@ upstream_inputs:
 - ✅ 找技术路径：AI 罗列六条路线（口播分组压缩，画面表格承载全量）/ 点明共同内核「描述→编译成帧→合成」（好坏评估留到选型段，过程旁白不入口播）→ 段二
 - ✅ 技术选型：让 AI 全方位对比「核心优势 + 劣势」/ 结合约束选 Remotion / vs 直接使用 HTML 绘制页面（授权口径如实说 BUSL）→ 段三
 - ✅ 技术落地·原理：用 React 写页面和动画 → 引擎逐帧截图自动合成、无需人工干预 / 为何 AI 好驱动四条（写的就是网页 / 改数据就改片 / 类型兜底 / 出片全自动）→ 段四
-- ✅ 技术落地·配置分发：一份配置 → Explainer 按 type 分发 / 现成模板场景统一主题 / 配置即内容 / TS 类型兜底 / SSR 坑 / 自有风格组件库一句带过 → 段五
+- ✅ 技术落地·配置分发：一份配置 → Explainer 按 type 分发 / 现成模板场景统一主题 / 配置即内容（填字段别造组件）/ TS 类型兜底 / 自有风格组件库一句带过 → 段五
 - ✅ 技术落地·数字人：定位陪衬 → 三种形象全方位对比（核心优势 / 劣势）→ 结合约束选定 VRM、定死不做对口型 → AI 落地（取景）→ 段六
 - ✅ 场景适配：适合纯自动渲染 / 可搭配透明叠层 / 不适合四类 / 口诀 → 段七
 - ✅ 总结 + 结尾 CTA：三步法回顾 + 「不吃编程基础，会讲需求、会判断就能复制」（价值前置表达）/ 频道定位语口播念一次（与品牌卡同帧）/ 关注 + EP03 预告 → 段八
@@ -114,8 +113,8 @@ upstream_inputs:
 {
   "title": "用 Vibe Coding 搭一套能自动出片的视频渲染引擎",
   "platform": "bilibili",
-  "estimated_duration_seconds": 373,
-  "total_word_count": 2080,
+  "estimated_duration_seconds": 359,
+  "total_word_count": 2081,
   "anti_hype_forbidden": [
     "100 行",
     "百倍",
@@ -287,7 +286,7 @@ upstream_inputs:
               {
                 "icon": "📝",
                 "title": "代码/数据描述画面",
-                "desc": "声明式说清每一帧长什么样"
+                "desc": "用代码/数据声明式描述画面"
               },
               {
                 "icon": "⚙️",
@@ -526,9 +525,9 @@ upstream_inputs:
     {
       "id": "5",
       "track": "A",
-      "voice": "选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。落地唯一反复出问题的是 SSR 坑：组件顶层直接读 window，打包时还跑在 Node 里、没有浏览器——人还没进门就伸手拉灯，灯还没装上，当然报错红屏。修法是加一句 typeof window 判断；更聪明的，是把这条规则写进 .cursor/rules，一次固化给 AI。还有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。",
-      "visual_instructions": "@FlowScene 分发流向 → @BulletScene 场景清单 → @TerminalScene 配置样例 → @TerminalScene SSR 崩→守卫 → @SplitLayout 造轮子 vs 填数据 → @CalloutScene 自有组件库一句带过。",
-      "duration_hint_seconds": 84,
+      "voice": "选型定了就进落地。引擎不用手写，跟 AI 把配置和现成组件对上号就行。这台引擎叫 remotion-composer：你写一份配置，说清这段画面是什么；主程序 Explainer 看配置里的 type 字段，自动找对应组件去渲。现成模板场景有一整套——开场收尾、概念要点、流程表格、图表对比这些，还有合成终端和截图叠层，全统一成深色科技底加白字，改一处主题，全片生效。所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。这里有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。而且每个字段的格式都用 TypeScript 定死，AI 填错、漏填当场报红，乱发挥的空间压到最小。至于在现成组件上扩一套自有风格的品牌组件库，是更大的话题，以后单独开一期。这期先用现成的把片子跑通。",
+      "visual_instructions": "@FlowScene 分发流向 → @BulletScene 场景清单 → @TerminalScene 配置样例 → @SplitLayout 造轮子 vs 填数据（TS 兜底）→ @CalloutScene 自有组件库一句带过。",
+      "duration_hint_seconds": 70,
       "shots": [
         {
           "id": "5.1",
@@ -597,50 +596,23 @@ upstream_inputs:
             ]
           },
           "voice_slice": "所以做内容，说白了就是挑组件、填字段。要一张对比卡？就说左边传统剪辑、右边代码即视频，AI 吐出来的就是一段 type 写 comparison 的配置，齐活。",
-          "duration_seconds": 13
+          "duration_seconds": 15
         },
         {
           "id": "5.4",
-          "scene_template": "@TerminalScene",
-          "props": {
-            "terminalTitle": "SSR 唯一的坑：把规则固化给 AI",
-            "prompt": "tsx",
-            "steps": [
-              {
-                "cmd": "const w = window.innerWidth; // ❌ 组件顶层直接读"
-              },
-              {
-                "out": "ReferenceError: window is not defined （Node 打包阶段崩、渲染红屏）"
-              },
-              {
-                "pause": 1
-              },
-              {
-                "cmd": "if (typeof window !== 'undefined') { /* 安全读取 */ } // ✅ 守卫"
-              },
-              {
-                "pill": ".cursor/rules 固化这条规则，往后 AI 自动带上"
-              }
-            ]
-          },
-          "voice_slice": "落地唯一反复出问题的是 SSR 坑：组件顶层直接读 window，打包时还跑在 Node 里、没有浏览器——人还没进门就伸手拉灯，灯还没装上，当然报错红屏。修法是加一句 typeof window 判断；更聪明的，是把这条规则写进 .cursor/rules，一次固化给 AI。",
-          "duration_seconds": 18
-        },
-        {
-          "id": "5.5",
           "scene_template": "@SplitLayout",
           "props": {
             "title": "心法：填数据，别造轮子",
             "leftLabel": "让 AI 从零手写组件 ❌",
             "leftValue": "重复造轮子，丢掉「换数据就复用」的好处",
             "rightLabel": "只填数据、复用现成组件 ✅",
-            "rightValue": "结构稳、可复用，AI 乱发挥空间最小"
+            "rightValue": "TypeScript 字段定死、填错即报红，结构稳、可复用，AI 乱发挥空间最小"
           },
-          "voice_slice": "还有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。",
-          "duration_seconds": 13
+          "voice_slice": "这里有条铁律：不让 AI 发明新组件，只让它照现成的填数据。从零手写新组件，既重复造轮子，又把换数据就复用的好处弄没了。而且每个字段的格式都用 TypeScript 定死，AI 填错、漏填当场报红，乱发挥的空间压到最小。",
+          "duration_seconds": 15
         },
         {
-          "id": "5.6",
+          "id": "5.5",
           "scene_template": "@CalloutScene",
           "props": {
             "callout_type": "tip",
