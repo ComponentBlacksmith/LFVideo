@@ -29,8 +29,8 @@ const TECH_TEXT = {
 	muted: '#A8B2C4',
 } as const;
 // 深色科技底上统一的网格/表面色（白色低透明度）。
-const TECH_LINE = 'rgba(255,255,255,0.12)';
-const TECH_SURFACE = 'rgba(255,255,255,0.06)';
+const TECH_LINE = 'rgba(255,255,255,0.30)';
+const TECH_SURFACE = 'rgba(255,255,255,0.10)';
 
 // 全部 5 套主题统一为「深色科技底 + 白字」，仅 accent / 字体保留各自调性。
 export const PALETTES: Record<string, Palette> = {

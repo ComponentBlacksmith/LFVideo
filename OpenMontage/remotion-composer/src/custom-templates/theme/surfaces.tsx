@@ -68,7 +68,7 @@ export const TechCorners: React.FC<{
 	size?: number;
 	inset?: number;
 	alpha?: number;
-}> = ({color, size = 18, inset = 10, alpha = 0.55}) => {
+}> = ({color, size = 18, inset = 10, alpha = 0.85}) => {
 	const c = withAlpha(color, alpha);
 	const base: CSSProperties = {
 		position: 'absolute',
@@ -136,8 +136,8 @@ export function techIconChip(
 		...(size ? {width: size, height: size} : {}),
 		flexShrink: 0,
 		borderRadius: shape === 'circle' ? '50%' : RADIUS.md,
-		background: withAlpha(color, 0.18),
-		border: `1.5px solid ${withAlpha(color, 0.45)}`,
+		background: withAlpha(lighten(color, 0.12), 0.34),
+		border: `2px solid ${withAlpha(lighten(color, 0.35), 0.85)}`,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -159,8 +159,8 @@ export function techPill(theme: TemplateTheme, color: string): CSSProperties {
 		fontWeight: 800,
 		letterSpacing: 2,
 		color,
-		background: withAlpha(color, 0.15),
-		border: `1.5px solid ${withAlpha(color, 0.45)}`,
+		background: withAlpha(lighten(color, 0.12), 0.28),
+		border: `1.5px solid ${withAlpha(lighten(color, 0.3), 0.8)}`,
 		borderRadius: RADIUS.pill,
 		padding: `6px ${SPACING.md}px`,
 	};
