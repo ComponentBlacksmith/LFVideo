@@ -111,7 +111,7 @@
 | 多方案矩阵对比（≥3 行 × ≥2 维度） | `@TableScene` | `headers` / `rows` / `highlightCell` |
 | 两方 / 两面对照（A vs B、优势 vs 劣势） | `@SplitLayout` | `leftLabel/leftValue/rightLabel/rightValue` |
 | 概念拆解、认知框架（≤3 张卡） | `@ConceptScene` | `items[]`：`label/title/desc/icon` |
-| 平铺要点清单（可有序） | `@BulletScene` | `items[]`、`ordered` |
+| 平铺要点清单（可有序） | `@BulletScene` | `items[]`、`ordered`；条目 ≥5 自动切 2 列矩阵（2×3/2×4） |
 | 按时间/版本推进的事件 | `@TimelineScene` | `events[]` |
 | 单个核心大数字 | `@StatScene` | `stat` |
 | 量化数据（跑分/占比） | `@ChartScene` | `kind` / `data` |
