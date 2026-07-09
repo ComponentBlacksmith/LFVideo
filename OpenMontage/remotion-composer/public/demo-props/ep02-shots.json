@@ -33,12 +33,30 @@
     },
     {
       "id": "shot-1.4",
-      "type": "intro_scene",
+      "type": "flow_scene",
       "source": "",
       "in_seconds": 26.016,
       "out_seconds": 34.392,
-      "title": "三步：找技术路径 → 技术选型 → 落地出片",
-      "subtitle": "AI 铺信息与实现，人做判断与验收",
+      "eyebrow": "怎么落地 · 三步",
+      "title": "找技术路径 → 技术选型 → 落地出片",
+      "orientation": "horizontal",
+      "steps": [
+        {
+          "icon": "🧭",
+          "title": "找技术路径",
+          "desc": "让 AI 把现成路子摆全"
+        },
+        {
+          "icon": "⚖️",
+          "title": "技术选型",
+          "desc": "对着实际需求全方位对比、结合约束选定"
+        },
+        {
+          "icon": "🚀",
+          "title": "落地出片",
+          "desc": "填配置、套组件、自动出片"
+        }
+      ],
       "background": "holo"
     },
     {
@@ -571,12 +589,30 @@
     },
     {
       "id": "shot-8.1",
-      "type": "outro_scene",
+      "type": "flow_scene",
       "source": "",
       "in_seconds": 417.648,
       "out_seconds": 436.2,
-      "headline": "三步法：AI 罗列 → 人全方位对比·结合约束 → AI 填配置出片",
-      "cta": "会讲需求、会判断，就能复制这套流程",
+      "eyebrow": "整期回顾 · 三步法",
+      "title": "AI 罗列 → 人全方位对比·结合约束 → AI 填配置出片",
+      "orientation": "horizontal",
+      "steps": [
+        {
+          "icon": "🧭",
+          "title": "找技术路径",
+          "desc": "AI 把现成路子全列出来"
+        },
+        {
+          "icon": "⚖️",
+          "title": "技术选型",
+          "desc": "人做全方位对比、结合约束选定"
+        },
+        {
+          "icon": "🚀",
+          "title": "落地出片",
+          "desc": "AI 填配置、套组件、自动出片"
+        }
+      ],
       "background": "holo"
     },
     {

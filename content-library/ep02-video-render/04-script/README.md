@@ -136,7 +136,7 @@ upstream_inputs:
       "id": "1",
       "track": "A",
       "voice": "如何用 Vibe Coding，快速搞定自动化视频渲染？先记住一个关键认知：AI 最能打的本事，是啃文本和代码。所以想让渲染自动化，思路就一条——把视频变成代码和数据，让 AI 按配置出片。改一行配置，整条片子自动重渲。这就是低成本、高效率的自动化生产。怎么落地？三步：先让 AI 找技术路径，再对着实际需求选型，最后落地出片。",
-      "visual_instructions": "@IntroScene ×4：选题问句点题 → 关键认知卡 → 价值卡（低成本高效自动化）→ 三步路线图点亮。",
+      "visual_instructions": "@IntroScene ×3：选题问句点题 → 关键认知卡 → 价值卡（低成本高效自动化）；@FlowScene 三步骨架卡片（找技术路径→技术选型→落地出片）点亮。",
       "duration_hint_seconds": 34,
       "shots": [
         {
@@ -171,10 +171,16 @@ upstream_inputs:
         },
         {
           "id": "1.4",
-          "scene_template": "@IntroScene",
+          "scene_template": "@FlowScene",
           "props": {
-            "title": "三步：找技术路径 → 技术选型 → 落地出片",
-            "subtitle": "AI 铺信息与实现，人做判断与验收"
+            "eyebrow": "怎么落地 · 三步",
+            "title": "找技术路径 → 技术选型 → 落地出片",
+            "orientation": "horizontal",
+            "steps": [
+              {"icon": "🧭", "title": "找技术路径", "desc": "让 AI 把现成路子摆全"},
+              {"icon": "⚖️", "title": "技术选型", "desc": "对着实际需求全方位对比、结合约束选定"},
+              {"icon": "🚀", "title": "落地出片", "desc": "填配置、套组件、自动出片"}
+            ]
           },
           "voice_slice": "怎么落地？三步：先让 AI 找技术路径，再对着实际需求选型，最后落地出片。",
           "duration_seconds": 8
@@ -804,15 +810,21 @@ upstream_inputs:
       "id": "8",
       "track": "A",
       "voice": "回顾一下，整期就三步：让 AI 把技术路径全列出来，你做全方位对比、结合约束选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础——会讲需求、会验收，你就能复制。这个频道就一条原则：不吹 AI，真落地，真开源。觉得有用，点个关注。下期 EP03 讲字幕匹配：用 Whisper 拿到字级时间戳，自动驱动 CaptionOverlay，让字幕踩着话音一个字一个字往外蹦。",
-      "visual_instructions": "@OutroScene ×2：三步法回顾 + 没基础也能复制；关注引导 + EP03 预告。",
+      "visual_instructions": "@FlowScene 三步法回顾卡（首尾呼应）→ @OutroScene 关注引导 + EP03 预告。",
       "duration_hint_seconds": 19,
       "shots": [
         {
           "id": "8.1",
-          "scene_template": "@OutroScene",
+          "scene_template": "@FlowScene",
           "props": {
-            "headline": "三步法：AI 罗列 → 人全方位对比·结合约束 → AI 填配置出片",
-            "cta": "会讲需求、会判断，就能复制这套流程"
+            "eyebrow": "整期回顾 · 三步法",
+            "title": "AI 罗列 → 人全方位对比·结合约束 → AI 填配置出片",
+            "orientation": "horizontal",
+            "steps": [
+              {"icon": "🧭", "title": "找技术路径", "desc": "AI 把现成路子全列出来"},
+              {"icon": "⚖️", "title": "技术选型", "desc": "人做全方位对比、结合约束选定"},
+              {"icon": "🚀", "title": "落地出片", "desc": "AI 填配置、套组件、自动出片"}
+            ]
           },
           "voice_slice": "回顾一下，整期就三步：让 AI 把技术路径全列出来，你做全方位对比、结合约束选型，再让 AI 填配置、套组件、自动出片。这套流程不吃编程基础——会讲需求、会验收，你就能复制。",
           "duration_seconds": 8
