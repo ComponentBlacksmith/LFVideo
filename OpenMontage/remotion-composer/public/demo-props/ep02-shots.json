@@ -43,18 +43,18 @@
       "steps": [
         {
           "icon": "🧭",
-          "title": "找技术路径",
-          "desc": "让 AI 把现成路子摆全"
+          "desc": "让 AI 把现成路子摆全",
+          "label": "找技术路径"
         },
         {
           "icon": "⚖️",
-          "title": "技术选型",
-          "desc": "对着实际需求全方位对比、结合约束选定"
+          "desc": "对着实际需求全方位对比、结合约束选定",
+          "label": "技术选型"
         },
         {
           "icon": "🚀",
-          "title": "落地出片",
-          "desc": "填配置、套组件、自动出片"
+          "desc": "填配置、套组件、自动出片",
+          "label": "落地出片"
         }
       ],
       "background": "holo"
@@ -148,18 +148,18 @@
       "steps": [
         {
           "icon": "📝",
-          "title": "代码/数据描述画面",
-          "desc": "用代码/数据声明式描述画面"
+          "desc": "用代码/数据声明式描述画面",
+          "label": "代码/数据描述画面"
         },
         {
           "icon": "⚙️",
-          "title": "编译成帧",
-          "desc": "程序把描述逐帧渲染出来"
+          "desc": "程序把描述逐帧渲染出来",
+          "label": "编译成帧"
         },
         {
           "icon": "🎬",
-          "title": "合成视频",
-          "desc": "帧序列 + 音轨合成 MP4"
+          "desc": "帧序列 + 音轨合成 MP4",
+          "label": "合成视频"
         }
       ],
       "background": "holo"
@@ -299,18 +299,18 @@
       "steps": [
         {
           "icon": "⚛️",
-          "title": "React 写页面和动画",
-          "desc": "网页长什么样、怎么动都用 React + CSS 描述"
+          "desc": "网页长什么样、怎么动都用 React + CSS 描述",
+          "label": "React 写页面和动画"
         },
         {
           "icon": "📸",
-          "title": "引擎逐帧截图",
-          "desc": "从头到尾逐帧截图再合成视频"
+          "desc": "从头到尾逐帧截图再合成视频",
+          "label": "引擎逐帧截图"
         },
         {
           "icon": "🤖",
-          "title": "全自动出片",
-          "desc": "不用人盯、不用手剪，天然可批量"
+          "desc": "不用人盯、不用手剪，天然可批量",
+          "label": "全自动出片"
         }
       ],
       "background": "holo"
@@ -351,18 +351,18 @@
       "steps": [
         {
           "icon": "🧾",
-          "title": "写一份配置",
-          "desc": "说清这段画面是什么、叠什么"
+          "desc": "说清这段画面是什么、叠什么",
+          "label": "写一份配置"
         },
         {
           "icon": "🔀",
-          "title": "Explainer 读 type",
-          "desc": "按 type 字段自动分发"
+          "desc": "按 type 字段自动分发",
+          "label": "Explainer 读 type"
         },
         {
           "icon": "🧱",
-          "title": "对应组件渲染",
-          "desc": "comparison→对比卡，terminal→合成终端…"
+          "desc": "comparison→对比卡，terminal→合成终端…",
+          "label": "对应组件渲染"
         }
       ],
       "background": "holo"
@@ -599,18 +599,18 @@
       "steps": [
         {
           "icon": "🧭",
-          "title": "找技术路径",
-          "desc": "AI 把现成路子全列出来"
+          "desc": "AI 把现成路子全列出来",
+          "label": "找技术路径"
         },
         {
           "icon": "⚖️",
-          "title": "技术选型",
-          "desc": "人做全方位对比、结合约束选定"
+          "desc": "人做全方位对比、结合约束选定",
+          "label": "技术选型"
         },
         {
           "icon": "🚀",
-          "title": "落地出片",
-          "desc": "AI 填配置、套组件、自动出片"
+          "desc": "AI 填配置、套组件、自动出片",
+          "label": "落地出片"
         }
       ],
       "background": "holo"

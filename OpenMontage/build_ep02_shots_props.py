@@ -155,6 +155,19 @@ def build_cuts(
             content = dict(shot.get("props") or {})
             if not content:
                 raise SystemExit(f"shot {sid}: SSOT shot has no props")
+            # FlowScene's step schema keys the card heading as `label`; the SSOT
+            # authors it as `title` (consistent with other scenes). Map it here so
+            # the renderer's zod parse succeeds and the cards actually render.
+            if ctype == "flow_scene" and isinstance(content.get("steps"), list):
+                content["steps"] = [
+                    {**s, "label": s["title"], "title": None}
+                    if isinstance(s, dict) and "title" in s and "label" not in s
+                    else s
+                    for s in content["steps"]
+                ]
+                content["steps"] = [
+                    {k: v for k, v in s.items() if v is not None} for s in content["steps"]
+                ]
             if ctype not in NO_HOLO_TYPES:
                 content.setdefault("background", "holo")
             content.update(SHOT_OVERRIDES.get(sid, {}))
