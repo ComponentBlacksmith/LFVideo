@@ -58,7 +58,7 @@ description: 分镜口播稿 - 调用分镜口播导演角色，直接把 02 故
 * **体量要求**：长 5-10 分钟，口播 1500 - 2500 字。
 * **内容深度**：按 `tutorial.final.md` 的两步主线展开——先用大白话讲「怎么选这条技术路线」，再讲「怎么把本期能力搭出来」（主线与讲述人设口径见 `shared/rules/project-context.md`《频道配置》）；把声明的模板组件（如 `@TableScene`、`@TimelineScene`）Props 参数填充完整。
 * **镜头切分（防静止的根治手法）**：任何 `duration_hint_seconds > 15` 的 section 必须切成 `≥ ceil(时长/15)` 个 shot；shot 内部组件还需要 stagger/高亮/Zoom 这类微动效时，才用该 shot 的 `visual_beats`（它只描述**单个组件内**的细节动画，不承担切镜职责）。
-* **组件映射决策**：现有组件可表达 → 复用并标注组件名与 Props；无法表达 → 声明 `Template Ticket`（含物理路径建议、Props 接口、动画规范）。
+* **组件映射决策**：现有组件可表达 → 复用并标注组件名与 Props；无法表达 → 声明 `Template Ticket`（含物理路径建议、Props 接口、动画规范）。选哪一个场景按 `shared/docs/remotion-spec.md` §2.1.5「场景选型决策表」的语义信号映射与四条选型硬规则执行（结构映射优先 / 相邻镜头去重 / 首尾呼应 / props 字段名对照 scene-types.json）。
 * **列表型组件逐条踩点（`atSec`）**：`@ConceptScene` / `@BulletScene` / `@FlowScene` / `@TimelineScene` 内含多个 item/step/event，画面默认是均匀错峰（uniform stagger），无法贴合不均匀的口播节奏。当某一条要**精确踩在某句口播上**时，给该条 props 加 `atSec`（数字，单位秒，**相对本镜头/shot 起点**，与 `voice_slice` 同一时间轴）——含义是「该条在镜头开始后第 atSec 秒入场」。不写 `atSec` 的条目自动回退到均匀 stagger，无需逐条都填。注意 `atSec` 不要超过该镜头 `duration_seconds`，否则该条永不出现。
 * **录屏 zoom 指令**：对含录屏的场景生成 `zoom_crop_directives`（clip_id / 时间戳 / 缩放倍数 / 焦点坐标）。
 
@@ -113,7 +113,11 @@ source_workflow: /04-script-draft
 - ❌ **防静止（硬性·镜头级）**：任一 `duration_hint_seconds > 15` 的 section 是否切成了 `≥ ceil(时长/15)` 个 `shots[]`（每个 shot 一个组件 + Props + `voice_slice` + `duration_seconds`）？只写 section 级 `visual_beats`/`sub_shots` 文字注解而不拆 shot = 不合格（`pipeline_lint.py` 在该期 04 置 `approved`/`reviewed` 时会硬报错）。shot 内的 `visual_beats` 仅用于单组件内部微动效，不算切镜（见 `shared/docs/remotion-spec.md` §1.5）。
 - ❌ **录屏兜底完整性**：含录屏的场景，脚本是否同时给出了 `[录屏画面]`（含 `zoom_crop_directives`）和 `[自动渲染兜底]` 画面指示？缺一即判不合格。
 - ❌ **列表型组件踩点**：`@ConceptScene` / `@BulletScene` / `@FlowScene` / `@TimelineScene` 的某一条若在口播里有明确「念到这条才出现」的对应句，是否给该条 props 标了 `atSec`（相对镜头起点的秒，不超过 `duration_seconds`）？只有「同时一起出现」或节奏无关时才允许省略 `atSec` 走均匀 stagger。
-- ❌ 脚本中是否将声明的新模版组件（如 `@TableScene` 等）Props 参数和数据 Schema 100% 填充完整？
+- ❌ **语义-场景匹配**：口播含「N 步/流程/对比/清单/大数字」等结构信号的镜头，是否都用了对应的结构化场景（见 remotion-spec §2.1.5 决策表）？有没有用 `@IntroScene`/`@OutroScene`/`@QuoteScene` 纯文字硬扛结构化信息？
+- ❌ **相邻镜头去重**：相邻/同段镜头是否用同一场景重放了几乎相同的 props（如同一张表连播两屏）？「全景→聚焦」是否改用不同场景递进（矩阵 → 聚焦赢家 SplitLayout/高亮）？
+- ❌ **首尾呼应**：开场给出的结构骨架（如三步法）在结尾回顾时是否用同一结构场景复现？
+- ❌ **props 字段名对照 schema**：每个镜头的 props 字段名是否逐字段对照过 `scene-types.json` 的 required/optional？（错名不报错，会静默回退成纯文字——如 FlowScene step 用 `label` 不是 `title`。）
+- ❌ 脚本是否将声明的新模版组件（如 `@TableScene` 等）Props 参数和数据 Schema 100% 填充完整？
 
 **通用：**
 - ❌ **必讲要点覆盖**：`tutorial.final.md` 末尾「必讲要点覆盖清单」里的每一条，是否都能在本脚本（口播或画面承载）里找到对应？逐条核对，任一条无对应即判不合格，需补写。**但标 `(内部)` 的条目相反：默认不入口播**，只能收敛为一句结果或交给画面；口播里出现 dev-log 级实现细节（修 bug 的具体手法）即判不合格，除非它本身是本期教学目标。

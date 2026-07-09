@@ -44,6 +44,7 @@
 口播之外，每段的 `[画面]` 与 JSON 契约里的视觉字段必须满足：
 
 - **组件覆盖**：每个 section 都要映射到具体 Remotion 组件或声明 Template Ticket，禁止留下未解决的抽象描述。
+- **语义-场景匹配（选型硬规则）**：按 `shared/docs/remotion-spec.md` §2.1.5「场景选型决策表」把口播语义信号映射到场景——口播出现「N 步/流程/对比/清单/大数字」等结构信号时必须用对应结构化场景（`@FlowScene`/`@TableScene`/`@SplitLayout`/`@BulletScene`/`@StatScene`…），禁止用 `@IntroScene`/`@OutroScene`/`@QuoteScene` 纯文字硬扛；相邻镜头禁止用同一场景重放几乎相同的 props（「全景→聚焦」用不同场景递进）；开场结构骨架与结尾回顾用同一结构场景首尾呼应；props 字段名逐字段对照 `scene-types.json`/组件 zod schema（错名会静默回退成纯文字，如 FlowScene step 用 `label` 不是 `title`）。
 - **术语专业化（与口语化口播相反）**：`@TableScene` 等判断层矩阵的列名与描述用**严谨、正式的工程术语**，统一为 `["技术路线","适用场景","局限条件","关键约束"]`，做**全方位对比**（既列核心优势/适用场景，也列局限/关键约束），不是单摆缺点或只堆坑；避免「报菜名、复制粘贴/土办法」等口语、片面或略粗俗的表达。**注意：口语化只用于 `[口播]` voice，视觉/Props 字段一律用工程术语。**
 - **受众对齐**：本频道受众为 AI 开发者 / 独立开发者 / 技术内容创作者，**大多不是传统视频制作者**。禁止用「传统剪辑拖时间轴 / 手动对字幕」等面向剪辑师的痛点做对比；改用开发者能共鸣的工程心智模型（如「手工时序 vs 声明式配置」「改配置即改片」）。
 - **防静止编排（Anti-Deadtime，硬性约束·镜头级）**：遵循 `shared/docs/remotion-spec.md` §1.5。任何 `duration_hint_seconds > 15`（中文约每秒 4–5 字，即 > ~75 字）的 section，**必须**切成 `≥ ceil(时长/15)` 个 `shots[]`，让任一画面不超过 ~15 秒不变。只在 section 级写 `visual_beats`/`sub_shots` 文字注解而不拆 shot 是**不合格的治标做法**（`scripts/pipeline_lint.py` 在该期 04 被置 `approved`/`reviewed` 后会硬报错）。多组件接力天然就是多个 shot，不要把它们塞进一个 section 的单个 `scene_template`。

@@ -101,6 +101,32 @@
 
 > 🕒 **列表型场景逐条踩点（`atSec`）通用约定**：上面的 `atSec` 字段同样适用于 `@BulletScene`（item）、`@FlowScene`（step）、`@TimelineScene`（event）——任意一条 item/step/event 都可加 `atSec` 让它踩准对应口播；不填即均匀 stagger。这与 `/04-script-draft` 工作流的「列表型组件逐条踩点」约定一致，脚本作者在需要逐条对齐语音节奏时填写。
 
+### 2.1.5 场景选型决策表（语义 → 场景，硬约束）
+
+> **完整场景清单与字段 SSOT**：`OpenMontage/remotion-composer/src/custom-templates/scene-types.json`（14 个场景，required/optional 字段与组件 zod schema 强一致，启动期守卫校验）。选场景时按下表把**口播语义信号**映射到场景，不要凭标题感觉选。
+
+| 口播/内容语义信号 | 该用的场景 | 关键字段（以 scene-types.json 为准） |
+| :--- | :--- | :--- |
+| 「N 步 / 流程 / 先…再…最后…」 | `@FlowScene` | `steps[]`：每步 `label`（**不是 title**）+ `desc` + `icon`（Emoji） |
+| 多方案矩阵对比（≥3 行 × ≥2 维度） | `@TableScene` | `headers` / `rows` / `highlightCell` |
+| 两方 / 两面对照（A vs B、优势 vs 劣势） | `@SplitLayout` | `leftLabel/leftValue/rightLabel/rightValue` |
+| 概念拆解、认知框架（≤3 张卡） | `@ConceptScene` | `items[]`：`label/title/desc/icon` |
+| 平铺要点清单（可有序） | `@BulletScene` | `items[]`、`ordered` |
+| 按时间/版本推进的事件 | `@TimelineScene` | `events[]` |
+| 单个核心大数字 | `@StatScene` | `stat` |
+| 量化数据（跑分/占比） | `@ChartScene` | `kind` / `data` |
+| 强调一句警示/铁律（可带小清单） | `@CalloutScene` | `text`、`items[]`（扁平字符串） |
+| 金句收束 | `@QuoteScene` | `text` |
+| 章节分隔 | `@SectionScene` | `title` / `index` |
+| 开场点题 / 片尾 CTA / 命令与报错 | `@IntroScene` / `@OutroScene` / `@TerminalScene` | 见 §2.1 |
+
+**选型硬规则（04 撰稿与自检必过）**：
+
+1. **结构映射优先**：口播里出现「三步 / 流程 / 对比 / 清单 / 大数字」等结构信号时，画面**必须**用上表对应的结构化场景承载；禁止用 `@IntroScene`/`@OutroScene`/`@QuoteScene` 一行纯文字硬扛结构化信息（教训：ep02 开场「三步骨架」曾配成纯文字 IntroScene，返工改 FlowScene）。
+2. **相邻镜头去重**：相邻或同段镜头**禁止用同一场景重放几乎相同的 props**。语义是「先全景 → 再聚焦」时，用不同场景递进表达（如 `@TableScene` 全景矩阵 → `@SplitLayout` 聚焦赢家优势/劣势），而不是把整表再播一遍（教训：ep02 3.1/3.2 曾连播两张相同对比表，返工去重）。
+3. **首尾呼应**：开场给出的结构骨架（如三步法），结尾回顾时用**同一结构场景**复现一遍（如都用 `@FlowScene` 同一套三步卡），形成记忆锚点。
+4. **props 字段名逐字段核对 schema**：字段名写错不会报错，而是**静默校验失败、整卡回退成纯文字**（教训：FlowScene step 的标题字段是 `label`，写成 `title` 导致全部流程卡悄悄退化）。落盘前对照 scene-types.json 的 required/optional 逐字段核对。
+
 ### 2.2 基础布局组件 (Primitives)
 
 *   **`@SplitLayout` (分屏组件)**
