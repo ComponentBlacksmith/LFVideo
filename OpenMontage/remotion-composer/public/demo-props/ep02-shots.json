@@ -203,40 +203,16 @@
     },
     {
       "id": "shot-3.2",
-      "type": "table_scene",
+      "type": "comparison_scene",
       "source": "",
       "in_seconds": 87.456,
       "out_seconds": 104.904,
-      "title": "把「劣势」和约束对齐做减法",
-      "headers": [
-        "方案",
-        "核心优势",
-        "劣势"
-      ],
-      "rows": [
-        [
-          "Remotion",
-          "前端 React 栈、复杂排版强、模板跨期复用",
-          "纯后台超长批处理弱；顶层读 window 打包崩；BUSL 授权"
-        ],
-        [
-          "Manim",
-          "数学/公式/算法可视化专业",
-          "学习曲线陡、排版弱、渲染慢；普通 UI 不合适"
-        ],
-        [
-          "MoviePy",
-          "纯 Python、简单拼接、音轨闪避",
-          "文字排版繁琐、改了要重跑；复杂动效弱"
-        ],
-        [
-          "FFmpeg + 脚本",
-          "批量转码、字幕烧录、兜底合成",
-          "命令语法晦涩、难调试；做不了复杂动效"
-        ]
-      ],
-      "highlightCell": "1-3",
-      "background": "holo"
+      "title": "只看赢家 Remotion：优势 vs 劣势",
+      "leftLabel": "优势 ✅",
+      "leftValue": "前端 React 栈、复杂排版强、模板还能跨期复用",
+      "rightLabel": "劣势 ⚠️",
+      "rightValue": "顶层读 window 打包崩；纯后台超长批处理弱；BUSL 授权做大了要付费",
+      "enter": "rise"
     },
     {
       "id": "shot-3.3",

@@ -315,7 +315,7 @@ upstream_inputs:
       "id": "3",
       "track": "A",
       "voice": "第二步，技术选型。别急着问 AI 哪个好——它会把每个都夸一遍，你照样选不出来。想让它帮你拍板，就让它做一次全方位对比：每条路的核心优势、劣势，全摆到台面上，列成一张表。就说 Remotion。优势很实在：前端 React 栈、排版能力强、模板还能跨期复用。劣势它也不藏——组件顶层直接读浏览器对象，打包阶段当场崩；而且是 BUSL 授权，做大了要给钱。优劣摆齐，再拿自己的约束去卡。我的约束就三条：一个固定模板、换数据批量出几十期；AI 改内容别老出错；跨期还得好维护。三条一卡，Remotion 胜出。你可能会问，直接拿 HTML 画页面不行吗？行。但你改一处，剩下几十期不会跟着变。Remotion 不一样，改一处全系列生效，AI 只能照着填数据，动不了结构。十期之后，照样管得住。记住一点：AI 负责把优劣铺开；怎么权衡、选哪条，这个判断得你自己下。",
-      "visual_instructions": "@TableScene 全方位对比矩阵 + Zoom 高亮劣势列 → @ConceptScene 三条约束 → @SplitLayout vs 直接使用 HTML 绘制页面 → @QuoteScene 金句。",
+      "visual_instructions": "@TableScene 全方位对比矩阵 → @SplitLayout 只看赢家 Remotion 优势/劣势 → @ConceptScene 三条约束 → @SplitLayout vs 直接使用 HTML 绘制页面 → @QuoteScene 金句。",
       "duration_hint_seconds": 64,
       "shots": [
         {
@@ -367,48 +367,25 @@ upstream_inputs:
         },
         {
           "id": "3.2",
-          "scene_template": "@TableScene",
+          "scene_template": "@SplitLayout",
           "props": {
-            "title": "把「劣势」和约束对齐做减法",
-            "headers": [
-              "方案",
-              "核心优势",
-              "劣势"
-            ],
-            "rows": [
-              [
-                "Remotion",
-                "前端 React 栈、复杂排版强、模板跨期复用",
-                "纯后台超长批处理弱；顶层读 window 打包崩；BUSL 授权"
-              ],
-              [
-                "Manim",
-                "数学/公式/算法可视化专业",
-                "学习曲线陡、排版弱、渲染慢；普通 UI 不合适"
-              ],
-              [
-                "MoviePy",
-                "纯 Python、简单拼接、音轨闪避",
-                "文字排版繁琐、改了要重跑；复杂动效弱"
-              ],
-              [
-                "FFmpeg + 脚本",
-                "批量转码、字幕烧录、兜底合成",
-                "命令语法晦涩、难调试；做不了复杂动效"
-              ]
-            ],
-            "highlightCell": "1-3"
+            "title": "只看赢家 Remotion：优势 vs 劣势",
+            "leftLabel": "优势 ✅",
+            "leftValue": "前端 React 栈、复杂排版强、模板还能跨期复用",
+            "rightLabel": "劣势 ⚠️",
+            "rightValue": "顶层读 window 打包崩；纯后台超长批处理弱；BUSL 授权做大了要付费",
+            "enter": "rise"
           },
           "voice_slice": "就说 Remotion。优势很实在：前端 React 栈、排版能力强、模板还能跨期复用。劣势它也不藏——组件顶层直接读浏览器对象，打包阶段当场崩；而且是 BUSL 授权，做大了要给钱。",
           "duration_seconds": 16,
           "visual_beats": [
             {
-              "at_seconds": 2,
-              "action": "Zoom 聚焦「劣势」列"
+              "at_seconds": 0,
+              "action": "左栏「优势」淡入"
             },
             {
-              "at_seconds": 8,
-              "action": "highlight_cell(1,3) 高亮 Remotion 劣势"
+              "at_seconds": 6,
+              "action": "右栏「劣势」入场"
             }
           ]
         },
